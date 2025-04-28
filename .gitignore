@@ -1,6 +1,71 @@
-/DAACOORDINATORAPP/backend/.env
-/DAACOORDINATORAPP/frontend/node_modules
-/DAACOORDINATORAPP/frontend/.env
-/DAACOORDINATORAPP/backend/node_modules
-/DAACOORDINATORAPP/backend/api/__pycache__
-/DAACOORDINATORAPP/backend/backend/__pycache__
+# --- Global Ignores ---
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*  # in case you have multiple env files like .env.production
+
+# Backup files
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+
+# Node package folders (React, JS stuff)
+**/node_modules/
+
+# Build output (React build artifacts)
+**/build/
+**/dist/
+**/.next/    # If using Next.js
+**/.turbo/   # If using Turborepo
+**/.vite/    # If using Vite
+
+# Django/Python specific
+
+# Python bytecode
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+
+# Virtual environment folders
+**/venv/
+**/.venv/
+**/env/
+**/.env/
+
+# Django specific
+**/db.sqlite3
+**/db.sqlite3-journal
+**/staticfiles/
+**/media/
+**/migrations/**/  # Ignore Django migrations, optional if you don't track them individually
+!**/migrations/__init__.py  # But keep the __init__.py so Django sees them as packages
+
+# Coverage reports
+**/htmlcov/
+**/.coverage
+**/coverage.xml
+**/.pytest_cache/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing snapshots
+**/__snapshots__/
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
