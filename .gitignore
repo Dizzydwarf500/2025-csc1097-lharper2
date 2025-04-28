@@ -1,3 +1,6 @@
 /DAACOORDINATORAPP/backend/.env
 /DAACOORDINATORAPP/frontend/node_modules
 /DAACOORDINATORAPP/frontend/.env
+/DAACOORDINATORAPP/backend/node_modules
+/DAACOORDINATORAPP/backend/api/__pycache__
+/DAACOORDINATORAPP/backend/backend/__pycache__
