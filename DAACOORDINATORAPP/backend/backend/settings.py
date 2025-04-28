@@ -60,7 +60,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
-    'https://two025-csc1097-lharper2.onrender.com/',
+    'https://two025-csc1097-lharper2.onrender.com',
 ]
 ROOT_URLCONF = 'backend.urls'
 
