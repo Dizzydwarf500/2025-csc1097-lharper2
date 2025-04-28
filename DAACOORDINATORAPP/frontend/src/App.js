@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/product/`)
+      .get(`${process.env.REACT_APP_API_URL}/api/product/`)
       .then((response) => {
         const sortedProducts = response.data.sort((a, b) => a.name.localeCompare(b.name));
         setRollcallProducts(sortedProducts);
@@ -42,7 +42,7 @@ function App() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);  
+  }, []);
 
   const incrementTestTime = () => {
     setTestTime((prev) => {
