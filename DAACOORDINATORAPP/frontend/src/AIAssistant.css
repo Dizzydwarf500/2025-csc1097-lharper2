@@ -1,0 +1,96 @@
+/* AIAssistant.css */
+
+.ai-assistant {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+.ai-assistant h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.ai-input {
+  width: 90%; 
+  max-width: 260px;
+  padding: 10px 12px;
+  margin: 0 auto 15px auto; 
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  font-size: 1rem;
+  display: block; 
+  transition: border-color 0.3s ease;
+}
+
+
+.ai-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.ai-ask-button {
+  display: block;
+  width: 100%;
+  background: #007bff;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ai-ask-button:hover {
+  background: #0056b3;
+}
+
+.ai-answer {
+  margin-top: 20px;
+}
+
+.answer-bubble {
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.typing-animation {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 2rem;
+  color: #007bff;
+  animation: blink 1s infinite;
+}
+
+.typing-animation span {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

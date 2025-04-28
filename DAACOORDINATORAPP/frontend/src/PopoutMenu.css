@@ -1,0 +1,459 @@
+/* Base styles for the pop-out menu */
+.popout-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.85); 
+  transition: transform 0.3s ease, width 0.3s ease; 
+  transform: translateX(100%);
+  color: white;
+  z-index: 1000;
+}
+
+.popout-menu.open {
+  transform: translateX(0);
+}
+
+/* Add the extended class for the Staff section */
+.popout-menu.extended {
+  width: 600px; 
+}
+
+.popout-tab {
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  width: 60px;
+  height: 120px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px 0 0 10px;
+  transform: translateY(-50%);
+}
+
+.tab-arrow {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.menu-content {
+  padding: 20px;
+  text-align: left;
+}
+
+.menu-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Updated this section for rollcall products */
+.menu-content ul li {
+  margin: 10px 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.rollcall-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  width: 250px; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.1s ease, box-shadow 0.1s ease; 
+}
+
+.rollcall-product:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+/* Rollcall item hover effect */
+.menu-content ul li:hover {
+  color: #aaa; 
+}
+
+/* Styles for the Rollcall popup modal */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+/* Popup Content: Dark, subtle background with rounded corners */
+.popup-content {
+  background-color: rgba(50, 50, 50, 0.9); 
+  padding: 40px;
+  border-radius: 12px;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1200px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  position: relative;
+  text-align: center;
+}
+
+/* Popup Title */
+.popup-content h2 {
+  color: #d0d0d0;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Rollcall Section */
+.rollcall-section {
+  background-color: #2c2c2c; 
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.rollcall-section h3 {
+  color: #b0b0b0;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.rollcall-item {
+  background-color: #3a3a3a; 
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rollcall-item:hover {
+  background-color: #4a4a4a;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rollcall-item h4 {
+  margin: 0;
+  color: #e0e0e0; 
+  font-size: 18px;
+}
+
+.rollcall-item p {
+  margin: 5px 0 0;
+  color: #a0a0a0; 
+  font-size: 14px;
+}
+
+/* Close Button: Subtle button in the top-right corner */
+.close-button {
+  margin-top: 20px;
+  background-color: #444; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.close-button:hover {
+  background-color: #666;
+}
+
+/* Smooth scrolling within the popup content */
+.popup-content {
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Staff Extension section with opaque black style */
+.staff-section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px; 
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+  color: white;
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* Styling for content inside the extended section */
+.staff-section h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.staff-section p {
+  font-size: 14px;
+  color: #000000;
+}
+.staff-section {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.staff-item {
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.staff-section-hover {
+  border-color: #888;
+}
+
+.popout-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.popout-menu.open {
+  transform: translateX(0);
+}
+
+.popout-tab {
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  width: 60px;
+  height: 120px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px 0 0 10px;
+}
+
+.tab-arrow {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.menu-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Staff item styling similar to draggable-product */
+.staff-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  width: 250px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.staff-item:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the date section in staff items */
+.staff-item .staff-date {
+  background-color: #0a3156;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 15px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Info section style for staff items */
+.staff-item .staff-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 10px;
+}
+
+/* VIP Section Styling */
+.vip-section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px; 
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+  color: white;
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.vip-section h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.vip-section p {
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.vip-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 10px;
+  margin: 5px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.vip-item:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.vip-item .vip-date {
+  background-color: #0a3156;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 15px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.vip-item .vip-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 10px;
+}
+
+/* Highlight the VIP section when an item is dragged over it */
+.vip-section-hover {
+  border-color: #888;
+  background-color: rgba(50, 50, 50, 0.2);
+}
+
+/* Auto Pass Section Styling */
+.autopass-section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+  color: white;
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.autopass-section h3 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.autopass-section p {
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.autopass-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 10px;
+  margin: 5px 0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.autopass-item:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.autopass-item .autopass-date {
+  background-color: #0a3156;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 15px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.autopass-item .autopass-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 10px;
+}
+
+/* Highlight the Auto Pass section when an item is dragged over it */
+.autopass-section-hover {
+  border-color: #888;
+  background-color: rgba(50, 50, 50, 0.2);
+}
+.ap-symbol {
+  color: green;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+
