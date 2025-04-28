@@ -1,0 +1,96 @@
+.copilot-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0a3156;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copilot-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copilot-panel {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background: white;
+  width: 500px;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 999;
+}
+
+.copilot-left {
+  flex: 1;
+  background-color: #f0f4f8;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.copilot-right {
+  flex: 1;
+  background-color: #ffffff;
+  border-left: 2px solid #e0e0e0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.copilot-alert {
+  background: #e8f0fe;
+  border-left: 4px solid #4285f4;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  border-radius: 5px;
+}
+
+.copilot-alert button {
+  margin-top: 5px;
+  background-color: #0a3156;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.copilot-empty {
+  text-align: center;
+  color: gray;
+  margin-top: 20px;
+  font-size: 14px;
+}
+.assistant-wrapper {
+  width: 100%;
+  max-width: 300px;
+  margin-left: 0; 
+}
+
