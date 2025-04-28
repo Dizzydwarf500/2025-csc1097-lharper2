@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-imv7@0z8corn4inn(^1s$+v^loa&c6c*$k6z0jtuanbq6buq!y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "https://two025-csc1097-lharper2.onrender.com",
+    "two025-csc1097-lharper2.onrender.com",
+    "http://two025-csc1097-lharper2.onrender.com"
+]
 
 
 # Application definition
