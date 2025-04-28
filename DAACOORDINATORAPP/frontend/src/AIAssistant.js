@@ -40,7 +40,7 @@ const AIAssistant = ({ onDuty = [], onBreak = [], finished = [] }) => {
     try {
       const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api';
 
-      const response = await fetch(`${API_URL}/assistant-query/`, {
+      const response = await fetch(`${API_URL}/api/assistant-query/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
