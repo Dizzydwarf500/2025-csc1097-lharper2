@@ -25,11 +25,11 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: stretch;
-    /* Stretch children vertically */
-    padding: 20px;
+    padding: 2vw;
     box-sizing: border-box;
     background-color: #0a3156;
 }
+
 
 .column {
     flex: 1;
