@@ -59,8 +59,11 @@ const PopoutMenu = ({
     const matchingItems = rollcallProducts.filter((product) => {
       const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
       const shiftMinutes = startHour * 60 + startMinute;
-      return nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
+      const isWithinTime = nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
+      const alreadyOnDuty = onDutyProducts.some((p) => p.id === product.id);
+      return isWithinTime && !alreadyOnDuty;
     });
+
 
     if (matchingItems.length !== rollcallNotificationCount) {
       setRollcallNotificationCount(matchingItems.length);

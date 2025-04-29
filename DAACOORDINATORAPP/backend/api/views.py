@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ✅ Set up OpenAI client safely
+# Set up OpenAI client safely
 openai_api_key = os.getenv('OPENAI_API_KEY')
 if not openai_api_key:
     raise ValueError("No OPENAI_API_KEY set for OpenAI client")
@@ -41,8 +41,8 @@ def assistant_query(request):
         onBreak = data.get('onBreak', [])
         finished = data.get('finished', [])
 
-        # 🚀 Safer Debugging
-        print("🚀 Incoming data:")
+        # Safer Debugging
+        print("Incoming data")
         print("Query:", query)
         if isinstance(onDuty, list):
             print("OnDuty sample:", onDuty[0] if onDuty else "empty")
@@ -62,7 +62,7 @@ def assistant_query(request):
         if not query:
             return Response({"error": "No query provided."}, status=400)
 
-        # ✅ Build GPT Prompt
+        # Build GPT Prompt
         prompt = (
     "You are an AI assistant responsible for managing shift schedules at an airport. "
     "Your job is to suggest who should go on break, who can finish early, and ensure operational rules are followed.\n\n"
@@ -92,7 +92,7 @@ def assistant_query(request):
 )
 
 
-        # ✅ Call OpenAI
+        # Call OpenAI
         response = client.chat.completions.create(
             model="o4-mini",
             messages=[
@@ -107,14 +107,14 @@ def assistant_query(request):
         return Response({"answer": answer})
 
     except Exception as e:
-        print("❌ Assistant Error:", str(e))
+        print("Assistant Error", str(e))
         return Response({"error": str(e)}, status=500)
 
 class ProductListView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        # ✅ Base filter: Terminal 1 only
+        # Base filter: Terminal 1 only
         queryset = Product.objects.filter(Location="Terminal 1")
 
         ENABLE_DATE_FILTER = True
@@ -123,7 +123,7 @@ class ProductListView(generics.ListAPIView):
 
         queryset = queryset.order_by('name', 'Shift_Start_Date')
 
-        # ✅ Deduplicate by name
+        # Deduplicate by name
         seen_names = set()
         unique_products = []
         for product in queryset:
