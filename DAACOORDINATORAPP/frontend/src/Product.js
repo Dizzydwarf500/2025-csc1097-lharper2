@@ -102,7 +102,7 @@ const calculateAdditionalMinutes = (selectedTime) => {
   const [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
   const selectedDate = new Date(now);
   selectedDate.setHours(selectedHour, selectedMinute, 0, 0);
-  
+
   const differenceInMinutes = Math.round((selectedDate - now) / (1000 * 60));
   return differenceInMinutes > 0 ? differenceInMinutes : 0;
 };
@@ -148,9 +148,9 @@ const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, st
 
   // Countdown message only in the "On Break" section
   const displayTime =
-  sectionId === "On Break" && product.breakStartTestTime && product.breakDuration
-    ? getBreakTimeDisplay(testTime, product.breakStartTestTime, product.breakDuration)
-    : null;
+    sectionId === "On Break" && product.breakStartTestTime && product.breakDuration
+      ? getBreakTimeDisplay(testTime, product.breakStartTestTime, product.breakDuration)
+      : null;
 
   return (
     <div
@@ -167,52 +167,52 @@ const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, st
         <div className="product-day">{formatDate(product.Shift_Start_Date)}</div>
       </div>
       <div className="product-info">
-      <h3>
-  {product.name} {product.IDname}
-  {staffProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: 'blue', marginLeft: '6px', fontWeight: 'bold' }}>S</span>
-  )}
-  {vipProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: '#b266ff', marginLeft: '6px', fontWeight: 'bold' }}>V</span>
-  )}
-  {autoPassProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: 'orange', marginLeft: '6px', fontWeight: 'bold' }}>A</span>
-  )}
-  {FastTrackProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: 'purple', marginLeft: '6px', fontWeight: 'bold' }}>F</span>
-  )}
-  {QMProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: '#66ccff', marginLeft: '6px', fontWeight: 'bold' }}>QM</span>
-  )}
-  {SweepProducts?.some((p) => p.id === product.id) && (
-    <span style={{ color: '#66ff99', marginLeft: '6px', fontWeight: 'bold' }}>SW</span>
-  )}
-</h3>
+        <h3>
+          {product.name} {product.IDname}
+          {staffProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: 'blue', marginLeft: '6px', fontWeight: 'bold' }}>S</span>
+          )}
+          {vipProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: '#b266ff', marginLeft: '6px', fontWeight: 'bold' }}>V</span>
+          )}
+          {autoPassProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: 'orange', marginLeft: '6px', fontWeight: 'bold' }}>A</span>
+          )}
+          {FastTrackProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: 'purple', marginLeft: '6px', fontWeight: 'bold' }}>F</span>
+          )}
+          {QMProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: '#66ccff', marginLeft: '6px', fontWeight: 'bold' }}>QM</span>
+          )}
+          {SweepProducts?.some((p) => p.id === product.id) && (
+            <span style={{ color: '#66ff99', marginLeft: '6px', fontWeight: 'bold' }}>SW</span>
+          )}
+        </h3>
 
 
 
 
-<div style={{ width: '100%' }}>
-  <p>
-    {product.Shift_Start_Time} - {product.Shift_End_Time} (
-    {testTime
-      ? getRemainingFromTestClock(testTime, product.Shift_Start_Time, product.Shift_End_Time)
-      : calculateShiftDuration(product.Shift_Start_Time, product.Shift_End_Time)}
-    )
-  </p>
-  <div className="progress-container">
-    <div
-      className="progress-bar"
-      style={{
-        width: `${calculateShiftProgress(testTime, product.Shift_Start_Time, product.Shift_End_Time)}%`,
-        backgroundColor:
-          getRemainingSeconds(testTime, product.Shift_Start_Time, product.Shift_End_Time) <= 1800
-            ? '#ff4d4f'
-            : '#4caf50',
-      }}
-    />
-  </div>
-</div>
+        <div style={{ width: '100%' }}>
+          <p>
+            {product.Shift_Start_Time} - {product.Shift_End_Time} (
+            {testTime
+              ? getRemainingFromTestClock(testTime, product.Shift_Start_Time, product.Shift_End_Time)
+              : calculateShiftDuration(product.Shift_Start_Time, product.Shift_End_Time)}
+            )
+          </p>
+          <div className="progress-container">
+            <div
+              className="progress-bar"
+              style={{
+                width: `${calculateShiftProgress(testTime, product.Shift_Start_Time, product.Shift_End_Time)}%`,
+                backgroundColor:
+                  getRemainingSeconds(testTime, product.Shift_Start_Time, product.Shift_End_Time) <= 1800
+                    ? '#ff4d4f'
+                    : '#4caf50',
+              }}
+            />
+          </div>
+        </div>
 
         {displayTime && <p className="timer">{displayTime}</p>}
         {product.finishedCount > 0 && (
@@ -313,87 +313,87 @@ const DroppableSection = ({
 
   return (
     <div ref={drop} className={`droppable-section ${isOver ? 'droppable-section-hover' : ''}`}>
-  <div className="section-header">
-  <div className="section-title-wrapper">
-    <h2 className="section-title">{id}</h2>
-    {id === 'On Duty' && (
-      <button className="sort-toggle" onClick={() => setShowSortPanel(!showSortPanel)}>
-        <FaSort className="sort-icon" />
-        {showSortPanel ? <FaChevronUp /> : <FaChevronDown />}
-      </button>
-    )}
-  </div>
-</div>
-
-  {/* Conditionally visible sorting controls */}
-  {showSortPanel && id === 'On Duty' && (
-    <div className="sorting-controls">
-      <label className="sort-label">Sort by:</label>
-      <div className="sort-options">
-        <select
-          className="sort-select"
-          onChange={(e) => setSortBy(e.target.value)}
-          value={sortBy}
-        >
-          <option value="name">Name</option>
-          <option value="Shift_Start_Time">Shift Start Time</option>
-          <option value="Shift_End_Time">Shift End Time</option>
-        </select>
-
-        {sortBy === 'Shift_Start_Time' && (
-          <select
-            className="time-select"
-            value={selectedStartTime}
-            onChange={(e) => setSelectedStartTime(e.target.value)}
-          >
-            <option value="">-- All Times --</option>
-            {uniqueStartTimes.map((time) => (
-              <option key={time} value={time}>
-                {time} ({startTimeCounts[time] || 0})
-              </option>
-            ))}
-          </select>
-        )}
-
-        {sortBy === 'Shift_End_Time' && (
-          <select
-            className="time-select"
-            value={selectedEndTime}
-            onChange={(e) => setSelectedEndTime(e.target.value)}
-          >
-            <option value="">-- All Times --</option>
-            {uniqueEndTimes.map((time) => (
-              <option key={time} value={time}>
-                {time} ({endTimeCounts[time] || 0})
-              </option>
-            ))}
-          </select>
-        )}
+      <div className="section-header">
+        <div className="section-title-wrapper">
+          <h2 className="section-title">{id}</h2>
+          {id === 'On Duty' && (
+            <button className="sort-toggle" onClick={() => setShowSortPanel(!showSortPanel)}>
+              <FaSort className="sort-icon" />
+              {showSortPanel ? <FaChevronUp /> : <FaChevronDown />}
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  )}
 
-  <TransitionGroup className="product-list">
-    {getSortedProducts().map((product, index) => (
-      <CSSTransition key={product.id} timeout={1} classNames="fade">
-        <DraggableProduct
-          key={product.id}
-          product={product}
-          index={index}
-          sectionId={id}
-          moveProduct={moveProduct}
-          staffProducts={staffProducts}
-          autoPassProducts={autoPassProducts}
-          vipProducts={vipProducts}
-          FastTrackProducts={FastTrackProducts}
-          QMProducts={QMProducts}
-          SweepProducts={SweepProducts}
-          testTime={testTime}
-        />
-      </CSSTransition>
-    ))}
-  </TransitionGroup>
-</div>
+      {/* Conditionally visible sorting controls */}
+      {showSortPanel && id === 'On Duty' && (
+        <div className="sorting-controls">
+          <label className="sort-label">Sort by:</label>
+          <div className="sort-options">
+            <select
+              className="sort-select"
+              onChange={(e) => setSortBy(e.target.value)}
+              value={sortBy}
+            >
+              <option value="name">Name</option>
+              <option value="Shift_Start_Time">Shift Start Time</option>
+              <option value="Shift_End_Time">Shift End Time</option>
+            </select>
+
+            {sortBy === 'Shift_Start_Time' && (
+              <select
+                className="time-select"
+                value={selectedStartTime}
+                onChange={(e) => setSelectedStartTime(e.target.value)}
+              >
+                <option value="">-- All Times --</option>
+                {uniqueStartTimes.map((time) => (
+                  <option key={time} value={time}>
+                    {time} ({startTimeCounts[time] || 0})
+                  </option>
+                ))}
+              </select>
+            )}
+
+            {sortBy === 'Shift_End_Time' && (
+              <select
+                className="time-select"
+                value={selectedEndTime}
+                onChange={(e) => setSelectedEndTime(e.target.value)}
+              >
+                <option value="">-- All Times --</option>
+                {uniqueEndTimes.map((time) => (
+                  <option key={time} value={time}>
+                    {time} ({endTimeCounts[time] || 0})
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        </div>
+      )}
+
+      <TransitionGroup className="product-list">
+        {getSortedProducts().map((product, index) => (
+          <CSSTransition key={product.id} timeout={1} classNames="fade">
+            <DraggableProduct
+              key={product.id}
+              product={product}
+              index={index}
+              sectionId={id}
+              moveProduct={moveProduct}
+              staffProducts={staffProducts}
+              autoPassProducts={autoPassProducts}
+              vipProducts={vipProducts}
+              FastTrackProducts={FastTrackProducts}
+              QMProducts={QMProducts}
+              SweepProducts={SweepProducts}
+              testTime={testTime}
+            />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
+    </div>
   );
 };
 
@@ -420,10 +420,10 @@ const ProductList = ({
   const [showBreakPopup, setShowBreakPopup] = useState(false);
   const [breakPopupMessage, setBreakPopupMessage] = useState('');
   const [currentProduct, setCurrentProduct] = useState(null);
-  
+
   const triggerBreakPopup = (product) => {
     setCurrentProduct(product);
-  
+
     const isShortShift = (() => {
       const start = new Date(`1970-01-01T${product.Shift_Start_Time}Z`);
       let end = new Date(`1970-01-01T${product.Shift_End_Time}Z`);
@@ -431,9 +431,9 @@ const ProductList = ({
       const diffMinutes = (end - start) / (1000 * 60);
       return diffMinutes < 390; // 6.5 hours
     })();
-  
+
     const shouldFinish = product.finishedCount === 2 || (product.finishedCount === 1 && isShortShift);
-  
+
     if (shouldFinish) {
       setBreakPopupMessage(`Finish ${product.name} ${product.IDname}'s shift?`);
       setShowBreakPopup('finish');
@@ -442,7 +442,7 @@ const ProductList = ({
       setShowBreakPopup('break');
     }
   };
-  
+
 
   const handlePopupConfirm = (selectedTime) => {
     if (showBreakPopup === 'finish') {
@@ -453,20 +453,20 @@ const ProductList = ({
       const additionalMinutes = calculateAdditionalMinutes(selectedTime);
       const baseMinutes = currentProduct.finishedCount === 1 ? 30 : 40;
       const totalTimerSeconds = (baseMinutes + additionalMinutes) * 60;
-  
+
       setOnBreakProducts((prevOnBreak) =>
         prevOnBreak.map((p) =>
           p.id === currentProduct.id
             ? {
-                ...p,
-                breakStartTestTime: testTime,
-                breakDuration: totalTimerSeconds,
-              }
+              ...p,
+              breakStartTestTime: testTime,
+              breakDuration: totalTimerSeconds,
+            }
             : p
         )
       );
     }
-  
+
     setShowBreakPopup(false);
   };
 
@@ -489,39 +489,39 @@ const ProductList = ({
 
     const now = new Date();
 
-let timerStartedAt =
-  targetSectionId === "On Duty" && !product.timerStartedAt
-    ? now.toISOString()
-    : product.timerStartedAt;
+    let timerStartedAt =
+      targetSectionId === "On Duty" && !product.timerStartedAt
+        ? now.toISOString()
+        : product.timerStartedAt;
 
-let timer = product.timer;
+    let timer = product.timer;
 
-if (targetSectionId === "On Duty" && !product.timerStartedAt) {
-  const shiftStart = new Date(`1970-01-01T${product.Shift_Start_Time}Z`);
-  const shiftEnd = new Date(`1970-01-01T${product.Shift_End_Time}Z`);
+    if (targetSectionId === "On Duty" && !product.timerStartedAt) {
+      const shiftStart = new Date(`1970-01-01T${product.Shift_Start_Time}Z`);
+      const shiftEnd = new Date(`1970-01-01T${product.Shift_End_Time}Z`);
 
-  // Handle overnight shifts
-  if (shiftEnd < shiftStart) {
-    shiftEnd.setDate(shiftEnd.getDate() + 1);
-  }
+      // Handle overnight shifts
+      if (shiftEnd < shiftStart) {
+        shiftEnd.setDate(shiftEnd.getDate() + 1);
+      }
 
-  const totalDuration = Math.floor((shiftEnd - shiftStart) / 1000);
-  const elapsed = Math.floor((now - shiftStart) / 1000);
-  timer = Math.max(totalDuration - elapsed, 0);
-}
+      const totalDuration = Math.floor((shiftEnd - shiftStart) / 1000);
+      const elapsed = Math.floor((now - shiftStart) / 1000);
+      timer = Math.max(totalDuration - elapsed, 0);
+    }
 
-const newTargetList = [
-  ...targetList,
-  {
-    ...product,
-    timerStartedAt,
-    timer,
-    finishedCount:
-  targetSectionId === "Finished"
-    ? (product.finishedCount || 0) + 1
-    : product.finishedCount,
-  },
-].sort((a, b) => a.name.localeCompare(b.name));
+    const newTargetList = [
+      ...targetList,
+      {
+        ...product,
+        timerStartedAt,
+        timer,
+        finishedCount:
+          targetSectionId === "Finished"
+            ? (product.finishedCount || 0) + 1
+            : product.finishedCount,
+      },
+    ].sort((a, b) => a.name.localeCompare(b.name));
 
 
     setTargetList(newTargetList);
@@ -533,63 +533,62 @@ const newTargetList = [
 
   return (
     <div className="container">
-  <DroppableSection
-  id="On Duty"
-  products={onDutyProducts}
-  moveProduct={moveProduct}
-  staffProducts={staffProducts}
-  vipProducts={vipProducts}
-  autoPassProducts={autoPassProducts}
-  FastTrackProducts={FastTrackProducts}
-  QMProducts={QMProducts}
-  SweepProducts={SweepProducts}
-  testTime={testTime}
-/>
-<DroppableSection
-  id="On Break"
-  products={onBreakProducts}
-  moveProduct={moveProduct}
-  staffProducts={staffProducts}
-  vipProducts={vipProducts}
-  autoPassProducts={autoPassProducts}
-  FastTrackProducts={FastTrackProducts}
-  QMProducts={QMProducts}
-  SweepProducts={SweepProducts}
-  testTime={testTime}
-/>
-<DroppableSection
-  id="Finished"
-  products={finishedProducts}
-  moveProduct={moveProduct}
-  staffProducts={staffProducts}
-  vipProducts={vipProducts}
-  autoPassProducts={autoPassProducts}
-  FastTrackProducts={FastTrackProducts}
-  QMProducts={QMProducts}
-  SweepProducts={SweepProducts}
-  testTime={testTime}
-/>
+      <DroppableSection
+        id="On Duty"
+        products={onDutyProducts}
+        moveProduct={moveProduct}
+        staffProducts={staffProducts}
+        vipProducts={vipProducts}
+        autoPassProducts={autoPassProducts}
+        FastTrackProducts={FastTrackProducts}
+        QMProducts={QMProducts}
+        SweepProducts={SweepProducts}
+        testTime={testTime}
+      />
+      <DroppableSection
+        id="On Break"
+        products={onBreakProducts}
+        moveProduct={moveProduct}
+        staffProducts={staffProducts}
+        vipProducts={vipProducts}
+        autoPassProducts={autoPassProducts}
+        FastTrackProducts={FastTrackProducts}
+        QMProducts={QMProducts}
+        SweepProducts={SweepProducts}
+        testTime={testTime}
+      />
+      <DroppableSection
+        id="Finished"
+        products={finishedProducts}
+        moveProduct={moveProduct}
+        staffProducts={staffProducts}
+        vipProducts={vipProducts}
+        autoPassProducts={autoPassProducts}
+        FastTrackProducts={FastTrackProducts}
+        QMProducts={QMProducts}
+        SweepProducts={SweepProducts}
+        testTime={testTime}
+      />
 
+      {showBreakPopup && (
+        <BreakPopup
+          message={breakPopupMessage}
+          onClose={() => {
+            // If it was the "Finish Shift?" popup, move back to On Duty
+            if (showBreakPopup === 'finish' && currentProduct) {
+              setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
+              setOnDutyProducts((prev) =>
+                [...prev, currentProduct].sort((a, b) => a.name.localeCompare(b.name))
+              );
+            }
 
-{showBreakPopup && (
-  <BreakPopup
-    message={breakPopupMessage}
-    onClose={() => {
-      // If it was the "Finish Shift?" popup, move back to On Duty
-      if (showBreakPopup === 'finish' && currentProduct) {
-        setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
-        setOnDutyProducts((prev) =>
-          [...prev, currentProduct].sort((a, b) => a.name.localeCompare(b.name))
-        );
-      }
-
-      setShowBreakPopup(false);
-    }}
-    onConfirm={handlePopupConfirm}
-    testTime={testTime}
-    isFinish={showBreakPopup === 'finish'}
-  />
-)}
+            setShowBreakPopup(false);
+          }}
+          onConfirm={handlePopupConfirm}
+          testTime={testTime}
+          isFinish={showBreakPopup === 'finish'}
+        />
+      )}
     </div>
   );
 };

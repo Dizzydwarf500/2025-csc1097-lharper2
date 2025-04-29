@@ -64,7 +64,6 @@ function App() {
 
   const startAutoIncrement = (speed = 1000) => {
     if (autoIncrementRef.current) clearInterval(autoIncrementRef.current);
-
     autoIncrementRef.current = setInterval(() => {
       incrementTestTime();
     }, speed);
@@ -200,36 +199,39 @@ function App() {
           )}
         </div>
 
-        {/* Components */}
-        <AIHelper
-          onDutyProducts={safeOnDutyProducts}
-          onBreakProducts={onBreakProducts}
-          finishedProducts={finishedProducts}
-          autoPassProducts={autoPassProducts}
-          FastTrackProducts={FastTrackProducts}
-          QMProducts={QMProducts}
-          SweepProducts={SweepProducts}
-          testTime={testTime}
-        />
+        {/* Main FLEX section */}
+        <div className="main-container">
+          <ProductList
+            rollcallProducts={rollcallProducts}
+            onDutyProducts={onDutyProducts}
+            setOnDutyProducts={setOnDutyProducts}
+            onBreakProducts={onBreakProducts}
+            setOnBreakProducts={setOnBreakProducts}
+            finishedProducts={finishedProducts}
+            setFinishedProducts={setFinishedProducts}
+            staffProducts={staffSedProducts}
+            setStaffProducts={setStaffSedProducts}
+            vipProducts={vipProducts}
+            autoPassProducts={autoPassProducts}
+            FastTrackProducts={FastTrackProducts}
+            QMProducts={QMProducts}
+            SweepProducts={SweepProducts}
+            testTime={testTime}
+          />
 
-        <ProductList
-          rollcallProducts={rollcallProducts}
-          onDutyProducts={onDutyProducts}
-          setOnDutyProducts={setOnDutyProducts}
-          onBreakProducts={onBreakProducts}
-          setOnBreakProducts={setOnBreakProducts}
-          finishedProducts={finishedProducts}
-          setFinishedProducts={setFinishedProducts}
-          staffProducts={staffSedProducts}
-          setStaffProducts={setStaffSedProducts}
-          vipProducts={vipProducts}
-          autoPassProducts={autoPassProducts}
-          FastTrackProducts={FastTrackProducts}
-          QMProducts={QMProducts}
-          SweepProducts={SweepProducts}
-          testTime={testTime}
-        />
+          <AIHelper
+            onDutyProducts={safeOnDutyProducts}
+            onBreakProducts={onBreakProducts}
+            finishedProducts={finishedProducts}
+            autoPassProducts={autoPassProducts}
+            FastTrackProducts={FastTrackProducts}
+            QMProducts={QMProducts}
+            SweepProducts={SweepProducts}
+            testTime={testTime}
+          />
+        </div>
 
+        {/* PopoutMenu (floating) */}
         <PopoutMenu
           rollcallProducts={rollcallProducts}
           moveToOnDuty={moveToOnDuty}
