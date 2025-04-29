@@ -574,9 +574,11 @@ const ProductList = ({
         <BreakPopup
           message={breakPopupMessage}
           onClose={() => {
-            // If it was the "Finish Shift?" popup, move back to On Duty
-            if (showBreakPopup === 'finish' && currentProduct) {
+            if (currentProduct) {
+              // Remove from On Break
               setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
+
+              // Add back to On Duty
               setOnDutyProducts((prev) =>
                 [...prev, currentProduct].sort((a, b) => a.name.localeCompare(b.name))
               );
@@ -584,6 +586,7 @@ const ProductList = ({
 
             setShowBreakPopup(false);
           }}
+
           onConfirm={handlePopupConfirm}
           testTime={testTime}
           isFinish={showBreakPopup === 'finish'}
