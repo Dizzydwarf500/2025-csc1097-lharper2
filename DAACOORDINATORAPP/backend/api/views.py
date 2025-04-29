@@ -64,17 +64,31 @@ def assistant_query(request):
 
         # ✅ Build GPT Prompt
         prompt = (
-    f"You are an AI assistant managing shift data at an airport.\n"
-    f"Here is the current shift information:\n\n"
-    f"🟢 On Duty (currently working):\n"
-    f"{format_staff_list(onDuty)}\n\n"
-    f"🟡 On Break (currently on break):\n"
-    f"{format_staff_list(onBreak)}\n\n"
-    f"🔵 Finished (already completed shift):\n"
-    f"{format_staff_list(finished)}\n\n"
-    f"Answer the following user query based on the information above:\n"
+    "You are an AI assistant responsible for managing shift schedules at an airport. "
+    "Your job is to suggest who should go on break, who can finish early, and ensure operational rules are followed.\n\n"
+
+    "Staff are in one of three categories:\n"
+    "🟢 On Duty – Currently working\n"
+    "🟡 On Break – Currently on a break\n"
+    "🔵 Finished – Already completed their shift\n\n"
+
+    "Here is the current shift data:\n"
+    f"🟢 On Duty:\n{format_staff_list(onDuty)}\n\n"
+    f"🟡 On Break:\n{format_staff_list(onBreak)}\n\n"
+    f"🔵 Finished:\n{format_staff_list(finished)}\n\n"
+
+    "You must follow these rules:\n"
+    "- No critical role (e.g. VIP, FastTrack, QM, Sweep) should be left uncovered.\n"
+    "- Avoid sending too many staff on break at once.\n"
+    "- Breaks should be scheduled during low passenger traffic (not provided here, assume now is acceptable).\n"
+    "- Staff should receive a first break before 4.5 hours into their shift.\n"
+    "- Staff with short shifts (< 6.5 hours) only need one break.\n"
+    "- Once a person has had all their breaks, they may be finished if coverage is sufficient.\n\n"
+
+    "Answer this user query using the information above:\n"
     f"{query}\n\n"
-    f"Only answer based on the provided data. If you cannot answer, say 'No available data.'"
+
+    "Respond clearly and concisely. If there’s not enough information to decide, reply with 'No available data.'"
 )
 
 
