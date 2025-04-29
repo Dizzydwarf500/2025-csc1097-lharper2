@@ -1,11 +1,17 @@
 /* Container styling */
 .container {
   display: flex;
-  justify-content: space-around; 
+  flex: 1;
+  flex-grow: 1;
+  min-height: 80vh;
+  justify-content: space-around;
+  align-items: flex-start;
   padding: 20px;
   background-color: #0a3156;
   color: #ffffff;
+  box-sizing: border-box;
 }
+
 
 /* Droppable section styling */
 .droppable-section {
@@ -14,41 +20,41 @@
   background-color: #19589225;
   color: #ffffff;
   border-radius: 10px;
-  padding: 20px; 
+  padding: 20px;
   min-height: 500px;
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  overflow-y: auto; 
-  transition: background-color 0.3s ease, border 0.3s ease; 
-  border: 2px solid #000000; 
+  align-items: center;
+  overflow-y: auto;
+  transition: background-color 0.3s ease, border 0.3s ease;
+  border: 2px solid #000000;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Vertical black outline between sections */
 .droppable-section:not(:last-child) {
-  border-right: 2px solid #000000; 
+  border-right: 2px solid #000000;
 }
 
 /* Highlight section when an item is dragged over it */
 .droppable-section-hover {
-  background-color: #0e4a8c; 
-  border: 2px dashed #ffffff; 
-  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3); 
+  background-color: #0e4a8c;
+  border: 2px dashed #ffffff;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Heading styling */
 .droppable-section h2 {
   text-align: center;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 /* Product list wrapper */
 .product-list {
-  width: 100%; 
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
 
 /* Draggable product styling */
@@ -59,15 +65,15 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px 0; 
+  margin: 10px 0;
   text-align: center;
   background-color: #ffffff;
   color: #000000;
   font-size: 12px;
-  width: 350px; 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: transform 0.1s ease, box-shadow 0.1s ease; 
-  width: 100%; 
+  width: 350px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  width: 100%;
   max-width: 400px;
 }
 
@@ -98,7 +104,7 @@
 
 /* Add a stronger drop shadow effect when dragging an item */
 .draggable-product:active {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* Fade in/out animation for items */
@@ -106,20 +112,25 @@
   opacity: 0;
   transform: translateY(-10px);
 }
+
 .fade-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms ease, transform 300ms ease; 
+  transition: opacity 300ms ease, transform 300ms ease;
 }
+
 .fade-exit {
   opacity: 1;
   transform: translateY(0);
 }
+
 .fade-exit-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 300ms ease, transform 300ms ease; /* Smoother and quicker animation */
+  transition: opacity 300ms ease, transform 300ms ease;
+  /* Smoother and quicker animation */
 }
+
 /* Popup container that takes full screen and centers the content */
 .popup {
   position: fixed;
@@ -127,11 +138,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 /* BreakPopup container that takes full screen and centers the content */
@@ -141,26 +152,26 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 /* BreakPopup content, smaller and centered with white background */
 .break-popup-content {
-  background-color: #ffffff; 
-  padding: 10px; 
+  background-color: #ffffff;
+  padding: 10px;
   border-radius: 5px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
-  max-width: 150px; 
-  width: 100%; 
+  max-width: 150px;
+  width: 100%;
 }
 
 .break-popup-content h2 {
-  font-size: 12px; 
+  font-size: 12px;
   margin-bottom: 8px;
 }
 
@@ -171,7 +182,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .break-popup-content button:hover {
@@ -180,7 +191,7 @@
 
 .break-popup-message {
   color: black;
-  font-family: inherit; 
+  font-family: inherit;
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -195,14 +206,17 @@
   margin-right: 5px;
   font-weight: bold;
 }
+
 .checkmarks {
   margin-top: 5px;
   color: green;
   font-size: 16px;
 }
+
 .checkmark {
   margin-right: 5px;
 }
+
 .progress-container {
   width: 100%;
   background: #eee;
@@ -217,6 +231,7 @@
   height: 100%;
   transition: width 0.4s ease;
 }
+
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -246,7 +261,7 @@
   flex-direction: column;
   align-items: flex-start;
   background-color: transparent;
-  margin-top: -5px; 
+  margin-top: -5px;
   margin-left: 20px;
   gap: 8px;
 }
@@ -260,6 +275,7 @@
   padding: 6px;
   border-radius: 4px;
 }
+
 .section-header {
   width: 100%;
   display: flex;
