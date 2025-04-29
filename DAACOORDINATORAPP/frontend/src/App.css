@@ -1,3 +1,46 @@
+html,
 body {
-    background-color: #0a3156;  /* Set the background color */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #0a3156;
+    /* Your dark blue */
+    font-family: 'Arial', sans-serif;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.column {
+    flex: 1;
+    margin: 10px;
+    background-color: #0b3055;
+    border: 1px solid #003366;
+    border-radius: 8px;
+    min-height: 500px;
+    /* Optional: Gives a nice minimum column height */
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }

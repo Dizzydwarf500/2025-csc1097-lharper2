@@ -69,3 +69,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+/DAACOORDINATORAPP/frontend/package.json
+/DAACOORDINATORAPP/frontend/package-lock.json
