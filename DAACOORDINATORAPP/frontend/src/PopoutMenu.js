@@ -36,7 +36,7 @@ const PopoutMenu = ({
   removeFromSweep,
   testTime,
   finishedProducts,
-  onDutyProducts = [], 
+  onDutyProducts = [],
   onBreakProducts = [],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,13 +55,13 @@ const PopoutMenu = ({
     const nowMinutes = testTime
       ? testTime.hours * 60 + testTime.minutes
       : new Date().getHours() * 60 + new Date().getMinutes();
-  
+
     const matchingItems = rollcallProducts.filter((product) => {
       const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
       const shiftMinutes = startHour * 60 + startMinute;
       return nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
     });
-  
+
     if (matchingItems.length !== rollcallNotificationCount) {
       setRollcallNotificationCount(matchingItems.length);
       if (matchingItems.length > 0) {
@@ -207,16 +207,16 @@ const PopoutMenu = ({
   });
   const getBreakTimeDisplay = (currentTestTime, breakStartTestTime, breakDuration) => {
     if (!currentTestTime || !breakStartTestTime || breakDuration == null) return null;
-  
+
     const startSeconds = breakStartTestTime.hours * 3600 + breakStartTestTime.minutes * 60;
     const currentSeconds = currentTestTime.hours * 3600 + currentTestTime.minutes * 60;
     const elapsed = currentSeconds - startSeconds;
     const remaining = breakDuration - elapsed;
-  
+
     const absRemaining = Math.abs(remaining);
     const minutes = Math.floor(absRemaining / 60);
     const seconds = String(absRemaining % 60).padStart(2, '0');
-  
+
     return remaining >= 0
       ? `Time left: ${minutes}:${seconds}`
       : `Over by: ${minutes}:${seconds}`;
@@ -251,27 +251,27 @@ const PopoutMenu = ({
             {product.name} {product.IDname}
           </h4>
           <p>
-  {product.Shift_Start_Time} - {product.Shift_End_Time}
-</p>
+            {product.Shift_Start_Time} - {product.Shift_End_Time}
+          </p>
 
-{product.breakStartTestTime && product.breakDuration != null && (
-  <p style={{ fontWeight: 'bold', color: 'tomato' }}>
-    {getBreakTimeDisplay(testTime, product.breakStartTestTime, product.breakDuration)}
-  </p>
-)}
+          {product.breakStartTestTime && product.breakDuration != null && (
+            <p style={{ fontWeight: 'bold', color: 'tomato' }}>
+              {getBreakTimeDisplay(testTime, product.breakStartTestTime, product.breakDuration)}
+            </p>
+          )}
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
   };
 
-  
+
   const DraggableVIPItem = ({ product }) => {
     const [{ isDragging }, drag] = useDrag({
       type: ItemTypes.PRODUCT,
@@ -305,12 +305,12 @@ const PopoutMenu = ({
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -349,12 +349,12 @@ const PopoutMenu = ({
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -393,12 +393,12 @@ const PopoutMenu = ({
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -436,12 +436,12 @@ const PopoutMenu = ({
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -480,12 +480,12 @@ const PopoutMenu = ({
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
           {product.finishedCount > 0 && (
-          <div className="checkmarks">
-            {Array.from({ length: product.finishedCount }, (_, i) => (
-              <span key={i} className="checkmark">✔️</span>
-            ))}
-          </div>
-        )}
+            <div className="checkmarks">
+              {Array.from({ length: product.finishedCount }, (_, i) => (
+                <span key={i} className="checkmark">✔️</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -494,9 +494,8 @@ const PopoutMenu = ({
   return (
     <>
       <div
-        className={`popout-menu ${isOpen ? 'open' : ''} ${
-          isStaffExtended || isVIPExtended || isAutoPassExtended || isFastTrackExtended || isSweepExtended || isQMExtended ? 'extended' : ''
-        }`}
+        className={`popout-menu ${isOpen ? 'open' : ''} ${isStaffExtended || isVIPExtended || isAutoPassExtended || isFastTrackExtended || isSweepExtended || isQMExtended ? 'extended' : ''
+          }`}
       >
         <div className="popout-tab" onClick={toggleMenu}>
           <div className="tab-arrow">{isOpen ? '→' : '←'}</div>
@@ -504,22 +503,22 @@ const PopoutMenu = ({
         <div className="menu-content">
           <h2>Actions and Positions</h2>
           <ul>
-          <li onClick={toggleRollcallPopup}>
-  Rollcall
-  {rollcallNotificationCount > 0 && (
-    <span style={{
-      background: 'red',
-      color: 'white',
-      borderRadius: '50%',
-      padding: '2px 6px',
-      marginLeft: '8px',
-      fontSize: '12px',
-      fontWeight: 'bold',
-    }}>
-      {rollcallNotificationCount}
-    </span>
-  )}
-</li>
+            <li onClick={toggleRollcallPopup}>
+              Rollcall
+              {rollcallNotificationCount > 0 && (
+                <span style={{
+                  background: 'red',
+                  color: 'white',
+                  borderRadius: '50%',
+                  padding: '2px 6px',
+                  marginLeft: '8px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                }}>
+                  {rollcallNotificationCount}
+                </span>
+              )}
+            </li>
             <li onClick={toggleStaffExtension}>Staff(SED)</li>
             <li onClick={toggleVIPExtension}>VIP</li>
             <li onClick={toggleAutoPassExtension}>Auto Pass</li>
@@ -528,44 +527,53 @@ const PopoutMenu = ({
             <li onClick={toggleSweepExtension}>Sweep</li>
           </ul>
         </div>
-{/* Pie Chart showing On Duty vs On Break */}
-<div className="pie-chart-container" style={{ width: '100%', height: 250, marginTop: '20px' }}>
-  <ResponsiveContainer>
-    <PieChart>
-    <Pie
-  data={[
-    { name: 'On Duty', value: onDutyProducts.length },
-    { name: 'On Break', value: onBreakProducts.length },
-  ]}
-  cx="50%"
-  cy="50%"
-  innerRadius={60}
-  outerRadius={80}
-  paddingAngle={5}
-  dataKey="value"
-  isAnimationActive={true}
-  animationDuration={800}
-  animationEasing="ease-out"
->
-  <Cell key="onDuty" fill="#4CAF50" /> 
-  <Cell key="onBreak" fill="#FFC107" />
-  <Label
-    value={`Total: ${totalStaff}`}
-    position="center"
-    fill="#4CAF50"
-    style={{
-      fontSize: '16px',
-      fontWeight: 'bold',
-    }}
-  />
-</Pie>
+        {/* Pie Chart showing On Duty vs On Break */}
+        <div
+          className="pie-chart-container"
+          style={{
+            width: '250px',
+            height: '250px',
+            marginTop: '20px',
+            marginBottom: '20px',
+            marginLeft: '20px',
+            flexShrink: 0,
+          }}
+        >
 
-
-      <Tooltip />
-      <Legend />
-    </PieChart>
-  </ResponsiveContainer>
-</div>
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={[
+                  { name: 'On Duty', value: onDutyProducts.length },
+                  { name: 'On Break', value: onBreakProducts.length },
+                ]}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+                isAnimationActive={true}
+                animationDuration={800}
+                animationEasing="ease-out"
+              >
+                <Cell key="onDuty" fill="#4CAF50" />
+                <Cell key="onBreak" fill="#FFC107" />
+                <Label
+                  value={`Total: ${totalStaff}`}
+                  position="center"
+                  fill="#4CAF50"
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
         {isStaffExtended && (
           <div className="staff-section" ref={dropStaff}>
             <h3>Staff Information</h3>
@@ -602,7 +610,7 @@ const PopoutMenu = ({
                 <p>No Auto Pass items assigned.</p>
               )}
             </div>
-            </div>
+          </div>
         )}
 
         {isFastTrackExtended && (
@@ -647,68 +655,68 @@ const PopoutMenu = ({
       </div>
 
       {isRollcallOpen && (
-  <div className="popup-overlay">
-    <div className="popup-content rollcall-popup">
-      <h2>Rollcall</h2>
-      <div className="rollcall-section">
-        <h3>Available for Rollcall</h3>
-        {rollcallProducts.length > 0 ? (
-          rollcallProducts
-            .filter((product) => {
-              const nowMinutes = testTime
-              ? testTime.hours * 60 + testTime.minutes
-              : new Date().getHours() * 60 + new Date().getMinutes();
+        <div className="popup-overlay">
+          <div className="popup-content rollcall-popup">
+            <h2>Rollcall</h2>
+            <div className="rollcall-section">
+              <h3>Available for Rollcall</h3>
+              {rollcallProducts.length > 0 ? (
+                rollcallProducts
+                  .filter((product) => {
+                    const nowMinutes = testTime
+                      ? testTime.hours * 60 + testTime.minutes
+                      : new Date().getHours() * 60 + new Date().getMinutes();
 
-              const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
-              const shiftMinutes = startHour * 60 + startMinute;
+                    const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
+                    const shiftMinutes = startHour * 60 + startMinute;
 
-              return nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
-            })
-            .map((product, index) => (
-              <div
-                key={product.id}
-                className="product-item rollcall-item"
-                onClick={() => moveToOnDuty(product.id)}
-              >
-                <h4>
-                  {product.name} {product.IDname}
-                </h4>
-                <p>
-                  {product.Shift_Start_Time} - {product.Shift_End_Time}
-                </p>
-              </div>
-            ))
-        ) : (
-          <p>No one is available for Rollcall.</p>
-        )}
-      </div>
-      <button className="close-button" onClick={toggleRollcallPopup}>
-        Close
-      </button>
-    </div>
-  </div>
-  
-)}
-{showNewRollcallPopup && (
-  <div style={{
-    position: 'fixed',
-    top: '20px',
-    right: '20px',
-    background: '#fff',
-    color: '#333',
-    border: '1px solid #ccc',
-    padding: '16px 24px',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-    zIndex: 9999,
-  }}>
-    <strong>🚨 New Rollcall</strong>
-    <div>{rollcallNotificationCount} staff ready to check in</div>
-  </div>
-)}
+                    return nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
+                  })
+                  .map((product, index) => (
+                    <div
+                      key={product.id}
+                      className="product-item rollcall-item"
+                      onClick={() => moveToOnDuty(product.id)}
+                    >
+                      <h4>
+                        {product.name} {product.IDname}
+                      </h4>
+                      <p>
+                        {product.Shift_Start_Time} - {product.Shift_End_Time}
+                      </p>
+                    </div>
+                  ))
+              ) : (
+                <p>No one is available for Rollcall.</p>
+              )}
+            </div>
+            <button className="close-button" onClick={toggleRollcallPopup}>
+              Close
+            </button>
+          </div>
+        </div>
+
+      )}
+      {showNewRollcallPopup && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          background: '#fff',
+          color: '#333',
+          border: '1px solid #ccc',
+          padding: '16px 24px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+          zIndex: 9999,
+        }}>
+          <strong>🚨 New Rollcall</strong>
+          <div>{rollcallNotificationCount} staff ready to check in</div>
+        </div>
+      )}
 
     </>
-    
+
   );
 };
 
