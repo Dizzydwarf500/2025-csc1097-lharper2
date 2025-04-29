@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './ProductList.css';
 import { FaSort, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 const ItemTypes = {
   PRODUCT: 'product',
+
 };
+
 
 const getRemainingFromTestClock = (testTime, shiftStartTime, shiftEndTime) => {
   const testClock = new Date(`1970-01-01T${formatTwo(testTime.hours)}:${formatTwo(testTime.minutes)}:00Z`);
@@ -108,7 +110,7 @@ const calculateAdditionalMinutes = (selectedTime) => {
 };
 
 // BreakPopup Component with Time Selection
-const BreakPopup = ({ message, onClose, onConfirm, testTime, isFinish }) => {
+const BreakPopup = ({ message, onClose, onConfirm, testTime, isFinish, cancelClickedRef }) => {
   const timeOptions = generateTimeOptions(testTime);
   const [selectedTime, setSelectedTime] = useState(timeOptions[0]);
 
@@ -130,7 +132,15 @@ const BreakPopup = ({ message, onClose, onConfirm, testTime, isFinish }) => {
         )}
 
         <button onClick={() => onConfirm(isFinish ? null : selectedTime)}>Confirm</button>
-        <button onClick={onClose}>Cancel</button>
+        <button
+          onClick={() => {
+            cancelClickedRef.current = true;
+            onClose();
+          }}
+        >
+          Cancel
+        </button>
+
       </div>
     </div>
   );
@@ -420,7 +430,7 @@ const ProductList = ({
   const [showBreakPopup, setShowBreakPopup] = useState(false);
   const [breakPopupMessage, setBreakPopupMessage] = useState('');
   const [currentProduct, setCurrentProduct] = useState(null);
-
+  const cancelClickedRef = useRef(false);
   const triggerBreakPopup = (product) => {
     setCurrentProduct(product);
 
@@ -574,18 +584,17 @@ const ProductList = ({
         <BreakPopup
           message={breakPopupMessage}
           onClose={() => {
-            if (currentProduct) {
-              // Remove from On Break
+            if (cancelClickedRef.current && currentProduct) {
               setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
-
-              // Add back to On Duty
               setOnDutyProducts((prev) =>
                 [...prev, currentProduct].sort((a, b) => a.name.localeCompare(b.name))
               );
             }
-
             setShowBreakPopup(false);
+            cancelClickedRef.current = false;
           }}
+          cancelClickedRef={cancelClickedRef}
+
 
           onConfirm={handlePopupConfirm}
           testTime={testTime}
