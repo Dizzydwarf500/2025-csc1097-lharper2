@@ -78,6 +78,7 @@ const PopoutMenu = ({
   const toggleRollcallPopup = () => {
     setIsRollcallOpen(!isRollcallOpen);
     setRollcallNotificationCount(0);
+    setShowNewRollcallPopup(false);
   };
 
   const toggleStaffExtension = () => {
