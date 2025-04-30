@@ -132,3 +132,62 @@ class ProductListView(generics.ListAPIView):
                 seen_names.add(product.name)
 
         return unique_products
+
+@csrf_exempt
+@api_view(['POST'])
+def analyze_shifts(request):
+    try:
+        data = request.data
+        on_duty = data.get('onDuty', [])
+        on_break = data.get('onBreak', [])
+        passenger_data = data.get('passengerData', [])
+        current_hour = data.get('currentHour', 0)
+
+        def format_shift_data(staff_list):
+            result = []
+            for person in staff_list:
+                idname = f"{person['id']}{person['name']}"
+                shift = f"{person.get('Shift_Start_Time', '')}-{person.get('Shift_End_Time', '')}"
+                breaks = person.get('finishedCount', 0)
+                result.append(f"{idname} | Shift: {shift} | Breaks taken: {breaks}")
+            return "\n".join(result) or "None"
+
+        def format_traffic(data):
+            return "\n".join([f"{entry['hour']}: {entry['status']}" for entry in passenger_data])
+
+        prompt = (
+            f"You are an airport scheduling AI. The current hour is {current_hour}.\n\n"
+            f"Here is who is currently on duty:\n{format_shift_data(on_duty)}\n\n"
+            f"On break:\n{format_shift_data(on_break)}\n\n"
+            f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
+            "Assign break start times to staff currently on duty. Do NOT assign breaks during red traffic periods. "
+            "Only assign breaks to staff eligible for one based on the number of breaks taken and shift duration. "
+            "Output strictly as:\n(IDName) (BreakTime)\nExample:\n123John 12:15\n\n"
+            "If someone is not eligible, exclude them from the list."
+        )
+
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You assist with automated staff break planning at an airport."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=1000,
+            temperature=0.2,
+        )
+
+        output = response.choices[0].message.content.strip()
+        lines = output.splitlines()
+        schedule = {}
+
+        for line in lines:
+            parts = line.strip().split()
+            if len(parts) == 2:
+                idname, break_time = parts
+                schedule[idname] = break_time
+
+        return Response(schedule)
+
+    except Exception as e:
+        print("Analyze Error:", str(e))
+        return Response({"error": str(e)}, status=500)
