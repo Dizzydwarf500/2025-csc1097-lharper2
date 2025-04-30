@@ -201,7 +201,7 @@ function App() {
         console.log(logHeader);
         setAutomationLog(logHeader);
 
-        axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
+        axios.post(`${process.env.REACT_APP_API_URL}/analyze/`, {
           onDuty: onDutyProducts,
           onBreak: onBreakProducts,
           passengerData: require('./passengerData').default,
@@ -355,12 +355,12 @@ function App() {
 
           </div>
           {automationLog && (
-  <div style={{ background: '#f0f0f0', padding: '10px', marginTop: '5px', whiteSpace: 'pre-wrap' }}>
-    <strong>Automation Log:</strong>
-    <br />
-    {automationLog}
-  </div>
-)}
+            <div style={{ background: '#f0f0f0', padding: '10px', marginTop: '5px', whiteSpace: 'pre-wrap' }}>
+              <strong>Automation Log:</strong>
+              <br />
+              {automationLog}
+            </div>
+          )}
 
           {testTime && (
             <>
