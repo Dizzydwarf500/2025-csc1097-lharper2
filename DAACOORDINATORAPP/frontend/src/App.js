@@ -23,6 +23,8 @@ function App() {
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
   const [automationLog, setAutomationLog] = useState('');
   const lastGPTHourRunRef = useRef(null);
+  const onDutyRef = useRef(onDutyProducts);
+  const onBreakRef = useRef(onBreakProducts);
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
     if (!productToMove) return;
@@ -49,6 +51,13 @@ function App() {
       return isInRollcallWindow && !alreadyOnDuty;
     });
   };
+  useEffect(() => {
+    onDutyRef.current = onDutyProducts;
+  }, [onDutyProducts]);
+
+  useEffect(() => {
+    onBreakRef.current = onBreakProducts;
+  }, [onBreakProducts]);
 
   useEffect(() => {
     axios
@@ -208,8 +217,8 @@ function App() {
         setAutomationLog(logHeader);
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
-          onDuty: onDutyProducts,
-          onBreak: onBreakProducts,
+          onDuty: onDutyRef.current,
+          onBreak: onBreakRef.current,
           passengerData: require('./passengerData').default,
           currentHour,
         })
