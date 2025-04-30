@@ -189,7 +189,8 @@ def analyze_shifts(request):
     "1️⃣ Break Eligibility:\n"
     "- Staff with shifts under 8h 20min (500 minutes) get 1 break.\n"
     "- Staff with shifts of 8h 20min or more get 2 breaks.\n"
-    "- Staff must receive their first break before 4h 30min into their shift.\n\n"
+    "- Staff should ideally receive their first break between 2 and 4.5 hours into their shift.\n"
+    "- If staff are already beyond 4.5 hours without a break, they must be scheduled immediately.\n\n"
 
     "2️⃣ Minimum On Duty:\n"
     "- Always try to keep at least 93 people on duty.\n"
@@ -206,8 +207,10 @@ def analyze_shifts(request):
     "Return only people eligible for breaks. Output **strictly** in this format:\n"
     "(ID) (BreakTime)\n"
     "Example:\n100003 07:00\n\n"
-    "If no one qualifies, return nothing."
+    "If no one qualifies, return exactly this sentence:\n"
+    "No one qualifies for a break at this time."
 )
+
 
         response = client.chat.completions.create(
             model="o4-mini",
