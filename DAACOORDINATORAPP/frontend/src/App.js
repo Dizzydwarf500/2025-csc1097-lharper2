@@ -215,9 +215,14 @@ function App() {
         prev.forEach(person => {
           const idName = `${person.id}${person.name}`;
           if (breakSchedule.current[idName] === currentTimeStr) {
+            const duration = determineBreakDuration(person);
+            const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+
             toBreak.push({
               ...person,
-              breakEndTime: calculateBreakEndTime(person, testTime),
+              breakEndTime,
+              breakStartTestTime: { ...testTime },
+              breakDuration: duration
             });
           } else {
             remaining.push(person);
@@ -231,21 +236,25 @@ function App() {
         return remaining;
       });
 
+
       // 4. Finish breaks
-      setOnBreakProducts(prev => {
+      setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
         const nowFinished = [];
 
-        prev.forEach(person => {
-          const breakEnd = new Date();
-          breakEnd.setHours(person.breakEndTime.hours);
-          breakEnd.setMinutes(person.breakEndTime.minutes);
+        prevOnBreak.forEach((person) => {
+          const { breakEndTime } = person;
 
-          const current = new Date();
-          current.setHours(testTime.hours);
-          current.setMinutes(testTime.minutes);
+          // If breakEndTime is missing or malformed, keep them on break safely
+          if (!breakEndTime || breakEndTime.hours === undefined || breakEndTime.minutes === undefined) {
+            stillOnBreak.push(person);
+            return;
+          }
 
-          if (current >= breakEnd) {
+          const breakEndTotal = breakEndTime.hours * 60 + breakEndTime.minutes;
+          const currentTimeTotal = testTime.hours * 60 + testTime.minutes;
+
+          if (currentTimeTotal >= breakEndTotal) {
             nowFinished.push(person);
           } else {
             stillOnBreak.push(person);
@@ -253,22 +262,23 @@ function App() {
         });
 
         if (nowFinished.length > 0) {
-          setFinishedProducts(f => [...f, ...nowFinished]);
+          setFinishedProducts((prevFinished) => [...prevFinished, ...nowFinished]);
         }
 
         return stillOnBreak;
       });
 
+
     }, 1000); // Simulated time
 
     return () => clearInterval(interval);
   }, [isAutomated, testTime, rollcallProducts, onDutyProducts, onBreakProducts]);
+  const determineBreakDuration = (person) => {
+    if (person.finishedCount === 0 && person.shiftLength > 490) return 40;
+    return 30;
+  };
 
-  const calculateBreakEndTime = (person, time) => {
-    // Break Logic
-    let duration = 30;
-    if (person.finishedCount === 0 && person.shiftLength > 490) duration = 40;
-
+  const calculateBreakEndTime = (person, time, duration) => {
     let endMinutes = time.minutes + duration;
     let endHours = time.hours;
 
@@ -279,6 +289,7 @@ function App() {
 
     return { hours: endHours % 24, minutes: endMinutes };
   };
+
 
   return (
     <DndProvider backend={HTML5Backend}>
