@@ -19,6 +19,8 @@ function App() {
   const [onBreakProducts, setOnBreakProducts] = useState([]);
   const [finishedProducts, setFinishedProducts] = useState([]);
   const autoIncrementRef = useRef(null);
+  const [isAutomated, setIsAutomated] = useState(false);
+  const breakSchedule = useRef({}); // { IDName: "HH:MM" }
 
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
@@ -158,6 +160,107 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [finishedProducts, moveFinishedToOnDuty]);
+  useEffect(() => {
+    if (!isAutomated || !testTime) return;
+
+    const interval = setInterval(() => {
+      const currentHour = testTime.hours;
+      const currentMinute = testTime.minutes;
+      const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+
+      // 1. Import from Rollcall to OnDuty
+      rollcallProducts.forEach(person => {
+        if (!onDutyProducts.some(p => p.id === person.id)) {
+          setOnDutyProducts(prev => [...prev, person]);
+        }
+      });
+
+      // 2. Every hour send GPT request
+      if (currentMinute === 0) {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
+          onDuty: onDutyProducts,
+          onBreak: onBreakProducts,
+          passengerData: require('./passengerData').default,
+          currentHour,
+        }).then((response) => {
+          breakSchedule.current = response.data; // { "123John": "12:00" }
+        }).catch(err => {
+          console.error("Automation GPT error:", err);
+        });
+      }
+
+      // 3. Trigger breaks if time matches
+      setOnDutyProducts(prev => {
+        const toBreak = [];
+        const remaining = [];
+
+        prev.forEach(person => {
+          const idName = `${person.id}${person.name}`;
+          if (breakSchedule.current[idName] === currentTimeStr) {
+            toBreak.push({
+              ...person,
+              breakEndTime: calculateBreakEndTime(person, testTime),
+            });
+          } else {
+            remaining.push(person);
+          }
+        });
+
+        if (toBreak.length > 0) {
+          setOnBreakProducts(breaking => [...breaking, ...toBreak]);
+        }
+
+        return remaining;
+      });
+
+      // 4. Finish breaks
+      setOnBreakProducts(prev => {
+        const stillOnBreak = [];
+        const nowFinished = [];
+
+        prev.forEach(person => {
+          const breakEnd = new Date();
+          breakEnd.setHours(person.breakEndTime.hours);
+          breakEnd.setMinutes(person.breakEndTime.minutes);
+
+          const current = new Date();
+          current.setHours(testTime.hours);
+          current.setMinutes(testTime.minutes);
+
+          if (current >= breakEnd) {
+            nowFinished.push(person);
+          } else {
+            stillOnBreak.push(person);
+          }
+        });
+
+        if (nowFinished.length > 0) {
+          setFinishedProducts(f => [...f, ...nowFinished]);
+        }
+
+        return stillOnBreak;
+      });
+
+    }, 1000); // Simulated time
+
+    return () => clearInterval(interval);
+  }, [isAutomated, testTime, rollcallProducts, onDutyProducts, onBreakProducts]);
+
+  const calculateBreakEndTime = (person, time) => {
+    // Break Logic
+    let duration = 30;
+    if (person.finishedCount === 0 && person.shiftLength > 490) duration = 40;
+
+    let endMinutes = time.minutes + duration;
+    let endHours = time.hours;
+
+    if (endMinutes >= 60) {
+      endHours += Math.floor(endMinutes / 60);
+      endMinutes %= 60;
+    }
+
+    return { hours: endHours % 24, minutes: endMinutes };
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -187,6 +290,13 @@ function App() {
             <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
             <button onClick={() => startAutoIncrement(500)}>⚡ 2x Speed</button>
             <button onClick={stopAutoIncrement}>🛑 Stop</button>
+            <button
+              style={{ backgroundColor: isAutomated ? '#d44' : '#4caf50', color: 'white' }}
+              onClick={() => setIsAutomated(prev => !prev)}
+            >
+              {isAutomated ? '🛑 Stop Automation' : '🤖 Automate'}
+            </button>
+
           </div>
 
           {testTime && (
