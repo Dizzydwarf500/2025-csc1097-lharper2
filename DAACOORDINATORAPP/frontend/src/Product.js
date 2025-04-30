@@ -461,24 +461,27 @@ const ProductList = ({
       const [selHour, selMinute] = selectedTime.split(':').map(Number);
       const breakStartSeconds = selHour * 3600 + selMinute * 60;
       const currentSeconds = testTime.hours * 3600 + testTime.minutes * 60;
-
       const delaySeconds = Math.max(breakStartSeconds - currentSeconds, 0);
 
-      let baseMinutes;
       const start = new Date(`1970-01-01T${currentProduct.Shift_Start_Time}Z`);
       let end = new Date(`1970-01-01T${currentProduct.Shift_End_Time}Z`);
       if (end < start) end.setDate(end.getDate() + 1);
       const shiftMinutes = (end - start) / (1000 * 60);
 
-      // Apply your rules
-      if (currentProduct.finishedCount === 0 && shiftMinutes > 490) {
-        baseMinutes = 40;
-      } else if (currentProduct.finishedCount === 0 && shiftMinutes === 480) {
-        baseMinutes = 30;
+      let baseMinutes;
+
+      if (currentProduct.finishedCount === 0) {
+        if (shiftMinutes > 490) {
+          baseMinutes = 40;
+        } else if (shiftMinutes === 480) {
+          baseMinutes = 30;
+        } else {
+          baseMinutes = 0;
+        }
       } else if (currentProduct.finishedCount === 1) {
         baseMinutes = 30;
       } else {
-        baseMinutes = 30; // fallback
+        baseMinutes = 0;
       }
 
       const totalTimerSeconds = (baseMinutes * 60) + delaySeconds;
@@ -498,6 +501,7 @@ const ProductList = ({
 
     setShowBreakPopup(false);
   };
+
 
 
   const moveProduct = (product, sourceSectionId, targetSectionId) => {
