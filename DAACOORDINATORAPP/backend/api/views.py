@@ -154,7 +154,7 @@ def analyze_shifts(request):
             return "\n".join(result) or "None"
 
         def format_traffic(data):
-            return "\n".join([f"{entry['hour']}: {entry['status']}" for entry in passenger_data])
+            return "\n".join([f"{entry['time']}: {entry['status']}" for entry in passenger_data])
 
         prompt = (
             f"You are an airport scheduling AI. The current hour is {current_hour}.\n\n"
