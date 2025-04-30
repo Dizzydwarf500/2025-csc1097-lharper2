@@ -200,7 +200,7 @@ def analyze_shifts(request):
 
     "⏳ All staff below have an 'Ideal Break Window' listed. Choose a break time **within that window**, even if they just started their shift.\n"
     "- You may schedule the break for a future hour (e.g., someone who started at 03:50 could be scheduled for break at 06:00).\n"
-    "- Aim to assign at least 10 staff their first break.\n\n"
+    "- Assign a break time to every single staff member currently on duty using their Ideal Break Window.\n\n"
 
     "🛑 Do not check how long someone has worked. Just assign break times **inside their ideal window**.\n"
     "- Avoid red (busy) traffic periods.\n"
