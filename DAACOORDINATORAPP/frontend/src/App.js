@@ -246,26 +246,28 @@ function App() {
         prev.forEach(person => {
           const scheduledTime = breakSchedule.current[person.id];
           // Timer
-          const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
-          if (
+          if (scheduledTime) {
+            const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
+            if (
               scheduledHour === currentHour &&
               scheduledMinute === currentMinute
-            )
-            {
-            const duration = determineBreakDuration(person);
-            const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+            ) {
+              const duration = determineBreakDuration(person);
+              const breakEndTime = calculateBreakEndTime(person, testTime, duration);
 
-            const updatedPerson = {
-              ...person,
-              breakEndTime,
-              breakStartTestTime: { ...testTime },
-              breakDuration: duration * 60,
-            };
+              const updatedPerson = {
+                ...person,
+                breakEndTime,
+                breakStartTestTime: { ...testTime },
+                breakDuration: duration * 60,
+              };
 
-            toBreak.push(updatedPerson);
-          } else {
-            remaining.push(person);
+              toBreak.push(updatedPerson);
+              return;
+            }
           }
+          remaining.push(person);
+
         });
 
         if (toBreak.length > 0) {
