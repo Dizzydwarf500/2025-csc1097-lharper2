@@ -198,25 +198,21 @@ def analyze_shifts(request):
 
     "You must assign the *first break time* for eligible staff currently on duty, using the following rules:\n\n"
 
-    "1️⃣ Break Eligibility:\n"
+    "1-Break Eligibility:\n"
     "- Shifts under 8h 20min (500 minutes) get 1 break.\n"
     "- Shifts of 8h 20min or more get 2 breaks.\n"
     "- Staff must receive their *first* break within the 'Ideal Break Window' shown per person.\n"
     "- If staff are already beyond 4.5 hours (270 min) worked and have not taken a break, they must be scheduled immediately.\n\n"
 
-    "2️⃣ Minimum On Duty:\n"
+    "2-Minimum On Duty:\n"
     "- Always try to keep at least 93 staff on duty.\n"
     "- If someone must go on break to avoid exceeding 4.5 hours worked, allow on-duty count to temporarily drop to 74.\n\n"
 
-    "3️⃣ Coverage Preference:\n"
-    "- Try not to send critical roles (VIP, FastTrack, QM, Sweep) on break without coverage.\n"
-    "- Prefer replacements who just started their shift or who just returned from a break.\n\n"
-
-    "4️⃣ Passenger Traffic:\n"
+    "3-Passenger Traffic:\n"
     "- Avoid assigning breaks during red (busy) traffic periods.\n"
     "- Prefer green (quiet) traffic periods for breaks.\n\n"
 
-    "💡 Your job is to **predict and assign** the best break time for each person *now*, even if that break is scheduled for a future hour.\n"
+    "💡 Your job is to **predict and assign** the best break time for each person *now*, even if that break is scheduled for a future hour or hours.\n"
     "Use the 'Ideal Break Window' provided in the staff list to choose a time that is optimal based on workload and traffic.\n\n"
 
     "⏱️ Output one line per staff member you are assigning a break to, strictly in this format:\n"
