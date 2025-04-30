@@ -32,7 +32,6 @@ def format_staff_list(staff_list):
             output.append(str(s))
     return "\n".join(output)
 
-@csrf_exempt
 @api_view(['POST'])
 def assistant_query(request):
     try:
