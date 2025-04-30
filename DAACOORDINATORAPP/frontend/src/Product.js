@@ -456,13 +456,32 @@ const ProductList = ({
 
   const handlePopupConfirm = (selectedTime) => {
     if (showBreakPopup === 'finish') {
-      // Remove from On Break
       setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
     } else {
-      // Regular break logic
-      const additionalMinutes = calculateAdditionalMinutes(selectedTime);
-      const baseMinutes = currentProduct.finishedCount === 1 ? 30 : 40;
-      const totalTimerSeconds = (baseMinutes + additionalMinutes) * 60;
+      const [selHour, selMinute] = selectedTime.split(':').map(Number);
+      const breakStartSeconds = selHour * 3600 + selMinute * 60;
+      const currentSeconds = testTime.hours * 3600 + testTime.minutes * 60;
+
+      const delaySeconds = Math.max(breakStartSeconds - currentSeconds, 0);
+
+      let baseMinutes;
+      const start = new Date(`1970-01-01T${currentProduct.Shift_Start_Time}Z`);
+      let end = new Date(`1970-01-01T${currentProduct.Shift_End_Time}Z`);
+      if (end < start) end.setDate(end.getDate() + 1);
+      const shiftMinutes = (end - start) / (1000 * 60);
+
+      // Apply your rules
+      if (currentProduct.finishedCount === 0 && shiftMinutes > 490) {
+        baseMinutes = 40;
+      } else if (currentProduct.finishedCount === 0 && shiftMinutes === 480) {
+        baseMinutes = 30;
+      } else if (currentProduct.finishedCount === 1) {
+        baseMinutes = 30;
+      } else {
+        baseMinutes = 30; // fallback
+      }
+
+      const totalTimerSeconds = (baseMinutes * 60) + delaySeconds;
 
       setOnBreakProducts((prevOnBreak) =>
         prevOnBreak.map((p) =>
@@ -479,6 +498,7 @@ const ProductList = ({
 
     setShowBreakPopup(false);
   };
+
 
   const moveProduct = (product, sourceSectionId, targetSectionId) => {
     const sections = {
