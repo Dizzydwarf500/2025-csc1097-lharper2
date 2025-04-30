@@ -234,8 +234,7 @@ function App() {
         const remaining = [];
 
         prev.forEach(person => {
-          const idName = `${person.id}${person.name}`;
-          const scheduledTime = breakSchedule.current[idName];
+          const scheduledTime = breakSchedule.current[person.id];
           // Timer
           if (scheduledTime === currentTimeStr) {
             const duration = determineBreakDuration(person);
