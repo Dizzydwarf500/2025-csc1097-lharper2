@@ -222,7 +222,7 @@ function App() {
               ...person,
               breakEndTime,
               breakStartTestTime: { ...testTime },
-              breakDuration: duration
+              breakDuration: duration * 60
             });
           } else {
             remaining.push(person);
