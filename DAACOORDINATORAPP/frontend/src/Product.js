@@ -486,17 +486,17 @@ const ProductList = ({
       const totalTimerSeconds = (baseMinutes * 60) + delaySeconds;
 
       // Update break timer info
-      setOnBreakProducts((prevOnBreak) =>
-        prevOnBreak.map((p) =>
-          p.id === currentProduct.id
-            ? {
-              ...p,
-              breakStartTestTime: testTime,
-              breakDuration: totalTimerSeconds,
-            }
-            : p
-        )
+      const updatedProduct = {
+        ...currentProduct,
+        breakStartTestTime: testTime,
+        breakDuration: totalTimerSeconds,
+      };
+
+      // Remove from OnBreak first (in case it's already there), then re-add
+      setOnBreakProducts((prev) =>
+        [...prev.filter((p) => p.id !== updatedProduct.id), updatedProduct].sort((a, b) => a.name.localeCompare(b.name))
       );
+
     }
 
     setShowBreakPopup(false);
