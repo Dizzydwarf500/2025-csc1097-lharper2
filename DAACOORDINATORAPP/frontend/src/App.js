@@ -242,10 +242,10 @@ function App() {
       setOnDutyProducts(prev => {
         const toBreak = [];
         const remaining = [];
+        const newBreakLogs = [];
 
         prev.forEach(person => {
-          const scheduledTime = breakSchedule.current[person.id];
-          // Timer
+          const scheduledTime = breakSchedule.current[person.IDname];
           if (scheduledTime) {
             const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
             if (
@@ -263,21 +263,24 @@ function App() {
               };
 
               toBreak.push(updatedPerson);
+              newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min break at ${currentTimeStr}`);
               return;
             }
           }
           remaining.push(person);
-
         });
 
         if (toBreak.length > 0) {
           setOnBreakProducts(prev =>
             [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
           );
+          // Append new break log lines
+          setAutomationLog(prev => `${prev}\n${newBreakLogs.join('\n')}`);
         }
 
         return remaining;
       });
+
 
 
       // 4. Move to Finished when break ends
