@@ -246,7 +246,12 @@ function App() {
         prev.forEach(person => {
           const scheduledTime = breakSchedule.current[person.id];
           // Timer
-          if (scheduledTime === currentTimeStr) {
+          const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
+          if (
+              scheduledHour === currentHour &&
+              scheduledMinute === currentMinute
+            )
+            {
             const duration = determineBreakDuration(person);
             const breakEndTime = calculateBreakEndTime(person, testTime, duration);
 
