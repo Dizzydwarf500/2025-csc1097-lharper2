@@ -184,32 +184,31 @@ def analyze_shifts(request):
     f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
     f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
     f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
-    "You must assign break times to staff currently on duty, following these rules:\n\n"
+    "You must create a break schedule for staff currently on duty, following these rules:\n\n"
 
     "1️⃣ Break Eligibility:\n"
-    "- Staff with shifts under 8h 20min (500 minutes) get 1 break.\n"
-    "- Staff with shifts of 8h 20min or more get 2 breaks.\n"
-    "- Staff should ideally receive their first break between 2 and 4.5 hours into their shift.\n"
-    "- If staff are already beyond 4.5 hours without a break, they must be scheduled immediately.\n\n"
+    "- Shifts under 8h 20min (500 mins) get 1 break; longer shifts get 2.\n"
+    "- First break should ideally be between 2h and 4.5h into the shift.\n"
+    "- If already over 4.5h with no break, schedule immediately.\n\n"
 
     "2️⃣ Minimum On Duty:\n"
-    "- Always try to keep at least 93 people on duty.\n"
-    "- If someone is about to exceed their 4.5-hour limit without a break, allow on-duty count to drop to 74 **only to let that person take their break**.\n\n"
+    "- Maintain at least 93 on duty at all times.\n"
+    "- If someone is at their break limit (4.5h), allow going down to 74 briefly.\n\n"
 
-    "3️⃣ Coverage Preference:\n"
-    "- When someone is assigned a break, try to keep critical roles covered.\n"
-    "- Prefer coverage from someone who just started their shift or who has just returned from a break.\n\n"
+    "3️⃣ Passenger Traffic:\n"
+    "- Avoid assigning breaks during red (busy) hours.\n"
+    "- Prefer green periods where possible.\n\n"
 
-    "4️⃣ Passenger Traffic:\n"
-    "- Avoid scheduling breaks during red (busy) traffic hours.\n"
-    "- Prefer green periods when assigning breaks.\n\n"
+    "4️⃣ Coverage Preference:\n"
+    "- Prefer coverage by staff who just started or just returned from break.\n\n"
 
-    "Return only people eligible for breaks. Output **strictly** in this format:\n"
-    "(ID) (BreakTime)\n"
-    "Example:\n100003 07:00\n\n"
-    "If no one qualifies, return exactly this sentence:\n"
-    "No one qualifies for a break at this time."
+    "Output: A proactive break plan. Schedule breaks for the upcoming hours.\n"
+    "Only include IDs and break times in HH:MM format.\n"
+    "Output format:\n(ID) (BreakTime)\n\n"
+    "Example:\n100003 06:00\n100009 06:30\n\n"
+    "If no one qualifies within the next 4 hours, return:\nNo breaks needed yet."
 )
+
 
 
         response = client.chat.completions.create(
