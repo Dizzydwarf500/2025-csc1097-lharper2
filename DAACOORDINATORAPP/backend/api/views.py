@@ -222,14 +222,15 @@ def analyze_shifts(request):
 
 
 
-        response = client.chat.completions.create(
-            model="o4-mini",
-            messages=[
-                {"role": "system", "content": "You assist with automated staff break planning at an airport."},
-                {"role": "user", "content": prompt}
-            ],
-            max_completion_tokens=16000,
-        )
+        response = client.completions.create(
+        model="o1-pro",
+        prompt=(
+            "You assist with automated staff break planning at an airport.\n\n"
+            + prompt  
+        ),
+        max_tokens=1600,
+        temperature=0.3
+)
 
         output = response.choices[0].message.content.strip()
         print("GPT Prompt Sent:\n", prompt)
