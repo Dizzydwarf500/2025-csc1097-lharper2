@@ -201,7 +201,7 @@ function App() {
         console.log(logHeader);
         setAutomationLog(logHeader);
 
-        axios.post(`${process.env.REACT_APP_API_URL}/analyze/`, {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
           onDuty: onDutyProducts,
           onBreak: onBreakProducts,
           passengerData: require('./passengerData').default,
