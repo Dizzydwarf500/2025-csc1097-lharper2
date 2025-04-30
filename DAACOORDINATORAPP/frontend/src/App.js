@@ -230,30 +230,37 @@ function App() {
       setOnDutyProducts(prev => {
         const toBreak = [];
         const remaining = [];
-
+      
         prev.forEach(person => {
           const idName = `${person.id}${person.name}`;
-          if (breakSchedule.current[idName] === currentTimeStr) {
+          const scheduledTime = breakSchedule.current[idName];
+      
+          if (scheduledTime === currentTimeStr) {
             const duration = determineBreakDuration(person);
             const breakEndTime = calculateBreakEndTime(person, testTime, duration);
-
-            toBreak.push({
+      
+            const updatedPerson = {
               ...person,
               breakEndTime,
               breakStartTestTime: { ...testTime },
-              breakDuration: duration * 60
-            });
+              breakDuration: duration * 60,
+            };
+      
+            toBreak.push(updatedPerson);
           } else {
             remaining.push(person);
           }
         });
-
+      
         if (toBreak.length > 0) {
-          setOnBreakProducts(prev => [...prev, ...toBreak]);
+          setOnBreakProducts(prev =>
+            [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
+          );
         }
-
+      
         return remaining;
       });
+      
 
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
