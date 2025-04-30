@@ -196,9 +196,10 @@ function App() {
       }
 
       // 2. GPT analysis every hour
-      if (currentMinute === 0) {
-        if (lastGPTHourRunRef.current === currentHour) return;
-        lastGPTHourRunRef.current = currentHour;
+      if (currentMinute === 0 &&
+        (lastGPTHourRunRef.current === null || currentHour % 2 === 0) &&
+        lastGPTHourRunRef.current !== currentHour
+      ) {
 
         const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
 
@@ -213,13 +214,14 @@ function App() {
         })
           .then((response) => {
             breakSchedule.current = response.data;
+            lastGPTHourRunRef.current = currentHour;
 
-            const logText = `✅ GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
+            const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
             console.log(logText);
             setAutomationLog(`${logHeader}\n${logText}`);
           })
           .catch((err) => {
-            const errorLog = `❌ GPT automation error: ${err.message}`;
+            const errorLog = `GPT automation error: ${err.message}`;
             console.error(errorLog);
             setAutomationLog(`${logHeader}\n${errorLog}`);
           });
@@ -230,37 +232,37 @@ function App() {
       setOnDutyProducts(prev => {
         const toBreak = [];
         const remaining = [];
-      
+
         prev.forEach(person => {
           const idName = `${person.id}${person.name}`;
           const scheduledTime = breakSchedule.current[idName];
-      
+
           if (scheduledTime === currentTimeStr) {
             const duration = determineBreakDuration(person);
             const breakEndTime = calculateBreakEndTime(person, testTime, duration);
-      
+
             const updatedPerson = {
               ...person,
               breakEndTime,
               breakStartTestTime: { ...testTime },
               breakDuration: duration * 60,
             };
-      
+
             toBreak.push(updatedPerson);
           } else {
             remaining.push(person);
           }
         });
-      
+
         if (toBreak.length > 0) {
           setOnBreakProducts(prev =>
             [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
           );
         }
-      
+
         return remaining;
       });
-      
+
 
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
