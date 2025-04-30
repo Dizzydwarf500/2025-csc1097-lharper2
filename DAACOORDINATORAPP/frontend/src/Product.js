@@ -456,54 +456,43 @@ const ProductList = ({
 
   const handlePopupConfirm = (selectedTime) => {
     if (showBreakPopup === 'finish') {
-      // Finish the shift (remove from On Break)
       setOnBreakProducts((prev) => prev.filter((p) => p.id !== currentProduct.id));
     } else {
-      // Calculate break start delay
       const [selHour, selMinute] = selectedTime.split(':').map(Number);
       const breakStartSeconds = selHour * 3600 + selMinute * 60;
       const currentSeconds = testTime.hours * 3600 + testTime.minutes * 60;
       const delaySeconds = Math.max(breakStartSeconds - currentSeconds, 0);
 
-      // Get total shift duration in minutes
+      let baseMinutes;
       const start = new Date(`1970-01-01T${currentProduct.Shift_Start_Time}Z`);
       let end = new Date(`1970-01-01T${currentProduct.Shift_End_Time}Z`);
       if (end < start) end.setDate(end.getDate() + 1);
       const shiftMinutes = (end - start) / (1000 * 60);
 
-      // Determine correct break duration based on shift and break count
-      let baseMinutes = 0;
-      if (currentProduct.finishedCount === 0) {
-        if (shiftMinutes > 490) {
-          baseMinutes = 40;
-        } else if (shiftMinutes === 480) {
-          baseMinutes = 30;
-        }
-      } else if (currentProduct.finishedCount === 1) {
+      // Logic:
+      if (currentProduct.finishedCount === 1) {
         baseMinutes = 30;
+      } else if (currentProduct.finishedCount === 2) {
+        baseMinutes = 0;
+      } else {
+        baseMinutes = 40; // default for first break
       }
 
       const totalTimerSeconds = (baseMinutes * 60) + delaySeconds;
 
-      // Update break timer info
       const updatedProduct = {
         ...currentProduct,
         breakStartTestTime: testTime,
         breakDuration: totalTimerSeconds,
       };
 
-      // Remove from OnBreak first (in case it's already there), then re-add
       setOnBreakProducts((prev) =>
         [...prev.filter((p) => p.id !== updatedProduct.id), updatedProduct].sort((a, b) => a.name.localeCompare(b.name))
       );
-
     }
 
     setShowBreakPopup(false);
   };
-
-
-
 
   const moveProduct = (product, sourceSectionId, targetSectionId) => {
     const sections = {
