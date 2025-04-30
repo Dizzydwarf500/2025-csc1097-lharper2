@@ -175,10 +175,12 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [finishedProducts, moveFinishedToOnDuty]);
-  useEffect(() => {
-    if (!isAutomated || !testTime) return;
+  const automationTick = useRef();
 
-    const interval = setInterval(() => {
+  useEffect(() => {
+    automationTick.current = () => {
+      if (!isAutomated || !testTime) return;
+
       const currentHour = testTime.hours;
       const currentMinute = testTime.minutes;
       const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
@@ -192,8 +194,7 @@ function App() {
         ]);
       }
 
-
-      // 2. Every hour send GPT request
+      // 2. GPT analysis every hour
       if (currentMinute === 0) {
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
           onDuty: onDutyProducts,
@@ -201,13 +202,13 @@ function App() {
           passengerData: require('./passengerData').default,
           currentHour,
         }).then((response) => {
-          breakSchedule.current = response.data; // { "123John": "12:00" }
+          breakSchedule.current = response.data;
         }).catch(err => {
           console.error("Automation GPT error:", err);
         });
       }
 
-      // 3. Trigger breaks if time matches
+      // 3. Move to Break if time matches
       setOnDutyProducts(prev => {
         const toBreak = [];
         const remaining = [];
@@ -230,14 +231,13 @@ function App() {
         });
 
         if (toBreak.length > 0) {
-          setOnBreakProducts(breaking => [...breaking, ...toBreak]);
+          setOnBreakProducts(prev => [...prev, ...toBreak]);
         }
 
         return remaining;
       });
 
-
-      // 4. Finish breaks
+      // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
         const nowFinished = [];
@@ -245,7 +245,6 @@ function App() {
         prevOnBreak.forEach((person) => {
           const { breakEndTime } = person;
 
-          // If breakEndTime is missing or malformed, keep them on break safely
           if (!breakEndTime || breakEndTime.hours === undefined || breakEndTime.minutes === undefined) {
             stillOnBreak.push(person);
             return;
@@ -267,16 +266,18 @@ function App() {
 
         return stillOnBreak;
       });
+    };
+  }, [onDutyProducts, onBreakProducts, testTime, isAutomated, rollcallProducts]);
 
-
-    }, 1000); // Simulated time
-
+  // ✅ Run interval every second using latest automationTick ref
+  useEffect(() => {
+    if (!isAutomated) return;
+    const interval = setInterval(() => {
+      if (automationTick.current) automationTick.current();
+    }, 1000);
     return () => clearInterval(interval);
-  }, [isAutomated, testTime, rollcallProducts, onDutyProducts, onBreakProducts]);
-  const determineBreakDuration = (person) => {
-    if (person.finishedCount === 0 && person.shiftLength > 490) return 40;
-    return 30;
-  };
+  }, [isAutomated]);
+
 
   const calculateBreakEndTime = (person, time, duration) => {
     let endMinutes = time.minutes + duration;
@@ -288,6 +289,18 @@ function App() {
     }
 
     return { hours: endHours % 24, minutes: endMinutes };
+  };
+  const determineBreakDuration = (person) => {
+    const shiftStart = new Date(`1970-01-01T${person.Shift_Start_Time}Z`);
+    let shiftEnd = new Date(`1970-01-01T${person.Shift_End_Time}Z`);
+
+    // Handle overnight shift
+    if (shiftEnd < shiftStart) shiftEnd.setDate(shiftEnd.getDate() + 1);
+
+    const shiftMinutes = (shiftEnd - shiftStart) / (1000 * 60);
+
+    if (person.finishedCount === 0 && shiftMinutes > 490) return 40;
+    return 30;
   };
 
 
