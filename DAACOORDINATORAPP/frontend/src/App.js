@@ -21,6 +21,7 @@ function App() {
   const autoIncrementRef = useRef(null);
   const [isAutomated, setIsAutomated] = useState(false);
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
+  const [automationLog, setAutomationLog] = useState('');
 
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
@@ -196,17 +197,30 @@ function App() {
 
       // 2. GPT analysis every hour
       if (currentMinute === 0) {
+        const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
+        console.log(logHeader);
+        setAutomationLog(logHeader);
+
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
           onDuty: onDutyProducts,
           onBreak: onBreakProducts,
           passengerData: require('./passengerData').default,
           currentHour,
-        }).then((response) => {
-          breakSchedule.current = response.data;
-        }).catch(err => {
-          console.error("Automation GPT error:", err);
-        });
+        })
+          .then((response) => {
+            breakSchedule.current = response.data;
+
+            const logText = `✅ GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
+            console.log(logText);
+            setAutomationLog(`${logHeader}\n${logText}`);
+          })
+          .catch((err) => {
+            const errorLog = `❌ GPT automation error: ${err.message}`;
+            console.error(errorLog);
+            setAutomationLog(`${logHeader}\n${errorLog}`);
+          });
       }
+
 
       // 3. Move to Break if time matches
       setOnDutyProducts(prev => {
@@ -340,6 +354,13 @@ function App() {
             </button>
 
           </div>
+          {automationLog && (
+  <div style={{ background: '#f0f0f0', padding: '10px', marginTop: '5px', whiteSpace: 'pre-wrap' }}>
+    <strong>Automation Log:</strong>
+    <br />
+    {automationLog}
+  </div>
+)}
 
           {testTime && (
             <>
