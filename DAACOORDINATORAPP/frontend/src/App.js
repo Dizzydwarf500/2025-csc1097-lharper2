@@ -284,22 +284,25 @@ function App() {
 
 
       // 4. Move to Finished when break ends
+      // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
         const nowFinished = [];
 
         prevOnBreak.forEach((person) => {
-          const { breakEndTime } = person;
+          const { breakStartTestTime, breakDuration } = person;
 
-          if (!breakEndTime || breakEndTime.hours === undefined || breakEndTime.minutes === undefined) {
+          if (!breakStartTestTime || breakDuration == null) {
             stillOnBreak.push(person);
             return;
           }
 
-          const breakEndTotal = breakEndTime.hours * 60 + breakEndTime.minutes;
-          const currentTimeTotal = testTime.hours * 60 + testTime.minutes;
+          const startTotal = breakStartTestTime.hours * 60 + breakStartTestTime.minutes;
+          const nowTotal = testTime.hours * 60 + testTime.minutes;
 
-          if (currentTimeTotal >= breakEndTotal) {
+          const minutesElapsed = nowTotal - startTotal;
+
+          if (minutesElapsed >= breakDuration / 60) {
             nowFinished.push(person);
           } else {
             stillOnBreak.push(person);
@@ -308,10 +311,12 @@ function App() {
 
         if (nowFinished.length > 0) {
           setFinishedProducts((prevFinished) => [...prevFinished, ...nowFinished]);
+          setAutomationLog(prev => `${prev}\n✅ ${nowFinished.map(p => `${p.name} (ID: ${p.id})`).join(', ')} finished break`);
         }
 
         return stillOnBreak;
       });
+
     };
   }, [onDutyProducts, onBreakProducts, testTime, isAutomated, rollcallProducts]);
 
