@@ -178,6 +178,9 @@ def analyze_shifts(request):
         )
 
         output = response.choices[0].message.content.strip()
+        print("GPT Prompt Sent:\n", prompt)
+        print("GPT Raw Output:\n", output)
+
         lines = output.splitlines()
         schedule = {}
 
