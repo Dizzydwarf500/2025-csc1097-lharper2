@@ -157,15 +157,35 @@ def analyze_shifts(request):
             return "\n".join([f"{entry['time']}: {entry['status']}" for entry in passenger_data])
 
         prompt = (
-            f"You are an airport scheduling AI. The current hour is {current_hour}.\n\n"
-            f"Here is who is currently on duty:\n{format_shift_data(on_duty)}\n\n"
-            f"On break:\n{format_shift_data(on_break)}\n\n"
-            f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
-            "Assign break start times to staff currently on duty. Do NOT assign breaks during red traffic periods. "
-            "Only assign breaks to staff eligible for one based on the number of breaks taken and shift duration. "
-            "Output strictly as:\n(ID) (BreakTime)\nExample:\n100003 12:15\n\n"
-            "If someone is not eligible, exclude them from the list."
-        )
+        f"You are an AI shift scheduling assistant for an airport.\n\n"
+        f"The current hour is {current_hour}.\n\n"
+        f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
+        f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
+        f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
+        "You must assign break times to staff currently on duty, following these rules:\n\n"
+
+        "1️⃣ Break Eligibility:\n"
+        "- Staff with shifts under 8h 20min (500 minutes) get 1 break.\n"
+        "- Staff with shifts of 8h 20min or more get 2 breaks.\n"
+        "- Staff must receive their first break before 4h 30min into their shift.\n\n"
+
+        "2️⃣ Minimum On Duty:\n"
+        "- Always try to keep at least 93 people on duty.\n"
+        "- If someone is about to exceed their 4.5-hour limit without a break, allow on-duty count to drop to 74 **only to let that person take their break**.\n\n"
+
+        "3️⃣ Coverage Preference:\n"
+        "- When someone is assigned a break, try to keep critical roles covered.\n"
+        "- Prefer coverage from someone who just started their shift or who has just returned from a break.\n\n"
+
+        "4️⃣ Passenger Traffic:\n"
+        "- Avoid scheduling breaks during red (busy) traffic hours.\n"
+        "- Prefer green periods when assigning breaks.\n\n"
+
+        "Return only people eligible for breaks. Output **strictly** in this format:\n"
+        "(ID) (BreakTime)\n"
+        "Example:\n100003 07:00\n\n"
+        "If no one qualifies, return nothing."
+)
 
         response = client.chat.completions.create(
             model="o4-mini",
