@@ -491,7 +491,10 @@ const ProductList = ({
           p.id === currentProduct.id
             ? {
               ...p,
-              breakStartTestTime: testTime,
+              breakStartTestTime: {
+                hours: selHour,
+                minutes: selMinute
+              },
               breakDuration: totalTimerSeconds,
             }
             : p
@@ -501,6 +504,7 @@ const ProductList = ({
 
     setShowBreakPopup(false);
   };
+
 
 
 
