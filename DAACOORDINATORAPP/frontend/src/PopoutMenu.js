@@ -55,7 +55,7 @@ const PopoutMenu = ({
     const nowMinutes = testTime
       ? testTime.hours * 60 + testTime.minutes
       : new Date().getHours() * 60 + new Date().getMinutes();
-{/* Code for notifcations */}
+    {/* Code for notifcations */ }
     const matchingItems = rollcallProducts.filter((product) => {
       const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
       const shiftMinutes = startHour * 60 + startMinute;

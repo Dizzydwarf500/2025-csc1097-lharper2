@@ -33,6 +33,21 @@ function App() {
 
     console.log('Moved from Finished back to On Duty:', productToMove);
   }, [finishedProducts]);
+  const getActiveRollcallProducts = () => {
+    if (!testTime) return [];
+
+    const nowMinutes = testTime.hours * 60 + testTime.minutes;
+
+    return rollcallProducts.filter((product) => {
+      const [startHour, startMinute] = product.Shift_Start_Time.split(':').map(Number);
+      const shiftStartMinutes = startHour * 60 + startMinute;
+
+      const isInRollcallWindow = nowMinutes >= shiftStartMinutes && nowMinutes < shiftStartMinutes + 10;
+      const alreadyOnDuty = onDutyProducts.some((p) => p.id === product.id);
+
+      return isInRollcallWindow && !alreadyOnDuty;
+    });
+  };
 
   useEffect(() => {
     axios
@@ -169,11 +184,14 @@ function App() {
       const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
 
       // 1. Import from Rollcall to OnDuty
-      rollcallProducts.forEach(person => {
-        if (!onDutyProducts.some(p => p.id === person.id)) {
-          setOnDutyProducts(prev => [...prev, person]);
-        }
-      });
+      const activeRollcall = getActiveRollcallProducts();
+      if (activeRollcall.length > 0) {
+        setOnDutyProducts(prev => [
+          ...prev,
+          ...activeRollcall.filter(p => !prev.some(existing => existing.id === p.id))
+        ]);
+      }
+
 
       // 2. Every hour send GPT request
       if (currentMinute === 0) {
