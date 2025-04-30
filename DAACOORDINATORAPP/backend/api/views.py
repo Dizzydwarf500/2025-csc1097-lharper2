@@ -150,7 +150,7 @@ def analyze_shifts(request):
                 idname = f"{person['id']}{person['name']}"
                 shift = f"{person.get('Shift_Start_Time', '')}-{person.get('Shift_End_Time', '')}"
                 breaks = person.get('finishedCount', 0)
-                result.append(f"{idname} | Shift: {shift} | Breaks taken: {breaks}")
+                result.append(f"{person['id']} {person['name']} | Shift: {shift} | Breaks taken: {breaks}")
             return "\n".join(result) or "None"
 
         def format_traffic(data):
