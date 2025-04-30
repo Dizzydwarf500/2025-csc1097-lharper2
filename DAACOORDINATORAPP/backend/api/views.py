@@ -225,7 +225,7 @@ def analyze_shifts(request):
 
 
         response = client.chat.completions.create(
-            model="o4-mini",
+            model="o1-pro",
             messages=[
                 {"role": "system", "content": "You are a highly efficient scheduling assistant specialized in airport staff shifts."},
                 {"role": "user", "content": prompt},
