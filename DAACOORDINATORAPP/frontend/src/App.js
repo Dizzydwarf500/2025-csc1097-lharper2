@@ -196,8 +196,9 @@ function App() {
       }
 
       // 2. GPT analysis every hour
-      if (currentMinute === 0 &&
-        (lastGPTHourRunRef.current === null || currentHour % 2 === 0) &&
+      if (
+        currentMinute === 0 &&
+        currentHour % 2 === 0 &&
         lastGPTHourRunRef.current !== currentHour
       ) {
 
