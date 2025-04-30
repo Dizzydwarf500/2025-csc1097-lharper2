@@ -6,5 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('product/', ProductListView.as_view(), name='product-list'),
     path('assistant-query/', assistant_query, name='assistant-query'),
-    path('analyze/', analyze_shifts, name='analyze-shifts'),
+    path('api/analyze/', analyze_shifts, name='analyze-shifts'),
 ]

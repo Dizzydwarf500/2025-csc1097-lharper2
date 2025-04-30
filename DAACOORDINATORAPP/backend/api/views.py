@@ -10,6 +10,7 @@ from datetime import datetime
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import traceback
 
 load_dotenv()
 
@@ -189,5 +190,5 @@ def analyze_shifts(request):
         return Response(schedule)
 
     except Exception as e:
-        print("Analyze Error:", str(e))
+        traceback.print_exc()
         return Response({"error": str(e)}, status=500)
