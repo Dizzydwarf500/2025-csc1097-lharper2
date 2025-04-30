@@ -136,6 +136,8 @@ class ProductListView(generics.ListAPIView):
 
 @csrf_exempt
 @api_view(['POST'])
+@csrf_exempt
+@api_view(['POST'])
 def analyze_shifts(request):
     try:
         data = request.data
@@ -147,45 +149,64 @@ def analyze_shifts(request):
         def format_shift_data(staff_list):
             result = []
             for person in staff_list:
-                idname = f"{person['id']}{person['name']}"
-                shift = f"{person.get('Shift_Start_Time', '')}-{person.get('Shift_End_Time', '')}"
+                try:
+                    shift_start = datetime.strptime(person['Shift_Start_Time'], "%H:%M:%S")
+                    shift_end = datetime.strptime(person['Shift_End_Time'], "%H:%M:%S")
+                except Exception:
+                    result.append(f"{person.get('IDname')} {person.get('name')} | Invalid shift time")
+                    continue
+
+                # Handle overnight shift
+                if shift_end < shift_start:
+                    shift_end = shift_end.replace(day=2)
+
+                shift_length_minutes = int((shift_end - shift_start).total_seconds() / 60)
+
+                # Calculate minutes worked so far
+                current_minutes = int(current_hour) * 60
+                shift_start_minutes = shift_start.hour * 60 + shift_start.minute
+                minutes_worked = max(0, current_minutes - shift_start_minutes)
+
                 breaks = person.get('finishedCount', 0)
-                result.append(f"{person['IDname']} {person['name']} | Shift: {shift} | Breaks taken: {breaks}")
+                result.append(
+                    f"{person.get('IDname')} {person.get('name')} | Shift: {person.get('Shift_Start_Time')} - {person.get('Shift_End_Time')} | "
+                    f"Worked: {minutes_worked}min | Total: {shift_length_minutes}min | Breaks: {breaks}"
+                )
+
             return "\n".join(result) or "None"
 
         def format_traffic(data):
             return "\n".join([f"{entry['time']}: {entry['status']}" for entry in passenger_data])
 
         prompt = (
-        f"You are an AI shift scheduling assistant for an airport.\n\n"
-        f"The current hour is {current_hour}.\n\n"
-        f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
-        f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
-        f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
-        "You must assign break times to staff currently on duty, following these rules:\n\n"
+            f"You are an AI shift scheduling assistant for an airport.\n\n"
+            f"The current hour is {current_hour}.\n\n"
+            f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
+            f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
+            f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
 
-        "1️⃣ Break Eligibility:\n"
-        "- Staff with shifts under 8h 20min (500 minutes) get 1 break.\n"
-        "- Staff with shifts of 8h 20min or more get 2 breaks.\n"
-        "- Staff must receive their first break before 4h 30min into their shift.\n\n"
+            "You must assign break times to staff currently on duty, following these rules:\n\n"
 
-        "2️⃣ Minimum On Duty:\n"
-        "- Always try to keep at least 93 people on duty.\n"
-        "- If someone is about to exceed their 4.5-hour limit without a break, allow on-duty count to drop to 74 **only to let that person take their break**.\n\n"
+            "1️⃣ Break Eligibility:\n"
+            "- Staff with total shift length under 500 minutes get 1 break.\n"
+            "- Staff with shift length of 500+ minutes get 2 breaks.\n"
+            "- Staff must receive their first break before 270 minutes (4.5 hours) of work.\n\n"
 
-        "3️⃣ Coverage Preference:\n"
-        "- When someone is assigned a break, try to keep critical roles covered.\n"
-        "- Prefer coverage from someone who just started their shift or who has just returned from a break.\n\n"
+            "2️⃣ Minimum On Duty:\n"
+            "- Always maintain at least 93 people on duty.\n"
+            "- If someone is about to exceed 270 minutes without a break, allow duty count to drop to 74 to let them take their break.\n\n"
 
-        "4️⃣ Passenger Traffic:\n"
-        "- Avoid scheduling breaks during red (busy) traffic hours.\n"
-        "- Prefer green periods when assigning breaks.\n\n"
+            "3️⃣ Coverage Preference:\n"
+            "- Prefer sending someone who is eligible but ensures coverage by staff who just started or just came back from a break.\n\n"
 
-        "Return only people eligible for breaks. Output **strictly** in this format:\n"
-        "(ID) (BreakTime)\n"
-        "Example:\n100003 07:00\n\n"
-        "If no one qualifies, return nothing."
-)
+            "4️⃣ Passenger Traffic:\n"
+            "- Avoid assigning breaks during RED traffic hours.\n"
+            "- Prefer GREEN periods for breaks.\n\n"
+
+            "Return only those who should go on break now.\n"
+            "Format strictly as:\n(ID) (BreakTime)\nExample:\n100003 07:00\n\n"
+            "If no one qualifies, return nothing."
+        )
 
         response = client.chat.completions.create(
             model="o4-mini",
