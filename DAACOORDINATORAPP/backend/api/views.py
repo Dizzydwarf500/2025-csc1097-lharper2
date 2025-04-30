@@ -196,31 +196,27 @@ def analyze_shifts(request):
     f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
     f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
 
-    "You must assign the *first break time* for eligible staff currently on duty, using the following rules:\n\n"
+    "📋 Your job is to assign a first break time to some of the staff currently on duty.\n\n"
 
-    "1-Break Eligibility:\n"
-    "- Shifts under 8h 20min (500 minutes) get 1 break.\n"
-    "- Shifts of 8h 20min or more get 2 breaks.\n"
-    "- Staff must receive their *first* break within the 'Ideal Break Window' shown per person.\n"
-    "- If staff are already beyond 4.5 hours (270 min) worked and have not taken a break, they must be scheduled immediately.\n\n"
+    "⏳ All staff below have an 'Ideal Break Window' listed. Choose a break time **within that window**, even if they just started their shift.\n"
+    "- You may schedule the break for a future hour (e.g., someone who started at 03:50 could be scheduled for break at 06:00).\n"
+    "- Aim to assign at least 10 staff their first break.\n\n"
 
-    "2-Minimum On Duty:\n"
-    "- Always try to keep at least 93 staff on duty.\n"
-    "- If someone must go on break to avoid exceeding 4.5 hours worked, allow on-duty count to temporarily drop to 74.\n\n"
+    "🛑 Do not check how long someone has worked. Just assign break times **inside their ideal window**.\n"
+    "- Avoid red (busy) traffic periods.\n"
+    "- Prefer green (quiet) traffic periods.\n"
+    "- Try to balance load so that at least 93 people remain on duty, unless someone must go urgently.\n\n"
 
-    "3-Passenger Traffic:\n"
-    "- Avoid assigning breaks during red (busy) traffic periods.\n"
-    "- Prefer green (quiet) traffic periods for breaks.\n\n"
+    "🧠 Use smart logic to spread out breaks evenly across the available green traffic hours.\n\n"
 
-    "💡 Your job is to **predict and assign** the best break time for each person *now*, even if that break is scheduled for a future hour or hours.\n"
-    "Use the 'Ideal Break Window' provided in the staff list to choose a time that is optimal based on workload and traffic.\n\n"
-
-    "⏱️ Output one line per staff member you are assigning a break to, strictly in this format:\n"
+    "🧾 Return only the people you've assigned a break to, in this exact format:\n"
     "(ID) (BreakTime)\n"
-    "Example:\n100003 06:00\n\n"
+    "Example:\n100354 06:00\n\n"
 
-    "If no one is eligible for a break at any future point, return exactly:\nNo one qualifies for a break at this time."
+    "If somehow no break times could be assigned, return this exact sentence:\n"
+    "No one qualifies for a break at this time."
 )
+
 
 
 
