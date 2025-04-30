@@ -163,7 +163,7 @@ def analyze_shifts(request):
             f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
             "Assign break start times to staff currently on duty. Do NOT assign breaks during red traffic periods. "
             "Only assign breaks to staff eligible for one based on the number of breaks taken and shift duration. "
-            "Output strictly as:\n(IDName) (BreakTime)\nExample:\n123John 12:15\n\n"
+            "Output strictly as:\n(ID) (BreakTime)\nExample:\n100003 12:15\n\n"
             "If someone is not eligible, exclude them from the list."
         )
 
@@ -186,8 +186,8 @@ def analyze_shifts(request):
         for line in lines:
             parts = line.strip().split()
             if len(parts) == 2:
-                idname, break_time = parts
-                schedule[idname] = break_time
+                staff_id, break_time = parts
+                schedule[staff_id] = break_time
 
         return Response(schedule)
 
