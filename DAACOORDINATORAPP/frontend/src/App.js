@@ -22,7 +22,7 @@ function App() {
   const [isAutomated, setIsAutomated] = useState(false);
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
   const [automationLog, setAutomationLog] = useState('');
-
+  const lastGPTHourRunRef = useRef(null);
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
     if (!productToMove) return;
@@ -182,62 +182,25 @@ function App() {
     automationTick.current = () => {
       if (!isAutomated || !testTime) return;
 
-      const currentHour = testTime.hours;
-      const currentMinute = testTime.minutes;
-      const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+      const currentTimeStr = `${String(testTime.hours).padStart(2, '0')}:${String(testTime.minutes).padStart(2, '0')}`;
+      const currentTimeTotal = testTime.hours * 60 + testTime.minutes;
 
-      // 1. Import from Rollcall to OnDuty
-      const activeRollcall = getActiveRollcallProducts();
-      if (activeRollcall.length > 0) {
-        setOnDutyProducts(prev => [
-          ...prev,
-          ...activeRollcall.filter(p => !prev.some(existing => existing.id === p.id))
-        ]);
-      }
-
-      // 2. GPT analysis every hour
-      if (currentMinute === 0) {
-        const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
-        console.log(logHeader);
-        setAutomationLog(logHeader);
-
-        axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
-          onDuty: onDutyProducts,
-          onBreak: onBreakProducts,
-          passengerData: require('./passengerData').default,
-          currentHour,
-        })
-          .then((response) => {
-            breakSchedule.current = response.data;
-
-            const logText = `✅ GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
-            console.log(logText);
-            setAutomationLog(`${logHeader}\n${logText}`);
-          })
-          .catch((err) => {
-            const errorLog = `❌ GPT automation error: ${err.message}`;
-            console.error(errorLog);
-            setAutomationLog(`${logHeader}\n${errorLog}`);
-          });
-      }
-
-
-      // 3. Move to Break if time matches
-      setOnDutyProducts(prev => {
+      // 🟡 Step 1: Move from On Duty to On Break if it's their scheduled break time
+      setOnDutyProducts((prev) => {
         const toBreak = [];
         const remaining = [];
 
-        prev.forEach(person => {
+        prev.forEach((person) => {
           const idName = `${person.id}${person.name}`;
           if (breakSchedule.current[idName] === currentTimeStr) {
             const duration = determineBreakDuration(person);
-            const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+            const breakEndTime = calculateBreakEndTime(testTime, duration);
 
             toBreak.push({
               ...person,
-              breakEndTime,
               breakStartTestTime: { ...testTime },
-              breakDuration: duration * 60
+              breakEndTime,
+              breakDuration: duration * 60,
             });
           } else {
             remaining.push(person);
@@ -245,13 +208,13 @@ function App() {
         });
 
         if (toBreak.length > 0) {
-          setOnBreakProducts(prev => [...prev, ...toBreak]);
+          setOnBreakProducts((prevBreak) => [...prevBreak, ...toBreak]);
         }
 
         return remaining;
       });
 
-      // 4. Move to Finished when break ends
+      // 🔵 Step 2: Move from On Break to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
         const nowFinished = [];
@@ -265,7 +228,6 @@ function App() {
           }
 
           const breakEndTotal = breakEndTime.hours * 60 + breakEndTime.minutes;
-          const currentTimeTotal = testTime.hours * 60 + testTime.minutes;
 
           if (currentTimeTotal >= breakEndTotal) {
             nowFinished.push(person);
@@ -281,7 +243,8 @@ function App() {
         return stillOnBreak;
       });
     };
-  }, [onDutyProducts, onBreakProducts, testTime, isAutomated, rollcallProducts]);
+  }, [isAutomated, testTime, breakSchedule.current]);
+
 
   // ✅ Run interval every second using latest automationTick ref
   useEffect(() => {
@@ -293,7 +256,7 @@ function App() {
   }, [isAutomated]);
 
 
-  const calculateBreakEndTime = (person, time, duration) => {
+  const calculateBreakEndTime = (time, duration) => {
     let endMinutes = time.minutes + duration;
     let endHours = time.hours;
 
@@ -304,6 +267,7 @@ function App() {
 
     return { hours: endHours % 24, minutes: endMinutes };
   };
+
   const determineBreakDuration = (person) => {
     const shiftStart = new Date(`1970-01-01T${person.Shift_Start_Time}Z`);
     let shiftEnd = new Date(`1970-01-01T${person.Shift_End_Time}Z`);
