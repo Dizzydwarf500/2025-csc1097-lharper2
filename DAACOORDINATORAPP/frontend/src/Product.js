@@ -3,6 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './ProductList.css';
 import { FaSort, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { useEffect } from 'react';
 const ItemTypes = {
   PRODUCT: 'product',
 
@@ -108,7 +109,6 @@ const calculateAdditionalMinutes = (selectedTime) => {
   const differenceInMinutes = Math.round((selectedDate - now) / (1000 * 60));
   return differenceInMinutes > 0 ? differenceInMinutes : 0;
 };
-
 // BreakPopup Component with Time Selection
 const BreakPopup = ({ message, onClose, onConfirm, testTime, isFinish, cancelClickedRef }) => {
   const timeOptions = generateTimeOptions(testTime);
@@ -425,12 +425,50 @@ const ProductList = ({
   FastTrackProducts,
   QMProducts,
   SweepProducts,
-  testTime
+  testTime,
+  isAutomated
 }) => {
   const [showBreakPopup, setShowBreakPopup] = useState(false);
   const [breakPopupMessage, setBreakPopupMessage] = useState('');
   const [currentProduct, setCurrentProduct] = useState(null);
   const cancelClickedRef = useRef(false);
+  useEffect(() => {
+    if (!isAutomated || !testTime) return;
+
+    setOnBreakProducts((prev) => {
+      const stillOnBreak = [];
+      const nowFinished = [];
+
+      prev.forEach((person) => {
+        if (!person.breakStartTestTime || person.breakDuration == null) {
+          stillOnBreak.push(person);
+          return;
+        }
+
+        const startSec = person.breakStartTestTime.hours * 3600 + person.breakStartTestTime.minutes * 60;
+        const currentSec = testTime.hours * 3600 + testTime.minutes * 60;
+        const elapsed = currentSec - startSec;
+        const remaining = person.breakDuration - elapsed;
+
+        if (remaining <= 0 && remaining > -60) {
+          nowFinished.push(person);
+        } else {
+          stillOnBreak.push(person);
+        }
+      });
+
+      if (nowFinished.length > 0) {
+        setFinishedProducts((prevFinished) =>
+          [...prevFinished, ...nowFinished.map(p => ({
+            ...p,
+            finishedCount: (p.finishedCount || 0) + 1
+          }))].sort((a, b) => a.name.localeCompare(b.name))
+        );
+      }
+
+      return stillOnBreak;
+    });
+  }, [isAutomated, testTime, setFinishedProducts, setOnBreakProducts]);
   const triggerBreakPopup = (product) => {
     setCurrentProduct(product);
 

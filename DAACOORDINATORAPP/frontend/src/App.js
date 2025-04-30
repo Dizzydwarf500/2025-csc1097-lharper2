@@ -356,6 +356,7 @@ function App() {
             QMProducts={QMProducts}
             SweepProducts={SweepProducts}
             testTime={testTime}
+            isAutomated={isAutomated}
           />
 
           <AIHelper
