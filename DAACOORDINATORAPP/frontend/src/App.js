@@ -25,6 +25,7 @@ function App() {
   const lastGPTHourRunRef = useRef(null);
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
+  const testTimeRef = useRef(testTime);
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
     if (!productToMove) return;
@@ -83,6 +84,9 @@ function App() {
       return { hours: newHours, minutes: newMinutes };
     });
   };
+  useEffect(() => {
+    testTimeRef.current = testTime;
+  }, [testTime]);
 
   const safeOnDutyProducts = onDutyProducts.map((p) => ({
     ...p,
@@ -195,11 +199,12 @@ function App() {
 
   useEffect(() => {
     automationTick.current = () => {
-      if (!isAutomated || !testTime) return;
+      if (!isAutomated || !testTimeRef.current) return;
 
-      const currentHour = testTime.hours;
-      const currentMinute = testTime.minutes;
+      const currentHour = testTimeRef.current.hours;
+      const currentMinute = testTimeRef.current.minutes;
       const currentTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+
 
       // 1. Import from Rollcall to OnDuty
       const activeRollcall = getActiveRollcallProducts();
