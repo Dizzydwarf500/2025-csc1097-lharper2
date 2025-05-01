@@ -240,16 +240,21 @@ function App() {
         })
 
           .then((response) => {
-            breakSchedule.current = response.data;
+            Object.entries(response.data).forEach(([id, time]) => {
+              if (!breakSchedule.current[id]) {
+                breakSchedule.current[id] = time;
+              }
+            });
+
             lastGPTHourRunRef.current = currentHour;
 
-            // Merge the newly assigned breaks into permanent storage
             setAssignedBreaks(prev => ({ ...prev, ...response.data }));
 
             const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
             console.log(logText);
             setAutomationLog(`${logHeader}\n${logText}`);
           })
+
 
           .catch((err) => {
             const errorLog = `GPT automation error: ${err.message}`;
