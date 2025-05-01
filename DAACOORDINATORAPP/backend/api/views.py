@@ -202,7 +202,7 @@ def analyze_shifts(request):
 
                 "⏳ Each staff member below has an 'Ideal Break Window' listed for their **first break**.\n"
                 "- Assign the first break **somewhere inside the Ideal Break Window**, even if the current time is earlier than the window. It's okay to schedule breaks in advance.\n"
-                "- The **second break** must be **at least 2 hours after the first break** and **before the shift ends**.\n"
+                "- The second break must be at least 2 hours after the first break and must **end at least 40 minutes before the shift ends**.\n"
                 "- The second break does **not** need to be in the Ideal Break Window.\n"
                 "- You may schedule breaks in the future (e.g., someone starting at 03:50 can be scheduled for 06:00).\n"
                 "- Assign break times to **every single person** listed. Do not skip anyone.\n\n"
