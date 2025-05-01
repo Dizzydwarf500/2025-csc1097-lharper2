@@ -476,12 +476,6 @@ function App() {
             <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
             <button onClick={() => startAutoIncrement(500)}>⚡ 2x Speed</button>
             <button onClick={stopAutoIncrement}>🛑 Stop</button>
-            <button
-              style={{ backgroundColor: isAutomated ? '#d44' : '#4caf50', color: 'white' }}
-              onClick={() => setIsAutomated(prev => !prev)}
-            >
-              {isAutomated ? '🛑 Stop Automation' : '🤖 Automate'}
-            </button>
 
           </div>
 

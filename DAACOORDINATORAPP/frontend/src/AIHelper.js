@@ -145,14 +145,16 @@ const AIHelper = ({
                 finished={finishedProducts}
               />
             </div>
-            <div className="automation-toggle">
+            <div className="automation-container">
               <button
+                className={`automation-toggle ${isAutomated ? 'running' : ''}`}
                 onClick={() => setIsAutomated(prev => !prev)}
-                style={{ marginTop: '10px', padding: '8px 12px', backgroundColor: isAutomated ? '#d44' : '#4caf50', color: 'white', border: 'none', borderRadius: '5px' }}
               >
-                {isAutomated ? '🛑 Stop Automation' : '🤖 Automate'}
+                <span className="gear-icon">⚙️</span>
+                {isAutomated ? 'Stop Automation' : 'Start Automation'}
               </button>
             </div>
+
           </div>
         </div>
       )}

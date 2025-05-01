@@ -88,9 +88,55 @@
   margin-top: 20px;
   font-size: 14px;
 }
+
 .assistant-wrapper {
   width: 100%;
   max-width: 300px;
-  margin-left: 0; 
+  margin-left: 0;
 }
 
+.automation-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.automation-toggle {
+  background-color: #007bff;
+  /* Bootstrap Blue */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.automation-toggle:hover {
+  background-color: #0056b3;
+}
+
+.gear-icon {
+  font-size: 18px;
+  display: inline-block;
+}
+
+.automation-toggle.running .gear-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
