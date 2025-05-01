@@ -500,6 +500,7 @@ const PopoutMenu = ({
       <div
         className={`popout-menu ${isOpen ? 'open' : ''} ${isStaffExtended || isVIPExtended || isAutoPassExtended || isFastTrackExtended || isSweepExtended || isQMExtended ? 'extended' : ''
           }`}
+
       >
         <div className="popout-tab" onClick={toggleMenu}>
           <div className="tab-arrow">{isOpen ? '→' : '←'}</div>
@@ -699,7 +700,6 @@ const PopoutMenu = ({
             </button>
           </div>
         </div>
-
       )}
       {showNewRollcallPopup && (
         <div style={{
@@ -718,7 +718,6 @@ const PopoutMenu = ({
           <div>{rollcallNotificationCount} staff ready to check in</div>
         </div>
       )}
-
     </>
 
   );
