@@ -76,13 +76,11 @@ function App() {
     const newZoom = zoomLevel === 1 ? 2 : 1;
     setZoomLevel(newZoom);
 
-    const wrapper = document.getElementById('zoom-wrapper');
-    if (wrapper) {
-      wrapper.style.transition = 'transform 0.4s ease'; // just in case
-      wrapper.style.transform = `scale(${newZoom})`;
-      wrapper.style.transformOrigin = 'top left'; // anchor top-left
-    }
+    // Smooth transition
+    document.body.style.transition = 'zoom 0.4s ease';
+    document.body.style.zoom = newZoom;
   };
+
 
 
   const incrementTestTime = () => {
