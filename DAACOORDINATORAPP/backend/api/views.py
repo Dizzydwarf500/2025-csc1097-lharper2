@@ -206,10 +206,9 @@ def analyze_shifts(request):
                 "- The second break does **not** need to be in the Ideal Break Window.\n"
                 "- You may schedule breaks in the future (e.g., someone starting at 03:50 can be scheduled for 06:00).\n"
                 "- Assign break times to **every single person** listed. Do not skip anyone.\n\n"
-
-                "🛑 Do not check how long someone has worked. Just assign breaks as instructed.\n"
                 "- Avoid scheduling more than 20 staff at the same break time. Try to stagger breaks.\n"
-                "- Try to keep at least 93 staff on duty, unless someone must go urgently.\n\n"
+                "- Aim to keep at least 93 staff on duty at all times. However, it's okay to temporarily dip as low as 74 if needed to schedule breaks, especially early in the shift. Prioritize staggering and coverage.\n"
+                "🛑 Do not check how long someone has worked. Just assign breaks as instructed.\n\n"
 
                 "🧠 Use smart logic to spread out breaks across the available green traffic hours.\n\n"
 
