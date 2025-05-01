@@ -207,6 +207,9 @@ def analyze_shifts(request):
                 "- You may schedule breaks in the future (e.g., someone starting at 03:50 can be scheduled for 06:00).\n"
                 "- Assign break times to **every single person** listed. Do not skip anyone.\n\n"
                 "- Avoid scheduling more than 20 staff at the same break time. Try to stagger breaks.\n"
+                "+ ⚠️ Distribute breaks across available green hours. Do not schedule more than **20 people per time slot**.\n"
+                "+ If there are 100 people, use at least 5 different break start times (e.g., 06:00, 06:10, 06:20...).\n"
+                "+ Stagger the breaks in 10-minute intervals where possible to keep distribution even.\n"
                 "- Aim to keep at least 93 staff on duty at all times. However, it's okay to temporarily dip as low as 74 if needed to schedule breaks, especially early in the shift. Prioritize staggering and coverage.\n"
                 "🛑 Do not check how long someone has worked. Just assign breaks as instructed.\n\n"
 
