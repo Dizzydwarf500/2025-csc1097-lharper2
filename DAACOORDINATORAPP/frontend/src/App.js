@@ -258,7 +258,12 @@ function App() {
               scheduledHour === currentHour &&
               scheduledMinute === currentMinute
             ) {
-              const duration = determineBreakDuration(person);
+              const safePerson = {
+                ...person,
+                finishedCount: person.finishedCount || 0,
+              };
+
+              const duration = determineBreakDuration(safePerson);
               const breakEndTime = calculateBreakEndTime(person, testTime, duration);
 
               const updatedPerson = {
