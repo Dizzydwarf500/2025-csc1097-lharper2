@@ -275,10 +275,10 @@ function App() {
           const scheduledTime = breakSchedule.current[person.IDname];
           if (scheduledTime) {
             const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
-            if (
-              scheduledHour === currentHour &&
-              scheduledMinute === currentMinute
-            ) {
+            const currentTotal = currentHour * 60 + currentMinute;
+            const scheduledTotal = scheduledHour * 60 + scheduledMinute;
+
+            if (scheduledTotal <= currentTotal) {
               const safePerson = {
                 ...person,
                 finishedCount: person.finishedCount || 0,
@@ -313,9 +313,6 @@ function App() {
         return remaining;
       });
 
-
-
-      // 4. Move to Finished when break ends
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
