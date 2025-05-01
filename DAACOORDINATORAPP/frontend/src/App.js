@@ -15,7 +15,7 @@ function App() {
   const [FastTrackProducts, setFastTrackProducts] = useState([]);
   const [QMProducts, setQMProducts] = useState([]);
   const [SweepProducts, setSweepProducts] = useState([]);
-  const [testTime, setTestTime] = useState([]);
+  const [testTime, setTestTime] = useState({ hours: 3, minutes: 40 });
   const [onBreakProducts, setOnBreakProducts] = useState([]);
   const [finishedProducts, setFinishedProducts] = useState([]);
   const autoIncrementRef = useRef(null);
