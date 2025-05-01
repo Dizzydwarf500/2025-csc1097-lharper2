@@ -29,7 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "https://two025-csc1097-lharper2.onrender.com",
     "two025-csc1097-lharper2.onrender.com",
-    "http://two025-csc1097-lharper2.onrender.com"
+    "http://two025-csc1097-lharper2.onrender.com",
+    "127.0.0.1"
 ]
 
 
