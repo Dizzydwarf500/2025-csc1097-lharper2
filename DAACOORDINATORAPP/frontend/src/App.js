@@ -365,7 +365,10 @@ function App() {
 
         prev.forEach((person) => {
           const [endHour, endMinute] = person.Shift_End_Time.split(':').map(Number);
-          if (endHour === currentHour && endMinute === currentMinute) {
+          const shiftEndMinutes = endHour * 60 + endMinute;
+          const currentMinutes = currentHour * 60 + currentMinute;
+
+          if (shiftEndMinutes <= currentMinutes) {
             // Remove them completely (no On Break, no Finished)
             justRemoved.push(person.name);
           } else {
