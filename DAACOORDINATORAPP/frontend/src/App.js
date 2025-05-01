@@ -230,7 +230,7 @@ function App() {
         const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
         console.log(logHeader);
         setAutomationLog(logHeader);
-        const unassignedStaff = onDutyRef.current.filter(person => !assignedBreaks[person.id]);
+        const unassignedStaff = onDutyRef.current.filter(person => !assignedBreaks[person.IDname]);
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
           onDuty: unassignedStaff,
