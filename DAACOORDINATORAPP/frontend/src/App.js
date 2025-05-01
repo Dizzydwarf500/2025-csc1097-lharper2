@@ -269,41 +269,69 @@ function App() {
 
 
       // 3. Move to Break if time matches
-      // 3b. Move to Finished if shift has ended (0h 0m remaining)
       setOnDutyProducts(prev => {
-        const toFinish = [];
-        const stillOnDuty = [];
+        const toBreak = [];
+        const remaining = [];
+        const newBreakLogs = [];
 
         prev.forEach(person => {
-          const [endHour, endMinute] = person.Shift_End_Time.split(':').map(Number);
-          const shiftEndTotal = endHour * 60 + endMinute;
-          const nowTotal = currentHour * 60 + currentMinute;
+          const finishedCount = person.finishedCount || 0;
 
-          // Handle overnight shifts
-          const shiftStart = new Date(`1970-01-01T${person.Shift_Start_Time}Z`);
-          const shiftEnd = new Date(`1970-01-01T${person.Shift_End_Time}Z`);
-          if (shiftEnd < shiftStart) {
-            if (nowTotal < shiftEndTotal) {
-              // add 24 hours to end time
-              shiftEndTotal += 1440;
+          // Skip if already had two breaks
+          if (finishedCount >= 2) {
+            remaining.push(person);
+            return;
+          }
+
+          const breaks = breakSchedule.current[person.IDname];
+          if (!breaks) {
+            remaining.push(person);
+            return;
+          }
+
+          const nextBreakType = finishedCount === 0 ? "first" : "second";
+          const scheduledTime = breaks[nextBreakType];
+
+          if (scheduledTime) {
+            const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
+            const currentTotal = currentHour * 60 + currentMinute;
+            const scheduledTotal = scheduledHour * 60 + scheduledMinute;
+
+            if (scheduledTotal <= currentTotal) {
+              const safePerson = {
+                ...person,
+                finishedCount,
+              };
+
+              const duration = determineBreakDuration(safePerson);
+              const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+
+              const updatedPerson = {
+                ...person,
+                breakEndTime,
+                breakStartTestTime: { ...testTime },
+                breakDuration: duration * 60,
+              };
+
+              toBreak.push(updatedPerson);
+              newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min ${nextBreakType} break at ${currentTimeStr}`);
+              return; // do not push to remaining
             }
           }
 
-          if (nowTotal >= shiftEndTotal) {
-            toFinish.push(person);
-          } else {
-            stillOnDuty.push(person);
-          }
+          // If not ready for break yet, keep them on duty
+          remaining.push(person);
         });
 
-        if (toFinish.length > 0) {
-          setFinishedProducts(prev => [...prev, ...toFinish]);
-          setAutomationLog(prev => `${prev}\n🏁 ${toFinish.map(p => `${p.name} (ID: ${p.IDname})`).join(', ')} auto-finished at end of shift`);
+        if (toBreak.length > 0) {
+          setOnBreakProducts(prev =>
+            [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
+          );
+          setAutomationLog(prev => `${prev}\n${newBreakLogs.join('\n')}`);
         }
 
-        return stillOnDuty;
+        return remaining;
       });
-
 
 
       // 4. Move to Finished when break ends
