@@ -333,7 +333,36 @@ function App() {
         return remaining;
       });
 
+      // 3.5 Auto-finish if shift ends now
+      setOnDutyProducts((prev) => {
+        const remaining = [];
+        const toAutoFinish = [];
 
+        prev.forEach((person) => {
+          const [endHour, endMinute] = person.Shift_End_Time.split(':').map(Number);
+          if (endHour === currentHour && endMinute === currentMinute) {
+            // Trigger auto-finish: move to On Break to handle cleanup logic
+            const autoFinishPerson = {
+              ...person,
+              breakStartTestTime: { ...testTime },
+              breakDuration: 0, // finish immediately
+              finishedCount: (person.finishedCount || 0) + 1,
+            };
+            toAutoFinish.push(autoFinishPerson);
+          } else {
+            remaining.push(person);
+          }
+        });
+
+        if (toAutoFinish.length > 0) {
+          setOnBreakProducts((prevBreak) => [...prevBreak, ...toAutoFinish]);
+          setAutomationLog((prevLog) =>
+            `${prevLog}\n🚪 Auto-finishing: ${toAutoFinish.map(p => p.name).join(', ')}`
+          );
+        }
+
+        return remaining;
+      });
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
