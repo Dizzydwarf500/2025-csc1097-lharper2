@@ -226,7 +226,8 @@ function App() {
         isAfterStart &&
         !hasAlreadyRunThisMinute
       ) {
-        // Run the GPT request
+        lastGPTRunTimeRef.current = currentTimeStr; // Locking tick
+
         console.log(`Sending GPT automation request at ${currentTimeStr}`);
 
         const unassignedStaff = onDutyRef.current.filter(person => {
@@ -248,14 +249,13 @@ function App() {
             });
 
             setAssignedBreaks(prev => ({ ...prev, ...response.data }));
-            lastGPTRunTimeRef.current = currentTimeStr;
-
             console.log(`GPT response received:\n${JSON.stringify(response.data, null, 2)}`);
           })
           .catch((err) => {
             console.error(`GPT automation error: ${err.message}`);
           });
       }
+
 
 
 
