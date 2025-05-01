@@ -122,6 +122,9 @@ class ProductListView(generics.ListAPIView):
         if ENABLE_DATE_FILTER:
             queryset = queryset.filter(Shift_Start_Date="2024-09-15")
 
+        # Exclude staff whose shift ends at 07:00 or 08:00
+        queryset = queryset.exclude(Shift_End_Time=["07:00:00", "08:00:00"])
+
         queryset = queryset.order_by('name', 'Shift_Start_Date')
 
         # Deduplicate by name
@@ -133,6 +136,7 @@ class ProductListView(generics.ListAPIView):
                 seen_names.add(product.name)
 
         return unique_products
+
 
 @csrf_exempt
 @api_view(['POST'])
