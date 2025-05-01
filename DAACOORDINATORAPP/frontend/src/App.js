@@ -474,7 +474,7 @@ function App() {
           </select>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
-            <button onClick={() => startAutoIncrement(667)}>⏩ 1.5x Speed</button>
+            <button onClick={() => startAutoIncrement(750)}>⏩ 1.5x Speed</button>
             <button onClick={stopAutoIncrement}>🛑 Stop</button>
 
           </div>
