@@ -50,3 +50,7 @@ body {
         align-items: stretch;
     }
 }
+
+#zoom-wrapper {
+    transition: transform 0.4s ease;
+}

@@ -25,6 +25,7 @@ function App() {
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
   const testTimeRef = useRef(testTime);
+  const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100%, 2 = 200%
   const [assignedBreaks, setAssignedBreaks] = useState({});
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
@@ -71,6 +72,18 @@ function App() {
         console.error('Error fetching data:', error);
       });
   }, []);
+  const toggleZoom = () => {
+    const newZoom = zoomLevel === 1 ? 2 : 1;
+    setZoomLevel(newZoom);
+
+    const wrapper = document.getElementById('zoom-wrapper');
+    if (wrapper) {
+      wrapper.style.transition = 'transform 0.4s ease'; // just in case
+      wrapper.style.transform = `scale(${newZoom})`;
+      wrapper.style.transformOrigin = 'top left'; // anchor top-left
+    }
+  };
+
 
   const incrementTestTime = () => {
     setTestTime((prev) => {
@@ -444,110 +457,115 @@ function App() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="App">
-        {/* Top Panel */}
-        <div style={{ padding: '10px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <strong>Test Clock:</strong>
-          <select
-            onChange={(e) => {
-              const [h, m] = e.target.value.split(':').map(Number);
-              setTestTime(e.target.value ? { hours: h, minutes: m } : null);
-            }}
-          >
-            <option value="">System Time</option>
-            {Array.from({ length: 24 }).map((_, h) =>
-              Array.from({ length: 60 }).map((_, m) => {
-                const label = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-                return (
-                  <option key={label} value={label}>
-                    {label}
-                  </option>
-                );
-              })
+      <div id="zoom-wrapper">
+        <div className="App">
+          {/* Top Panel */}
+          <div style={{ padding: '10px', background: '#f5f5f5', display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <strong>Test Clock:</strong>
+            <select
+              onChange={(e) => {
+                const [h, m] = e.target.value.split(':').map(Number);
+                setTestTime(e.target.value ? { hours: h, minutes: m } : null);
+              }}
+            >
+              <option value="">System Time</option>
+              {Array.from({ length: 24 }).map((_, h) =>
+                Array.from({ length: 60 }).map((_, m) => {
+                  const label = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                  return (
+                    <option key={label} value={label}>
+                      {label}
+                    </option>
+                  );
+                })
+              )}
+            </select>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
+              <button onClick={() => startAutoIncrement(600)}>⏩ 2x Speed</button>
+              <button onClick={toggleZoom}>
+                🔍 {zoomLevel === 1 ? 'Zoom In' : 'Zoom Out'}
+              </button>
+              <button onClick={stopAutoIncrement}>🛑 Stop</button>
+
+            </div>
+
+            {testTime && (
+              <>
+                <span>Using: {String(testTime.hours).padStart(2, '0')}:{String(testTime.minutes).padStart(2, '0')}</span>
+                <button onClick={() => setTestTime(null)} style={{ marginLeft: '10px' }}>
+                  Reset to System Time
+                </button>
+              </>
             )}
-          </select>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
-            <button onClick={() => startAutoIncrement(600)}>⏩ 2x Speed</button>
-            <button onClick={stopAutoIncrement}>🛑 Stop</button>
+          </div>
+
+          {/* Main FLEX section */}
+          <div className="main-container">
+            <ProductList
+              rollcallProducts={rollcallProducts}
+              onDutyProducts={onDutyProducts}
+              setOnDutyProducts={setOnDutyProducts}
+              onBreakProducts={onBreakProducts}
+              setOnBreakProducts={setOnBreakProducts}
+              finishedProducts={finishedProducts}
+              setFinishedProducts={setFinishedProducts}
+              staffProducts={staffSedProducts}
+              setStaffProducts={setStaffSedProducts}
+              vipProducts={vipProducts}
+              autoPassProducts={autoPassProducts}
+              FastTrackProducts={FastTrackProducts}
+              QMProducts={QMProducts}
+              SweepProducts={SweepProducts}
+              testTime={testTime}
+              isAutomated={isAutomated}
+            />
+
+            <AIHelper
+              onDutyProducts={safeOnDutyProducts}
+              onBreakProducts={onBreakProducts}
+              finishedProducts={finishedProducts}
+              autoPassProducts={autoPassProducts}
+              FastTrackProducts={FastTrackProducts}
+              QMProducts={QMProducts}
+              SweepProducts={SweepProducts}
+              testTime={testTime}
+              isAutomated={isAutomated}
+              setIsAutomated={setIsAutomated}
+              startAutoIncrement={startAutoIncrement}
+              stopAutoIncrement={stopAutoIncrement}
+            />
 
           </div>
 
-          {testTime && (
-            <>
-              <span>Using: {String(testTime.hours).padStart(2, '0')}:{String(testTime.minutes).padStart(2, '0')}</span>
-              <button onClick={() => setTestTime(null)} style={{ marginLeft: '10px' }}>
-                Reset to System Time
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Main FLEX section */}
-        <div className="main-container">
-          <ProductList
+          {/* PopoutMenu (floating) */}
+          <PopoutMenu
             rollcallProducts={rollcallProducts}
-            onDutyProducts={onDutyProducts}
-            setOnDutyProducts={setOnDutyProducts}
-            onBreakProducts={onBreakProducts}
-            setOnBreakProducts={setOnBreakProducts}
-            finishedProducts={finishedProducts}
-            setFinishedProducts={setFinishedProducts}
-            staffProducts={staffSedProducts}
-            setStaffProducts={setStaffSedProducts}
+            moveToOnDuty={moveToOnDuty}
+            staffSedProducts={staffSedProducts}
+            addToStaff={addToStaff}
+            removeFromStaff={removeFromStaff}
             vipProducts={vipProducts}
+            addToVIP={addToVIP}
+            removeFromVIP={removeFromVIP}
             autoPassProducts={autoPassProducts}
+            addToAutoPass={addToAutoPass}
+            removeFromAutoPass={removeFromAutoPass}
             FastTrackProducts={FastTrackProducts}
-            QMProducts={QMProducts}
+            addToFastTrack={addToFastTrack}
             SweepProducts={SweepProducts}
+            addToSweep={addToSweep}
+            QMProducts={QMProducts}
+            addToQM={addToQM}
+            removeFromFastTrack={removeFromFastTrack}
+            removeFromSweep={removeFromSweep}
+            removeFromQM={removeFromQM}
             testTime={testTime}
-            isAutomated={isAutomated}
-          />
-
-          <AIHelper
-            onDutyProducts={safeOnDutyProducts}
-            onBreakProducts={onBreakProducts}
             finishedProducts={finishedProducts}
-            autoPassProducts={autoPassProducts}
-            FastTrackProducts={FastTrackProducts}
-            QMProducts={QMProducts}
-            SweepProducts={SweepProducts}
-            testTime={testTime}
-            isAutomated={isAutomated}
-            setIsAutomated={setIsAutomated}
-            startAutoIncrement={startAutoIncrement}
-            stopAutoIncrement={stopAutoIncrement}
+            onDutyProducts={onDutyProducts}
+            onBreakProducts={onBreakProducts}
           />
-
         </div>
-
-        {/* PopoutMenu (floating) */}
-        <PopoutMenu
-          rollcallProducts={rollcallProducts}
-          moveToOnDuty={moveToOnDuty}
-          staffSedProducts={staffSedProducts}
-          addToStaff={addToStaff}
-          removeFromStaff={removeFromStaff}
-          vipProducts={vipProducts}
-          addToVIP={addToVIP}
-          removeFromVIP={removeFromVIP}
-          autoPassProducts={autoPassProducts}
-          addToAutoPass={addToAutoPass}
-          removeFromAutoPass={removeFromAutoPass}
-          FastTrackProducts={FastTrackProducts}
-          addToFastTrack={addToFastTrack}
-          SweepProducts={SweepProducts}
-          addToSweep={addToSweep}
-          QMProducts={QMProducts}
-          addToQM={addToQM}
-          removeFromFastTrack={removeFromFastTrack}
-          removeFromSweep={removeFromSweep}
-          removeFromQM={removeFromQM}
-          testTime={testTime}
-          finishedProducts={finishedProducts}
-          onDutyProducts={onDutyProducts}
-          onBreakProducts={onBreakProducts}
-        />
       </div>
     </DndProvider>
   );
