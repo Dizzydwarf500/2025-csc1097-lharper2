@@ -190,7 +190,7 @@ function App() {
         if (lastFinished) {
           moveFinishedToOnDuty(lastFinished.id);
         }
-      }, 500);
+      }, 200);
 
       return () => clearTimeout(timer);
     }
@@ -474,7 +474,7 @@ function App() {
           </select>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button onClick={() => startAutoIncrement(1000)}>▶️ 1x Speed</button>
-            <button onClick={() => startAutoIncrement(750)}>⏩ 1.5x Speed</button>
+            <button onClick={() => startAutoIncrement(500)}>⏩ 1.5x Speed</button>
             <button onClick={stopAutoIncrement}>🛑 Stop</button>
 
           </div>
