@@ -196,7 +196,7 @@ def analyze_shifts(request):
     f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
     f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
 
-    "📋 Your job is to assign a first break time to some of the staff currently on duty.\n\n"
+    "📋 Your job is to assign a first break time and second break time to some of the staff currently on duty.\n\n"
 
     "⏳ All staff below have an 'Ideal Break Window' listed. Choose a break time **within that window**, even if they just started their shift.\n"
     "- You may schedule the break for a future hour (e.g., someone who started at 03:50 could be scheduled for break at 06:00).\n"
@@ -204,14 +204,16 @@ def analyze_shifts(request):
 
     "🛑 Do not check how long someone has worked. Just assign break times **inside their ideal window**.\n"
     "- Avoid scheduling more than 20 staff at the same break time. Try to stagger breaks across the window.\n"
-    "- Try to balance load so that at least 93 people remain on duty, unless someone must go urgently.\n\n"
+    "- Try to balance load so that at least 93 people remain on duty, unless someone must go urgently.\n"
+    "- The second break must be at least 2 hours after the first break and before the shift ends.\n"
+    "- If a person only qualifies for one break (e.g. short shift), only return the first time and omit the second.\n\n"
 
 
     "🧠 Use smart logic to spread out breaks evenly across the available green traffic hours.\n\n"
 
     "🧾 Return only the people you've assigned a break to, in this exact format:\n"
-    "(ID) (BreakTime)\n"
-    "Example:\n100354 06:00\n\n"
+    "(ID) (FirstBreakTime) (SecondBreakTime)\n"
+    "Example:\n100354 06:00 10:30\n\n"
 
     "If somehow no break times could be assigned, return this exact sentence:\n"
     "No one qualifies for a break at this time."
@@ -240,9 +242,18 @@ def analyze_shifts(request):
 
         for line in lines:
             parts = line.strip().split()
-            if len(parts) == 2:
-                staff_id, break_time = parts
-                schedule[staff_id] = break_time
+            if len(parts) == 3:
+                staff_id, first_break, second_break = parts
+                schedule[staff_id] = {
+                "first": first_break,
+                "second": second_break
+                }
+            elif len(parts) == 2:
+                staff_id, first_break = parts
+                schedule[staff_id] = {
+                "first": first_break
+            }
+
 
         return Response(schedule)
 

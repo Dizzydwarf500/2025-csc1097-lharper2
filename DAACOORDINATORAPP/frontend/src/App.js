@@ -230,7 +230,10 @@ function App() {
         const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
         console.log(logHeader);
         setAutomationLog(logHeader);
-        const unassignedStaff = onDutyRef.current.filter(person => !assignedBreaks[person.IDname]);
+        const unassignedStaff = onDutyRef.current.filter(person => {
+          const breaks = assignedBreaks[person.IDname];
+          return !breaks || (person.finishedCount === 0 && !breaks.second);
+        });        
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
           onDuty: unassignedStaff,
@@ -272,7 +275,23 @@ function App() {
         const newBreakLogs = [];
 
         prev.forEach(person => {
-          const scheduledTime = breakSchedule.current[person.IDname];
+          const finishedCount = person.finishedCount || 0;
+
+          // Skip if already had two breaks
+          if (finishedCount >= 2) {
+            remaining.push(person);
+            return;
+          }
+
+          const breaks = breakSchedule.current[person.IDname];
+          if (!breaks) {
+            remaining.push(person);
+            return;
+          }
+
+          const nextBreakType = finishedCount === 0 ? "first" : "second";
+          const scheduledTime = breaks[nextBreakType];
+
           if (scheduledTime) {
             const [scheduledHour, scheduledMinute] = scheduledTime.split(':').map(Number);
             const currentTotal = currentHour * 60 + currentMinute;
@@ -281,7 +300,7 @@ function App() {
             if (scheduledTotal <= currentTotal) {
               const safePerson = {
                 ...person,
-                finishedCount: person.finishedCount || 0,
+                finishedCount,
               };
 
               const duration = determineBreakDuration(safePerson);
@@ -295,10 +314,12 @@ function App() {
               };
 
               toBreak.push(updatedPerson);
-              newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min break at ${currentTimeStr}`);
-              return;
+              newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min ${nextBreakType} break at ${currentTimeStr}`);
+              return; // do not push to remaining
             }
           }
+
+          // If not ready for break yet, keep them on duty
           remaining.push(person);
         });
 
@@ -306,12 +327,12 @@ function App() {
           setOnBreakProducts(prev =>
             [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
           );
-          // Append new break log lines
           setAutomationLog(prev => `${prev}\n${newBreakLogs.join('\n')}`);
         }
 
         return remaining;
       });
+
 
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
