@@ -211,14 +211,17 @@ function App() {
       }
 
       // 2. GPT analysis every hour
+      // 2. GPT analysis every 2 hours starting from 04:00
+      const isEvenHour = currentHour % 2 === 0;
+      const isAfterStart = currentHour >= 4;
+
       if (
         currentMinute === 0 &&
-        currentHour % 2 === 0 &&
+        isEvenHour &&
+        isAfterStart &&
         lastGPTHourRunRef.current !== currentHour
       ) {
-
         const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
-
         console.log(logHeader);
         setAutomationLog(logHeader);
 
@@ -242,6 +245,7 @@ function App() {
             setAutomationLog(`${logHeader}\n${errorLog}`);
           });
       }
+
 
 
       // 3. Move to Break if time matches
