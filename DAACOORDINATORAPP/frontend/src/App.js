@@ -21,7 +21,6 @@ function App() {
   const autoIncrementRef = useRef(null);
   const [isAutomated, setIsAutomated] = useState(false);
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
-  const [automationLog, setAutomationLog] = useState('');
   const lastGPTHourRunRef = useRef(null);
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
@@ -227,9 +226,7 @@ function App() {
         isAfterStart &&
         lastGPTHourRunRef.current !== currentHour
       ) {
-        const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
         console.log(logHeader);
-        setAutomationLog(logHeader);
         const unassignedStaff = onDutyRef.current.filter(person => {
           const breaks = assignedBreaks[person.IDname];
           return !breaks || (person.finishedCount === 0 && !breaks.second);
@@ -253,16 +250,13 @@ function App() {
 
             setAssignedBreaks(prev => ({ ...prev, ...response.data }));
 
-            const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
             console.log(logText);
-            setAutomationLog(`${logHeader}\n${logText}`);
           })
 
 
           .catch((err) => {
             const errorLog = `GPT automation error: ${err.message}`;
             console.error(errorLog);
-            setAutomationLog(`${logHeader}\n${errorLog}`);
           });
       }
 
@@ -356,7 +350,6 @@ function App() {
           setOnBreakProducts(prev =>
             [...prev, ...toBreak].sort((a, b) => a.name.localeCompare(b.name))
           );
-          setAutomationLog(prev => `${prev}\n${newBreakLogs.join('\n')}`);
         }
 
         return remaining;
@@ -377,12 +370,6 @@ function App() {
             remaining.push(person);
           }
         });
-
-        if (justRemoved.length > 0) {
-          setAutomationLog((prevLog) =>
-            `${prevLog}\n🗑 Removed at shift end (${nowTimeStr}): ${justRemoved.join(', ')}`
-          );
-        }
 
         return remaining;
       });
@@ -414,7 +401,6 @@ function App() {
 
         if (nowFinished.length > 0) {
           setFinishedProducts((prevFinished) => [...prevFinished, ...nowFinished]);
-          setAutomationLog(prev => `${prev}\n✅ ${nowFinished.map(p => `${p.name} (ID: ${p.id})`).join(', ')} finished break`);
         }
 
         return stillOnBreak;
@@ -494,13 +480,6 @@ function App() {
             </button>
 
           </div>
-          {automationLog && (
-            <div style={{ background: '#f0f0f0', padding: '10px', marginTop: '5px', whiteSpace: 'pre-wrap' }}>
-              <strong>Automation Log:</strong>
-              <br />
-              {automationLog}
-            </div>
-          )}
 
           {testTime && (
             <>
@@ -542,7 +521,10 @@ function App() {
             QMProducts={QMProducts}
             SweepProducts={SweepProducts}
             testTime={testTime}
+            isAutomated={isAutomated}
+            setIsAutomated={setIsAutomated}
           />
+
         </div>
 
         {/* PopoutMenu (floating) */}

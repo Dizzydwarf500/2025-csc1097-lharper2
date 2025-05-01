@@ -123,7 +123,7 @@ class ProductListView(generics.ListAPIView):
             queryset = queryset.filter(Shift_Start_Date="2024-09-15")
 
         queryset = queryset.order_by('name', 'Shift_Start_Date')
-        queryset = queryset.exclude(Shift_End_Time__in=["07:00:00", "08:00:00", "08:45:00"])
+        queryset = queryset.exclude(Shift_End_Time__in=["07:00:00", "08:00:00", "08:45:00", "07:50:00"])
 
         # Deduplicate by name
         seen_names = set()
