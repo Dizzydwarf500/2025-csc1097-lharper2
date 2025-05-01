@@ -15,6 +15,8 @@ const AIHelper = ({
   testTime,
   isAutomated,
   setIsAutomated,
+  startAutoIncrement,
+  stopAutoIncrement
 }) => {
   const [alerts, setAlerts] = useState([]);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -148,7 +150,17 @@ const AIHelper = ({
             <div className="automation-container">
               <button
                 className={`automation-toggle ${isAutomated ? 'running' : ''}`}
-                onClick={() => setIsAutomated(prev => !prev)}
+                onClick={() => {
+                  setIsAutomated(prev => {
+                    const newState = !prev;
+                    if (newState) {
+                      startAutoIncrement(600);  // 1.5x speed
+                    } else {
+                      stopAutoIncrement();      // Stop clock
+                    }
+                    return newState;
+                  });
+                }}
               >
                 <span className="gear-icon">⚙️</span>
                 {isAutomated ? 'Stop Automation' : 'Start Automation'}
