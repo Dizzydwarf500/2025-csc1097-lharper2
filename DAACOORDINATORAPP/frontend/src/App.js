@@ -298,24 +298,36 @@ function App() {
             const scheduledTotal = scheduledHour * 60 + scheduledMinute;
 
             if (scheduledTotal <= currentTotal) {
-              const safePerson = {
-                ...person,
-                finishedCount,
-              };
+              const shiftEnd = new Date(`1970-01-01T${person.Shift_End_Time}Z`);
+              const shiftStart = new Date(`1970-01-01T${person.Shift_Start_Time}Z`);
+              if (shiftEnd < shiftStart) shiftEnd.setDate(shiftEnd.getDate() + 1);
+              const shiftMinutes = (shiftEnd - shiftStart) / (1000 * 60);
 
-              const duration = determineBreakDuration(safePerson);
-              const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+              // Finish instead of breaking if they've already had 2 breaks or the shift is short
+              const isShortShift = shiftMinutes < 390;
+              const shouldFinish = person.finishedCount === 2 || (person.finishedCount === 1 && isShortShift);
 
-              const updatedPerson = {
-                ...person,
-                breakEndTime,
-                breakStartTestTime: { ...testTime },
-                breakDuration: duration * 60,
-              };
+              if (shouldFinish) {
+                const finishedPerson = {
+                  ...person,
+                  finishedCount: (person.finishedCount || 0) + 1,
+                };
+                setFinishedProducts(prev => [...prev, finishedPerson].sort((a, b) => a.name.localeCompare(b.name)));
+                newBreakLogs.push(`✅ ${person.name} (ID: ${person.IDname}) sent home at ${currentTimeStr}`);
+              } else {
+                const duration = determineBreakDuration(person);
+                const breakEndTime = calculateBreakEndTime(person, testTime, duration);
+                const updatedPerson = {
+                  ...person,
+                  breakEndTime,
+                  breakStartTestTime: { ...testTime },
+                  breakDuration: duration * 60,
+                };
+                toBreak.push(updatedPerson);
+                newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min ${nextBreakType} break at ${currentTimeStr}`);
+              }
 
-              toBreak.push(updatedPerson);
-              newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min ${nextBreakType} break at ${currentTimeStr}`);
-              return; // do not push to remaining
+              return; // Don't keep them on duty
             }
           }
 
@@ -399,7 +411,7 @@ function App() {
     };
   }, [onDutyProducts, onBreakProducts, testTime, isAutomated, rollcallProducts]);
 
-  // ✅ Run interval every second using latest automationTick ref
+  // Run interval every second using latest automationTick ref
   useEffect(() => {
     if (!isAutomated) return;
     const interval = setInterval(() => {
