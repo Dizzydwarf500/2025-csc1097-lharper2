@@ -21,7 +21,7 @@ function App() {
   const autoIncrementRef = useRef(null);
   const [isAutomated, setIsAutomated] = useState(false);
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
-  const lastGPTHourRunRef = useRef(null);
+  const lastGPTRunTimeRef = useRef(null);
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
   const testTimeRef = useRef(testTime);
@@ -219,15 +219,16 @@ function App() {
       // 2. GPT analysis every 2 hours starting from 04:00
       const isEvenHour = currentHour % 2 === 0;
       const isAfterStart = currentHour >= 4;
+      const hasAlreadyRunThisMinute = lastGPTRunTimeRef.current === currentTimeStr;
 
       if (
-        currentMinute === 0 &&
         isEvenHour &&
         isAfterStart &&
-        lastGPTHourRunRef.current !== currentHour
+        !hasAlreadyRunThisMinute
       ) {
-        const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
-        console.log(logHeader);
+        // Run the GPT request
+        console.log(`Sending GPT automation request at ${currentTimeStr}`);
+
         const unassignedStaff = onDutyRef.current.filter(person => {
           const breaks = assignedBreaks[person.IDname];
           return !breaks || (person.finishedCount === 0 && !breaks.second);
@@ -239,7 +240,6 @@ function App() {
           passengerData: require('./passengerData').default,
           currentHour,
         })
-
           .then((response) => {
             Object.entries(response.data).forEach(([id, time]) => {
               if (!breakSchedule.current[id]) {
@@ -247,20 +247,16 @@ function App() {
               }
             });
 
-            lastGPTHourRunRef.current = currentHour;
-
             setAssignedBreaks(prev => ({ ...prev, ...response.data }));
+            lastGPTRunTimeRef.current = currentTimeStr;
 
-            const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
-            console.log(logText);
+            console.log(`GPT response received:\n${JSON.stringify(response.data, null, 2)}`);
           })
-
-
           .catch((err) => {
-            const errorLog = `GPT automation error: ${err.message}`;
-            console.error(errorLog);
+            console.error(`GPT automation error: ${err.message}`);
           });
       }
+
 
 
 
