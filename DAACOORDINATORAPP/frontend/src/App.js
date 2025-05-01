@@ -226,6 +226,7 @@ function App() {
         isAfterStart &&
         lastGPTHourRunRef.current !== currentHour
       ) {
+        const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
         console.log(logHeader);
         const unassignedStaff = onDutyRef.current.filter(person => {
           const breaks = assignedBreaks[person.IDname];
@@ -250,6 +251,7 @@ function App() {
 
             setAssignedBreaks(prev => ({ ...prev, ...response.data }));
 
+            const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
             console.log(logText);
           })
 
@@ -370,6 +372,8 @@ function App() {
             remaining.push(person);
           }
         });
+
+
 
         return remaining;
       });
