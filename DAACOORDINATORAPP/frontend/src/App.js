@@ -332,7 +332,7 @@ function App() {
 
         return remaining;
       });
-
+      // Added this line for finishing breaks
       // 3.5 Auto-finish if shift ends now
       setOnDutyProducts((prev) => {
         const remaining = [];
