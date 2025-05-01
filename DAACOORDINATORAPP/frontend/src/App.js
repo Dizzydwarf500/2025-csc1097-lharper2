@@ -21,7 +21,7 @@ function App() {
   const autoIncrementRef = useRef(null);
   const [isAutomated, setIsAutomated] = useState(false);
   const breakSchedule = useRef({}); // { IDName: "HH:MM" }
-  const lastGPTRunTimeRef = useRef(null);
+  const lastGPTHourRunRef = useRef(null);
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
   const testTimeRef = useRef(testTime);
@@ -219,14 +219,14 @@ function App() {
       // 2. GPT analysis every 2 hours starting from 04:00
       const isEvenHour = currentHour % 2 === 0;
       const isAfterStart = currentHour >= 4;
-      const hasAlreadyRunThisMinute = lastGPTRunTimeRef.current === currentTimeStr;
+
 
       if (
         isEvenHour &&
         isAfterStart &&
-        !hasAlreadyRunThisMinute
+        lastGPTHourRunRef.current !== currentHour
       ) {
-        lastGPTRunTimeRef.current = currentTimeStr; // Locking tick
+        lastGPTHourRunRef.current = currentHour;  // 🔒 Prevent duplicate requests this hour
 
         console.log(`Sending GPT automation request at ${currentTimeStr}`);
 
@@ -255,11 +255,6 @@ function App() {
             console.error(`GPT automation error: ${err.message}`);
           });
       }
-
-
-
-
-
       // 3. Move to Break if time matches
       setOnDutyProducts(prev => {
         const toBreak = [];
