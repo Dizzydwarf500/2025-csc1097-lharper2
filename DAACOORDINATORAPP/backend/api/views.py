@@ -189,35 +189,40 @@ def analyze_shifts(request):
             return "\n".join([f"{entry['time']}: {entry['status']}" for entry in passenger_data])
 
         prompt = (
-    f"You are an AI shift scheduling assistant for an airport.\n\n"
-    f"The current hour is {current_hour}.\n\n"
+f"You are an AI shift scheduling assistant for an airport.\n\n"
+f"The current hour is {current_hour}.\n\n"
 
-    f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
-    f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
-    f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
+f"🟢 On Duty Staff:\n{format_shift_data(on_duty)}\n\n"
+f"🟡 On Break:\n{format_shift_data(on_break)}\n\n"
+f"Passenger traffic status:\n{format_traffic(passenger_data)}\n\n"
 
-    "📋 Your job is to assign a first break time and second break time to some of the staff currently on duty.\n\n"
+"📋 Your job is to assign a first break time to each staff member who has not taken any breaks, "
+"and a second break time to staff who have already taken one break.\n\n"
 
-    "⏳ All staff below have an 'Ideal Break Window' listed. Choose a break time **within that window**, even if they just started their shift.\n"
-    "- You may schedule the break for a future hour (e.g., someone who started at 03:50 could be scheduled for break at 06:00).\n"
-    "- Assign a break time to **every single staff member** currently on duty using their Ideal Break Window. Every person listed must be returned with a valid break time. Do not skip anyone.\n\n"
+"⏳ All staff below have an 'Ideal Break Window' listed. Choose a break time **within that window**, "
+"even if they just started their shift.\n"
+"- You may schedule the break for a future hour (e.g., someone who started at 03:50 could be scheduled for break at 06:00).\n"
+"- Assign break times to **every person** listed using their Ideal Break Window. Do not skip anyone.\n\n"
 
-    "🛑 Do not check how long someone has worked. Just assign break times **inside their ideal window**.\n"
-    "- Avoid scheduling more than 20 staff at the same break time. Try to stagger breaks across the window.\n"
-    "- Try to balance load so that at least 93 people remain on duty, unless someone must go urgently.\n"
-    "- The second break must be at least 2 hours after the first break and before the shift ends.\n"
-    "- If a person only qualifies for one break (e.g. short shift), only return the first time and omit the second.\n\n"
+"🛑 Do not check how long someone has worked. Just assign break times **inside their ideal window**.\n"
+"- Avoid scheduling more than 20 staff at the same break time. Try to stagger breaks across the window.\n"
+"- Try to balance load so that at least 93 people remain on duty, unless someone must go urgently.\n"
+"- If a person has not yet had a break (Breaks: 0), assign only a **first** break.\n"
+"- If they have already had one break (Breaks: 1), assign only a **second** break.\n"
+"- The second break must be **at least 2 hours after the first break** and **before the shift ends**.\n"
+"- If a person has a short shift and only needs one break, assign only the first break.\n\n"
 
+"🧠 Use smart logic to spread out breaks evenly across the available green traffic hours.\n\n"
 
-    "🧠 Use smart logic to spread out breaks evenly across the available green traffic hours.\n\n"
+"🧾 Return only the people you've assigned a break to, in this exact format:\n"
+"(ID) (FirstBreakTime) (SecondBreakTime)\n"
+"Example:\n100354 06:00 10:30\n"
+"If only assigning one break, omit the second:\n100355 06:30\n\n"
 
-    "🧾 Return only the people you've assigned a break to, in this exact format:\n"
-    "(ID) (FirstBreakTime) (SecondBreakTime)\n"
-    "Example:\n100354 06:00 10:30\n\n"
-
-    "If somehow no break times could be assigned, return this exact sentence:\n"
-    "No one qualifies for a break at this time."
+"If somehow no break times could be assigned, return this exact sentence:\n"
+"No one qualifies for a break at this time."
 )
+
 
 
 
