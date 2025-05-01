@@ -201,7 +201,7 @@ def analyze_shifts(request):
                 "📋 Your job is to assign both a **first** and **second** break time to every staff member currently on duty.\n\n"
 
                 "⏳ Each staff member below has an 'Ideal Break Window' listed for their **first break**.\n"
-                "- Choose the **first break** within this window, even if they just started their shift.\n"
+                "- Assign the first break **somewhere inside the Ideal Break Window**, even if the current time is earlier than the window. It's okay to schedule breaks in advance.\n"
                 "- The **second break** must be **at least 2 hours after the first break** and **before the shift ends**.\n"
                 "- The second break does **not** need to be in the Ideal Break Window.\n"
                 "- You may schedule breaks in the future (e.g., someone starting at 03:50 can be scheduled for 06:00).\n"
@@ -220,14 +220,6 @@ def analyze_shifts(request):
                 "If somehow no break times could be assigned, return this exact sentence:\n"
                 "No one qualifies for a break at this time."
             )
-
-
-
-
-
-
-
-
 
         response = client.chat.completions.create(
             model="o4-mini",
