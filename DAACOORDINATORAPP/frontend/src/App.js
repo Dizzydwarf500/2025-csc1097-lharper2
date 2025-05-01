@@ -312,37 +312,37 @@ function App() {
                 let shiftEnd = new Date(`1970-01-01T${person.Shift_End_Time}Z`);
                 if (shiftEnd < shiftStart) shiftEnd.setDate(shiftEnd.getDate() + 1);
                 const shiftMinutes = (shiftEnd - shiftStart) / (1000 * 60);
-              
+
                 const isShortShift = shiftMinutes < 390;
                 const shouldFinish = person.finishedCount === 2 || (person.finishedCount === 1 && isShortShift);
-              
+
                 if (shouldFinish) {
                   // Immediately finish them without putting into On Break
                   const finishedPerson = {
                     ...person,
                     finishedCount: (person.finishedCount || 0) + 1,
                   };
-              
+
                   setFinishedProducts(prev =>
                     [...prev, finishedPerson].sort((a, b) => a.name.localeCompare(b.name))
                   );
-              
+
                   newBreakLogs.push(`✅ ${person.name} (ID: ${person.IDname}) sent home automatically at ${currentTimeStr}`);
                 } else {
                   const duration = determineBreakDuration(person);
                   const breakEndTime = calculateBreakEndTime(person, testTime, duration);
-              
+
                   const updatedPerson = {
                     ...person,
                     breakEndTime,
                     breakStartTestTime: { ...testTime },
                     breakDuration: duration * 60,
                   };
-              
+
                   toBreak.push(updatedPerson);
                   newBreakLogs.push(`🟡 ${person.name} (ID: ${person.IDname}) started ${duration}-min ${nextBreakType} break at ${currentTimeStr}`);
                 }
-              
+
                 return; // Don't push them to remaining
               }
             }
@@ -361,37 +361,32 @@ function App() {
 
         return remaining;
       });
-      // Added this line for finishing breaks
-      // 3.5 Auto-finish if shift ends now
+
+      // 3.5 Remove anyone whose shift just ended
       setOnDutyProducts((prev) => {
         const remaining = [];
-        const toAutoFinish = [];
+        const nowTimeStr = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+        const justRemoved = [];
 
         prev.forEach((person) => {
           const [endHour, endMinute] = person.Shift_End_Time.split(':').map(Number);
           if (endHour === currentHour && endMinute === currentMinute) {
-            // Trigger auto-finish: move to On Break to handle cleanup logic
-            const autoFinishPerson = {
-              ...person,
-              breakStartTestTime: { ...testTime },
-              breakDuration: 0, // finish immediately
-              finishedCount: (person.finishedCount || 0) + 1,
-            };
-            toAutoFinish.push(autoFinishPerson);
+            // Remove them completely (no On Break, no Finished)
+            justRemoved.push(person.name);
           } else {
             remaining.push(person);
           }
         });
 
-        if (toAutoFinish.length > 0) {
-          setOnBreakProducts((prevBreak) => [...prevBreak, ...toAutoFinish]);
+        if (justRemoved.length > 0) {
           setAutomationLog((prevLog) =>
-            `${prevLog}\n🚪 Auto-finishing: ${toAutoFinish.map(p => p.name).join(', ')}`
+            `${prevLog}\n🗑 Removed at shift end (${nowTimeStr}): ${justRemoved.join(', ')}`
           );
         }
 
         return remaining;
       });
+
       // 4. Move to Finished when break ends
       setOnBreakProducts((prevOnBreak) => {
         const stillOnBreak = [];
