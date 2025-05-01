@@ -105,13 +105,19 @@ function App() {
     const productToMove = rollcallProducts.find((p) => p.id === productId);
     if (!productToMove) return;
 
+    const newProduct = {
+      ...productToMove,
+      finishedCount: productToMove.finishedCount || 0, // ← ensure it's 0 if undefined
+    };
+
     setRollcallProducts((prevProducts) => prevProducts.filter((p) => p.id !== productId));
     setOnDutyProducts((prevOnDuty) =>
-      [...prevOnDuty, productToMove].sort((a, b) => a.name.localeCompare(b.name))
+      [...prevOnDuty, newProduct].sort((a, b) => a.name.localeCompare(b.name))
     );
 
-    console.log('Moved to On Duty:', productToMove);
+    console.log('Moved to On Duty:', newProduct);
   };
+
 
   const addToStaff = (product) => {
     if (!staffSedProducts.some((p) => p.id === product.id)) {
