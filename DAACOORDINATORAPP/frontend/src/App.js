@@ -26,6 +26,7 @@ function App() {
   const onDutyRef = useRef(onDutyProducts);
   const onBreakRef = useRef(onBreakProducts);
   const testTimeRef = useRef(testTime);
+  const [assignedBreaks, setAssignedBreaks] = useState({});
   const moveFinishedToOnDuty = useCallback((productId) => {
     const productToMove = finishedProducts.find((p) => p.id === productId);
     if (!productToMove) return;
@@ -229,21 +230,27 @@ function App() {
         const logHeader = `Sending GPT automation request at ${currentTimeStr}`;
         console.log(logHeader);
         setAutomationLog(logHeader);
+        const unassignedStaff = onDutyRef.current.filter(person => !assignedBreaks[person.id]);
 
         axios.post(`${process.env.REACT_APP_API_URL}/api/analyze/`, {
-          onDuty: onDutyRef.current,
+          onDuty: unassignedStaff,
           onBreak: onBreakRef.current,
           passengerData: require('./passengerData').default,
           currentHour,
         })
+
           .then((response) => {
             breakSchedule.current = response.data;
             lastGPTHourRunRef.current = currentHour;
+
+            // Merge the newly assigned breaks into permanent storage
+            setAssignedBreaks(prev => ({ ...prev, ...response.data }));
 
             const logText = `GPT response received:\n${JSON.stringify(response.data, null, 2)}`;
             console.log(logText);
             setAutomationLog(`${logHeader}\n${logText}`);
           })
+
           .catch((err) => {
             const errorLog = `GPT automation error: ${err.message}`;
             console.error(errorLog);
