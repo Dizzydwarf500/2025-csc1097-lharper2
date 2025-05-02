@@ -257,12 +257,6 @@ const PopoutMenu = ({
           <p>
             {product.Shift_Start_Time} - {product.Shift_End_Time}
           </p>
-
-          {product.breakStartTestTime && product.breakDuration != null && (
-            <p style={{ fontWeight: 'bold', color: 'tomato' }}>
-              {getBreakTimeDisplay(testTime, product.breakStartTestTime, product.breakDuration)}
-            </p>
-          )}
           {product.finishedCount > 0 && (
             <div className="checkmarks">
               {Array.from({ length: product.finishedCount }, (_, i) => (
