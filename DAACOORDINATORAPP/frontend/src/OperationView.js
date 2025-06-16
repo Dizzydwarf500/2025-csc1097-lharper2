@@ -8,7 +8,12 @@ const OperationView = ({ onClose }) => {
             <div className="operation-content">
                 <button className="close-btn" onClick={onClose}>X</button>
                 <h1>Operation View</h1>
-                <p>This will be the overlay for new</p>
+                <p>This will be the overlay for new
+                    Important
+                </p>
+                <p>
+                    VIP
+                </p>
             </div>
         </div>
     );
