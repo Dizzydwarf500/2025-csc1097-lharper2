@@ -1,10 +1,10 @@
-// OperationView.js (Updated with React DnD)
+// OperationView.js (Updated with React DnD + Time Left)
 import React from 'react';
 import './OperationView.css';
 import MachineZone from './MachineZone';
 import DraggablePerson from './DraggablePerson';
 
-function OperationView({ onClose, onDuty, assignments, setAssignments }) {
+function OperationView({ onClose, onDuty, assignments, setAssignments, testTime }) {
     const machineNames = [
         'ATRS 13', 'ATRS 12', 'ATRS 11', 'ATRS 10', 'ATRS 9',
         'C3 8', 'C3 7', 'C3 6', 'C3 5', 'C3 4', 'C3 3', 'C3 2', 'C3 1'
@@ -40,6 +40,7 @@ function OperationView({ onClose, onDuty, assignments, setAssignments }) {
                             machine={machine}
                             assigned={assignments[machine] || []}
                             moveToMachine={moveToMachine}
+                            testTime={testTime}
                         />
                     ))}
                 </div>
