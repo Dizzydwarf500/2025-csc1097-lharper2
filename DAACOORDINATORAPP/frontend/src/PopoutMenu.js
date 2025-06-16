@@ -503,7 +503,7 @@ const PopoutMenu = ({
           <h2>Actions and Positions</h2>
           <ul>
             <li onClick={toggleRollcallPopup}>
-              Rollca
+              Rollcalling
               {rollcallNotificationCount > 0 && (
                 <span style={{
                   background: 'red',
@@ -511,7 +511,7 @@ const PopoutMenu = ({
                   borderRadius: '50%',
                   padding: '2px 6px',
                   marginLeft: '8px',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   fontWeight: 'bold',
                 }}>
                   {rollcallNotificationCount}
