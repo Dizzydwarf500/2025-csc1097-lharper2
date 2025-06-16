@@ -429,6 +429,10 @@ const ProductList = ({
   testTime,
   isAutomated
 }) => {
+  const [machineAssignments, setMachineAssignments] = useState({
+    'C3 Machine 1': [],
+    'C3 Machine 2': [],
+  });
   const [showOperationView, setShowOperationView] = useState(false);
   const [showBreakPopup, setShowBreakPopup] = useState(false);
   const [breakPopupMessage, setBreakPopupMessage] = useState('');
@@ -662,7 +666,11 @@ const ProductList = ({
       </button>
 
       {showOperationView && (
-        <OperationView onClose={() => setShowOperationView(false)} />
+        <OperationView onClose={() => setShowOperationView(false)}
+          onDuty={onDutyProducts}
+          assignments={machineAssignments}
+          setAssignments={setMachineAssignments}
+        />
       )}
     </div>
   );

@@ -36,3 +36,46 @@
     height: 32px;
     cursor: pointer;
 }
+
+.operation-columns {
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.on-duty-column,
+.machines-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.draggable-person {
+    background: white;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: grab;
+}
+
+.machine-zone {
+    background: #195892;
+    padding: 16px;
+    min-height: 120px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.machine-zone.hovered {
+    background: #2376c1;
+}
+
+.assigned-person {
+    background: white;
+    color: black;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 5px;
+}
