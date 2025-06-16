@@ -518,12 +518,12 @@ const PopoutMenu = ({
                 </span>
               )}
             </li>
-            <li onClick={toggleStaffExtension}>StaffINGTEST(SED)</li>
-            <li onClick={toggleVIPExtension}>VIPINGTEST</li>
-            <li onClick={toggleAutoPassExtension}>Auto PassINGTEST</li>
-            <li onClick={toggleFastTrackExtension}>Fast Track and HostINGTEST</li>
-            <li onClick={toggleQMExtension}>QMINGTEST</li>
-            <li onClick={toggleSweepExtension}>SweepINGTEST</li>
+            <li onClick={toggleStaffExtension}>Staff(SED)</li>
+            <li onClick={toggleVIPExtension}>VIP</li>
+            <li onClick={toggleAutoPassExtension}>Auto Pass</li>
+            <li onClick={toggleFastTrackExtension}>Fast Track and Host</li>
+            <li onClick={toggleQMExtension}>QM</li>
+            <li onClick={toggleSweepExtension}>Sweep</li>
           </ul>
         </div>
         {/* Pie Chart showing On Duty vs On Break */}
