@@ -672,6 +672,7 @@ const ProductList = ({
           onDuty={onDutyProducts}
           assignments={assignments}
           setAssignments={setAssignments}
+          testTime={testTime}
         />
       )}
     </div>
