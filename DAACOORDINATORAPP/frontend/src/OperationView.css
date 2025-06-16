@@ -1,38 +1,34 @@
-/* Full screen overlay */
 .operation-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(20, 20, 20, 0.9);
+    background: rgba(10, 49, 86, 0.95);
+    color: white;
     z-index: 9999;
-    overflow-y: auto;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 40px;
+    overflow: auto;
 }
 
 .operation-content {
-    background: #fefefe;
-    width: 95%;
-    max-width: 1600px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     position: relative;
+    width: 100%;
+    max-width: 1400px;
 }
 
 .close-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    background: crimson;
+    top: 12px;
+    right: 12px;
+    background: #ffffff33;
     color: white;
     border: none;
-    font-size: 16px;
-    font-weight: bold;
     border-radius: 50%;
+    font-size: 16px;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -40,71 +36,65 @@
 
 .operation-columns {
     display: flex;
-    gap: 30px;
-    margin-top: 20px;
+    gap: 40px;
+    justify-content: space-between;
 }
 
-/* On Duty Column */
 .on-duty-column {
-    flex: 1;
-    max-width: 350px;
-    background: #f1f1f1;
-    padding: 15px;
-    border-radius: 10px;
+    flex: 0 0 250px;
+    background: #1b4772;
+    padding: 16px;
+    border-radius: 8px;
+    max-height: 80vh;
     overflow-y: auto;
-    max-height: 75vh;
-}
-
-.on-duty-column h3 {
-    margin-bottom: 12px;
-    font-size: 18px;
 }
 
 .draggable-person {
     background: white;
-    padding: 10px;
-    margin-bottom: 10px;
+    color: black;
+    padding: 8px 12px;
     border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     cursor: grab;
-    font-weight: 500;
 }
 
-/* Machine Zones */
-.machines-column {
-    flex: 3;
+.machines-grid {
+    flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
 }
 
 .machine-zone {
-    background: #e8e8e8;
-    padding: 14px;
-    border-radius: 10px;
-    min-height: 140px;
-    transition: background 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #195892;
+    padding: 12px;
+    min-height: 100px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
 }
 
 .machine-zone.hovered {
-    background: #c1eaff;
+    background: #2376c1;
 }
 
-.machine-zone h3 {
-    margin-bottom: 10px;
-    font-size: 16px;
+.assigned-person {
+    background: white;
+    color: black;
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 13px;
 }
 
-/* Assigned Person (Detailed View) */
 .assigned-person.detailed {
     background: white;
+    color: black;
+    border-radius: 8px;
     padding: 10px 12px;
     margin-top: 8px;
-    border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     font-size: 14px;
-    position: relative;
 }
 
 .assigned-person .person-name {
@@ -129,21 +119,4 @@
 .assigned-person .progress-bar {
     height: 100%;
     border-radius: 4px;
-    background-color: #4caf50;
-}
-
-/* Optional Remove Button */
-.remove-btn {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: transparent;
-    border: none;
-    font-size: 14px;
-    color: #999;
-    cursor: pointer;
-}
-
-.remove-btn:hover {
-    color: red;
 }
