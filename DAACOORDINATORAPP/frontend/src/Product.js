@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './ProductList.css';
 import { FaSort, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useEffect } from 'react';
+import OperationView from './OperationView';
 const ItemTypes = {
   PRODUCT: 'product',
 
@@ -428,6 +429,7 @@ const ProductList = ({
   testTime,
   isAutomated
 }) => {
+  const [showOperationView, setShowOperationView] = useState(false);
   const [showBreakPopup, setShowBreakPopup] = useState(false);
   const [breakPopupMessage, setBreakPopupMessage] = useState('');
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -652,9 +654,16 @@ const ProductList = ({
         />
 
       )}
-      <button className="operation-view-button">
+      <button
+        className="operation-view-button"
+        onClick={() => setShowOperationView(true)}
+      >
         Operation View
       </button>
+
+      {showOperationView && (
+        <OperationView onClose={() => setShowOperationView(false)} />
+      )}
     </div>
   );
 };

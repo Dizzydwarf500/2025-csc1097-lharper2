@@ -1,0 +1,38 @@
+/* src/OperationView.css */
+.operation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 49, 86, 0.95);
+    /* Matches your theme */
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.operation-content {
+    position: relative;
+    padding: 40px;
+    background: #0e4a8c;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #ffffff33;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
