@@ -28,5 +28,5 @@ const DraggablePerson = ({ person }) => {
         </div>
     );
 };
-
+//Export
 export default DraggablePerson;
