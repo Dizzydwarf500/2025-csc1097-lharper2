@@ -1,4 +1,4 @@
-// OperationView.js
+// OperationView.js code
 import React from 'react';
 import './OperationView.css';
 import MachineZone from './MachineZone'; // 👈 Import child component
