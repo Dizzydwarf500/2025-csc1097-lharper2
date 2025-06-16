@@ -1,4 +1,3 @@
-/* Overlay covers full screen */
 .operation-overlay {
     position: fixed;
     top: 0;
@@ -10,19 +9,19 @@
     z-index: 9999;
     display: flex;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    align-items: flex-start;
+    padding: 30px;
+    overflow: auto;
 }
 
-/* Main content with horizontal layout */
 .operation-content-horizontal {
-    position: relative;
-    width: 100%;
-    height: 100%;
     display: flex;
+    width: 100%;
+    max-width: 1600px;
+    height: 90vh;
+    position: relative;
 }
 
-/* Close button in top-right */
 .close-btn {
     position: absolute;
     top: 12px;
@@ -31,57 +30,98 @@
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 16px;
-    width: 32px;
-    height: 32px;
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
-    z-index: 10001;
 }
 
-/* Sidebar with On Duty staff */
 .on-duty-sidebar {
-    width: 250px;
-    background: #1b4772;
-    padding: 20px;
+    flex: 0 0 260px;
+    background: #153d66;
+    padding: 16px;
+    border-radius: 10px;
     overflow-y: auto;
-    border-right: 2px solid #14406a;
+    margin-right: 24px;
 }
 
 .on-duty-sidebar h3 {
+    margin-bottom: 16px;
     font-size: 18px;
-    margin-bottom: 12px;
-    color: #ffffff;
+    text-align: center;
+    border-bottom: 1px solid #2c5c88;
+    padding-bottom: 8px;
 }
 
 .draggable-person {
     background: white;
-    color: black;
+    color: #1a1a1a;
     padding: 10px 12px;
     border-radius: 6px;
     margin-bottom: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     cursor: grab;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+    transition: transform 0.1s ease;
 }
 
-/* Scrollable horizontal machine area */
+.draggable-person:active {
+    cursor: grabbing;
+    transform: scale(1.02);
+}
+
 .machines-scroll {
     flex: 1;
-    overflow-x: auto;
-    overflow-y: hidden;
     display: flex;
-    padding: 20px;
-    gap: 20px;
-    align-items: flex-start;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 8px;
 }
 
-/* Machine drop zones */
-.machine-zone-horizontal {
+.machine-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-width: 200px;
-    min-height: 160px;
+}
+
+.machine-visual {
+    background: #134c80;
+    border-radius: 12px;
+    width: 180px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.machine-top-bar {
+    background: #0e3c63;
+    width: 100%;
+    padding: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.machine-body {
+    flex: 1;
+    width: 80%;
+    background: #1b6ea8;
+    margin-top: 6px;
+    border-radius: 6px;
+}
+
+.machine-zone-horizontal {
     background: #195892;
-    padding: 14px;
+    padding: 10px;
+    min-height: 120px;
     border-radius: 10px;
-    flex-shrink: 0;
+    width: 180px;
     transition: background-color 0.2s ease;
 }
 
@@ -89,47 +129,38 @@
     background: #2376c1;
 }
 
-.machine-zone-horizontal h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-/* Assigned person with details */
 .assigned-person.detailed {
     background: white;
     color: black;
-    border-radius: 8px;
+    margin-top: 8px;
     padding: 10px;
-    margin-top: 10px;
-    font-size: 14px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.assigned-person .person-name {
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-
-.assigned-person .shift-time,
-.assigned-person .time-remaining {
+    border-radius: 8px;
     font-size: 13px;
-    color: #444;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.person-name {
+    font-weight: bold;
+    font-size: 14px;
     margin-bottom: 4px;
 }
 
-/* Progress bar inside person card */
+.shift-time,
+.time-remaining {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #333;
+}
+
 .progress-container {
-    width: 100%;
-    height: 6px;
-    background: #e0e0e0;
+    background: #eee;
     border-radius: 4px;
     overflow: hidden;
+    height: 6px;
 }
 
 .progress-bar {
+    background-color: #4caf50;
     height: 100%;
-    background: #4caf50;
     transition: width 0.3s ease;
 }
