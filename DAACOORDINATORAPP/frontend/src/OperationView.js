@@ -35,7 +35,7 @@ const DropZone = ({ name, assigned, onDropPerson }) => {
 
     return (
         <div ref={drop} className={`machine-zone ${isOver ? 'hovered' : ''}`}>
-            <h3>{name}</h3>
+            <h4>{name}</h4>
             {assigned.map((p) => (
                 <div key={p.id} className="assigned-person">
                     {p.name} ({p.IDname})
@@ -49,10 +49,17 @@ const OperationView = ({ onClose, onDuty, assignments, setAssignments }) => {
     const handleDrop = (machine, person) => {
         setAssignments((prev) => {
             const newAssignments = { ...prev };
-            newAssignments[machine] = [...newAssignments[machine], person];
+            if (!newAssignments[machine].some(p => p.id === person.id)) {
+                newAssignments[machine] = [...newAssignments[machine], person];
+            }
             return newAssignments;
         });
     };
+
+    const machines = [
+        'C3 1', 'C3 2', 'C3 3', 'C3 4', 'C3 5', 'C3 6', 'C3 7', 'C3 8',
+        'ATRS 9', 'ATRS 10', 'ATRS 11', 'ATRS 12', 'ATRS 13'
+    ];
 
     return (
         <div className="operation-overlay">
@@ -68,12 +75,12 @@ const OperationView = ({ onClose, onDuty, assignments, setAssignments }) => {
                         ))}
                     </div>
 
-                    <div className="machines-column">
-                        {Object.keys(assignments).map((machine) => (
+                    <div className="machines-grid">
+                        {machines.map((machine) => (
                             <DropZone
                                 key={machine}
                                 name={machine}
-                                assigned={assignments[machine]}
+                                assigned={assignments[machine] || []}
                                 onDropPerson={handleDrop}
                             />
                         ))}
