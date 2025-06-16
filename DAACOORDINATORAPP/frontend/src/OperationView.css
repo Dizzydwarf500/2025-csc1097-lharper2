@@ -1,3 +1,4 @@
+/* Fullscreen overlay background */
 .operation-overlay {
     position: fixed;
     top: 0;
@@ -14,12 +15,14 @@
     overflow: auto;
 }
 
+/* Content wrapper */
 .operation-content {
     position: relative;
     width: 100%;
     max-width: 1400px;
 }
 
+/* Close button (X) */
 .close-btn {
     position: absolute;
     top: 12px;
@@ -34,12 +37,14 @@
     cursor: pointer;
 }
 
+/* Layout columns */
 .operation-columns {
     display: flex;
     gap: 40px;
     justify-content: space-between;
 }
 
+/* On Duty section (left) */
 .on-duty-column {
     flex: 0 0 250px;
     background: #1b4772;
@@ -49,6 +54,7 @@
     overflow-y: auto;
 }
 
+/* Draggable On Duty item */
 .draggable-person {
     background: white;
     color: black;
@@ -59,25 +65,29 @@
     cursor: grab;
 }
 
-.machines-grid {
+/* Machines container (right) */
+.machines-column {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
 }
 
+/* Individual machine drop zone */
 .machine-zone {
     background: #195892;
-    padding: 12px;
-    min-height: 100px;
-    border-radius: 8px;
+    padding: 14px;
+    min-height: 140px;
+    border-radius: 10px;
     transition: background-color 0.2s ease;
 }
 
+/* Highlighted drop zone when hovered */
 .machine-zone.hovered {
     background: #2376c1;
 }
 
+/* Default assigned person style */
 .assigned-person {
     background: white;
     color: black;
@@ -87,19 +97,24 @@
     font-size: 13px;
 }
 
+/* 🧑 Assigned person with full details */
 .assigned-person.detailed {
     background: white;
     color: black;
     border-radius: 8px;
     padding: 10px 12px;
-    margin-top: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    margin-top: 10px;
     font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
 }
 
 .assigned-person .person-name {
-    font-weight: bold;
-    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .assigned-person .shift-time,
@@ -108,15 +123,35 @@
     color: #444;
 }
 
+/* 📊 Shift progress bar */
 .assigned-person .progress-container {
     width: 100%;
     height: 6px;
-    background: #ddd;
+    background: #e0e0e0;
     border-radius: 4px;
-    margin-top: 6px;
+    overflow: hidden;
+    margin-top: 4px;
 }
 
 .assigned-person .progress-bar {
     height: 100%;
-    border-radius: 4px;
+    background: #4caf50;
+    transition: width 0.3s ease;
+}
+
+/* ❌ Remove button (optional) */
+.remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+}
+
+.remove-btn:hover {
+    color: #c0392b;
 }
