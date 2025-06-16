@@ -1,4 +1,4 @@
-/* Fullscreen overlay background */
+/* Overlay covers full screen */
 .operation-overlay {
     position: fixed;
     top: 0;
@@ -11,18 +11,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
-    overflow: auto;
+    overflow: hidden;
 }
 
-/* Content wrapper */
-.operation-content {
+/* Main content with horizontal layout */
+.operation-content-horizontal {
     position: relative;
     width: 100%;
-    max-width: 1400px;
+    height: 100%;
+    display: flex;
 }
 
-/* Close button (X) */
+/* Close button in top-right */
 .close-btn {
     position: absolute;
     top: 12px;
@@ -35,123 +35,101 @@
     width: 32px;
     height: 32px;
     cursor: pointer;
+    z-index: 10001;
 }
 
-/* Layout columns */
-.operation-columns {
-    display: flex;
-    gap: 40px;
-    justify-content: space-between;
-}
-
-/* On Duty section (left) */
-.on-duty-column {
-    flex: 0 0 250px;
+/* Sidebar with On Duty staff */
+.on-duty-sidebar {
+    width: 250px;
     background: #1b4772;
-    padding: 16px;
-    border-radius: 8px;
-    max-height: 80vh;
+    padding: 20px;
     overflow-y: auto;
+    border-right: 2px solid #14406a;
 }
 
-/* Draggable On Duty item */
+.on-duty-sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
 .draggable-person {
     background: white;
     color: black;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: 6px;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
     cursor: grab;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Machines container (right) */
-.machines-column {
+/* Scrollable horizontal machine area */
+.machines-scroll {
     flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    align-items: flex-start;
 }
 
-/* Individual machine drop zone */
-.machine-zone {
+/* Machine drop zones */
+.machine-zone-horizontal {
+    min-width: 200px;
+    min-height: 160px;
     background: #195892;
     padding: 14px;
-    min-height: 140px;
     border-radius: 10px;
+    flex-shrink: 0;
     transition: background-color 0.2s ease;
 }
 
-/* Highlighted drop zone when hovered */
-.machine-zone.hovered {
+.machine-zone-horizontal.hovered {
     background: #2376c1;
 }
 
-/* Default assigned person style */
-.assigned-person {
-    background: white;
-    color: black;
-    margin-top: 6px;
-    padding: 6px 10px;
-    border-radius: 5px;
-    font-size: 13px;
+.machine-zone-horizontal h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-/* 🧑 Assigned person with full details */
+/* Assigned person with details */
 .assigned-person.detailed {
     background: white;
     color: black;
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 10px;
     margin-top: 10px;
     font-size: 14px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    position: relative;
 }
 
 .assigned-person .person-name {
-    font-weight: 600;
+    font-weight: bold;
     font-size: 15px;
+    margin-bottom: 4px;
 }
 
 .assigned-person .shift-time,
 .assigned-person .time-remaining {
     font-size: 13px;
     color: #444;
+    margin-bottom: 4px;
 }
 
-/* 📊 Shift progress bar */
-.assigned-person .progress-container {
+/* Progress bar inside person card */
+.progress-container {
     width: 100%;
     height: 6px;
     background: #e0e0e0;
     border-radius: 4px;
     overflow: hidden;
-    margin-top: 4px;
 }
 
-.assigned-person .progress-bar {
+.progress-bar {
     height: 100%;
     background: #4caf50;
     transition: width 0.3s ease;
-}
-
-/* ❌ Remove button (optional) */
-.remove-btn {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    background: transparent;
-    border: none;
-    color: #888;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 0;
-}
-
-.remove-btn:hover {
-    color: #c0392b;
 }
