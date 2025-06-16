@@ -1,15 +1,14 @@
-// DraggablePerson.js
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
 const ItemTypes = {
-    PRODUCT: 'product',
+    PERSON: 'person',
 };
 
-const DraggablePerson = ({ person }) => {
+function DraggablePerson({ person }) {
     const [{ isDragging }, drag] = useDrag({
-        type: ItemTypes.PRODUCT,
-        item: { product: person },
+        type: ItemTypes.PERSON,
+        item: { person },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -19,14 +18,11 @@ const DraggablePerson = ({ person }) => {
         <div
             ref={drag}
             className="draggable-person"
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-                cursor: 'grab',
-            }}
+            style={{ opacity: isDragging ? 0.5 : 1 }}
         >
             {person.name} {person.IDname}
         </div>
     );
-};
+}
 
 export default DraggablePerson;
