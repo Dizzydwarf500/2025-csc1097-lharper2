@@ -503,7 +503,7 @@ const PopoutMenu = ({
           <h2>Actions and Positions</h2>
           <ul>
             <li onClick={toggleRollcallPopup}>
-              Rollcalling
+              Rollcall
               {rollcallNotificationCount > 0 && (
                 <span style={{
                   background: 'red',
@@ -511,15 +511,15 @@ const PopoutMenu = ({
                   borderRadius: '50%',
                   padding: '2px 6px',
                   marginLeft: '8px',
-                  fontSize: '13px',
+                  fontSize: '12px',
                   fontWeight: 'bold',
                 }}>
                   {rollcallNotificationCount}
                 </span>
               )}
             </li>
-            <li onClick={toggleStaffExtension}>Staff(SED)</li>
-            <li onClick={toggleVIPExtension}>VIP</li>
+            <li onClick={toggleStaffExtension}>StaffING(SED)</li>
+            <li onClick={toggleVIPExtension}>VIPING</li>
             <li onClick={toggleAutoPassExtension}>Auto Pass</li>
             <li onClick={toggleFastTrackExtension}>Fast Track and Host</li>
             <li onClick={toggleQMExtension}>QM</li>
