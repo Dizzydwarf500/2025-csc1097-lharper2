@@ -518,7 +518,7 @@ const PopoutMenu = ({
                 </span>
               )}
             </li>
-            <li onClick={toggleStaffExtension}>StaffSECTION(SED)</li>
+            <li onClick={toggleStaffExtension}>Staff(SED)</li>
             <li onClick={toggleVIPExtension}>VIP</li>
             <li onClick={toggleAutoPassExtension}>Auto Pass</li>
             <li onClick={toggleFastTrackExtension}>Fast Track and Host</li>
