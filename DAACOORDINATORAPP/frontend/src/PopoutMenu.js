@@ -522,8 +522,8 @@ const PopoutMenu = ({
             <li onClick={toggleVIPExtension}>VIPING</li>
             <li onClick={toggleAutoPassExtension}>Auto PassING</li>
             <li onClick={toggleFastTrackExtension}>Fast Track and HostING</li>
-            <li onClick={toggleQMExtension}>QM</li>
-            <li onClick={toggleSweepExtension}>Sweep</li>
+            <li onClick={toggleQMExtension}>QMING</li>
+            <li onClick={toggleSweepExtension}>SweepING</li>
           </ul>
         </div>
         {/* Pie Chart showing On Duty vs On Break */}
