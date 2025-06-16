@@ -652,6 +652,9 @@ const ProductList = ({
         />
 
       )}
+      <button className="operation-view-button">
+        Operation View
+      </button>
     </div>
   );
 };

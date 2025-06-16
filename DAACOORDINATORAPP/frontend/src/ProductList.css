@@ -78,6 +78,27 @@
   max-width: 400px;
 }
 
+.operation-view-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #0e4a8c;
+  color: white;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.operation-view-button:hover {
+  background-color: #1462b5;
+  transform: scale(1.03);
+}
+
 /* Style for the date section */
 .product-date {
   background-color: #0a3156;
