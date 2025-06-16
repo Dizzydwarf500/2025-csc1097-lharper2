@@ -520,8 +520,8 @@ const PopoutMenu = ({
             </li>
             <li onClick={toggleStaffExtension}>StaffING(SED)</li>
             <li onClick={toggleVIPExtension}>VIPING</li>
-            <li onClick={toggleAutoPassExtension}>Auto Pass</li>
-            <li onClick={toggleFastTrackExtension}>Fast Track and Host</li>
+            <li onClick={toggleAutoPassExtension}>Auto PassING</li>
+            <li onClick={toggleFastTrackExtension}>Fast Track and HostING</li>
             <li onClick={toggleQMExtension}>QM</li>
             <li onClick={toggleSweepExtension}>Sweep</li>
           </ul>
