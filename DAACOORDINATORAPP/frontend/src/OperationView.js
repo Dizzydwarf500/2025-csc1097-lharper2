@@ -1,11 +1,7 @@
-// OperationView.js (Horizontal Layout)
+// OperationView.js
 import React from 'react';
 import './OperationView.css';
-import { useDrop } from 'react-dnd';
-
-const ItemTypes = {
-    PRODUCT: 'product',
-};
+import MachineZone from './MachineZone'; // 👈 Import child component
 
 function OperationView({ onClose, onDuty, assignments, setAssignments }) {
     const machineNames = [
@@ -13,14 +9,14 @@ function OperationView({ onClose, onDuty, assignments, setAssignments }) {
         'C3 8', 'C3 7', 'C3 6', 'C3 5', 'C3 4', 'C3 3', 'C3 2', 'C3 1'
     ];
 
+    // Move a person to a machine (ensures removed from all others first)
     const moveToMachine = (person, machine) => {
         setAssignments((prev) => {
             const updated = { ...prev };
-            // Remove from all machines first
-            Object.keys(updated).forEach(m => {
+            Object.keys(updated).forEach((m) => {
                 updated[m] = updated[m].filter(p => p.id !== person.id);
             });
-            updated[machine] = [...updated[machine], person];
+            updated[machine] = [...(updated[machine] || []), person];
             return updated;
         });
     };
@@ -47,38 +43,14 @@ function OperationView({ onClose, onDuty, assignments, setAssignments }) {
                 </div>
 
                 <div className="machines-scroll">
-                    {machineNames.map(machine => {
-                        const assigned = assignments[machine] || [];
-
-                        const [{ isOver }, drop] = useDrop({
-                            accept: ItemTypes.PRODUCT,
-                            drop: (item, monitor) => {
-                                const person = JSON.parse(monitor.getItem().person || JSON.stringify(item.product));
-                                moveToMachine(person, machine);
-                            },
-                            collect: monitor => ({ isOver: monitor.isOver() }),
-                        });
-
-                        return (
-                            <div
-                                key={machine}
-                                ref={drop}
-                                className={`machine-zone-horizontal ${isOver ? 'hovered' : ''}`}
-                            >
-                                <h4>{machine}</h4>
-                                {assigned.map(p => (
-                                    <div className="assigned-person detailed" key={p.id}>
-                                        <div className="person-name">{p.name} {p.IDname}</div>
-                                        <div className="shift-time">{p.Shift_Start_Time} - {p.Shift_End_Time}</div>
-                                        <div className="time-remaining">Time Left: TBD</div>
-                                        <div className="progress-container">
-                                            <div className="progress-bar" style={{ width: '50%' }} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        );
-                    })}
+                    {machineNames.map(machine => (
+                        <MachineZone
+                            key={machine}
+                            machine={machine}
+                            assigned={assignments[machine] || []}
+                            moveToMachine={moveToMachine}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
