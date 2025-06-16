@@ -1,7 +1,8 @@
-// OperationView.js code
+// OperationView.js (Updated with React DnD)
 import React from 'react';
 import './OperationView.css';
-import MachineZone from './MachineZone'; // 👈 Import child component
+import MachineZone from './MachineZone';
+import DraggablePerson from './DraggablePerson';
 
 function OperationView({ onClose, onDuty, assignments, setAssignments }) {
     const machineNames = [
@@ -9,7 +10,6 @@ function OperationView({ onClose, onDuty, assignments, setAssignments }) {
         'C3 8', 'C3 7', 'C3 6', 'C3 5', 'C3 4', 'C3 3', 'C3 2', 'C3 1'
     ];
 
-    // Move a person to a machine (ensures removed from all others first)
     const moveToMachine = (person, machine) => {
         setAssignments((prev) => {
             const updated = { ...prev };
@@ -29,16 +29,7 @@ function OperationView({ onClose, onDuty, assignments, setAssignments }) {
                 <div className="on-duty-sidebar">
                     <h3>On Duty</h3>
                     {onDuty.map(person => (
-                        <div
-                            key={person.id}
-                            className="draggable-person"
-                            draggable
-                            onDragStart={(e) => {
-                                e.dataTransfer.setData('application/json', JSON.stringify(person));
-                            }}
-                        >
-                            {person.name} {person.IDname}
-                        </div>
+                        <DraggablePerson key={person.id} person={person} />
                     ))}
                 </div>
 

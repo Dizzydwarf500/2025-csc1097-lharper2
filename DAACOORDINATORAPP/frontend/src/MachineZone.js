@@ -6,11 +6,11 @@ const ItemTypes = {
     PRODUCT: 'product',
 };
 
-function MachineZone({ machine, assigned, moveToMachine }) {
+const MachineZone = ({ machine, assigned, moveToMachine }) => {
     const [{ isOver }, drop] = useDrop({
         accept: ItemTypes.PRODUCT,
-        drop: (item, monitor) => {
-            const person = item.product || JSON.parse(monitor.getItem().person || '{}');
+        drop: (item) => {
+            const person = item.product;
             moveToMachine(person, machine);
         },
         collect: (monitor) => ({
@@ -36,6 +36,6 @@ function MachineZone({ machine, assigned, moveToMachine }) {
             ))}
         </div>
     );
-}
+};
 
 export default MachineZone;
