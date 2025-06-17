@@ -148,7 +148,7 @@ const BreakPopup = ({ message, onClose, onConfirm, testTime, isFinish, cancelCli
 };
 
 // Draggable Product Component
-const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, staffProducts, vipProducts, autoPassProducts, FastTrackProducts, QMProducts, SweepProducts }) => {
+const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, staffProducts, vipProducts, autoPassProducts, FastTrackProducts, QMProducts, SweepProducts, assignments }) => {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.PRODUCT,
     item: { index, sectionId, product, origin: "ProductList" },
