@@ -273,6 +273,7 @@ const DroppableSection = ({
   QMProducts,
   SweepProducts,
   testTime,
+  assignments,
 }) => {
   const [sortBy, setSortBy] = useState('name');
   const [selectedStartTime, setSelectedStartTime] = useState('');
@@ -407,6 +408,7 @@ const DroppableSection = ({
               QMProducts={QMProducts}
               SweepProducts={SweepProducts}
               testTime={testTime}
+              assignments={assignments}
             />
           </CSSTransition>
         ))}
