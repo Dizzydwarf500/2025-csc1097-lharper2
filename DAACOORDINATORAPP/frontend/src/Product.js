@@ -156,7 +156,6 @@ const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, st
       isDragging: monitor.isDragging(),
     }),
   });
-
   // Countdown message only in the "On Break" section
   const displayTime =
     sectionId === "On Break" && product.breakStartTestTime && product.breakDuration
