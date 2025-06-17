@@ -338,3 +338,53 @@
 .sort-icon {
   margin-right: 6px;
 }
+
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  color: white;
+  background-color: #888888;
+}
+
+.badge.blue {
+  background-color: #007bff;
+}
+
+.badge.purple {
+  background-color: #b266ff;
+}
+
+.badge.orange {
+  background-color: orange;
+}
+
+.badge.pink {
+  background-color: purple;
+}
+
+.badge.lightblue {
+  background-color: #66ccff;
+}
+
+.badge.green {
+  background-color: #66ff99;
+}
+
+.badge.gray {
+  background-color: #888888;
+}
+
+.badge.c3 {
+  background-color: #00bfff;
+}
+
+/* Optional: C3-specific */
+.badge.atrs {
+  background-color: #ff9966;
+}
+
+/* Optional: ATRS-specific */

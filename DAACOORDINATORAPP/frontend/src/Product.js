@@ -181,22 +181,29 @@ const DraggableProduct = ({ product, index, sectionId, testTime, moveProduct, st
         <h3>
           {product.name} {product.IDname}
           {staffProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: 'blue', marginLeft: '6px', fontWeight: 'bold' }}>S</span>
+            <span className="badge blue">S</span>
           )}
           {vipProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: '#b266ff', marginLeft: '6px', fontWeight: 'bold' }}>V</span>
+            <span className="badge purple">V</span>
           )}
           {autoPassProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: 'orange', marginLeft: '6px', fontWeight: 'bold' }}>A</span>
+            <span className="badge orange">A</span>
           )}
           {FastTrackProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: 'purple', marginLeft: '6px', fontWeight: 'bold' }}>F</span>
+            <span className="badge pink">F</span>
           )}
           {QMProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: '#66ccff', marginLeft: '6px', fontWeight: 'bold' }}>QM</span>
+            <span className="badge lightblue">QM</span>
           )}
           {SweepProducts?.some((p) => p.id === product.id) && (
-            <span style={{ color: '#66ff99', marginLeft: '6px', fontWeight: 'bold' }}>SW</span>
+            <span className="badge green">SW</span>
+          )}
+          {assignments && Object.entries(assignments).map(([machineName, assignedPeople]) =>
+            assignedPeople.some(p => p.id === product.id) ? (
+              <span key={machineName} className="badge gray" title={`Assigned to ${machineName}`}>
+                {machineName}
+              </span>
+            ) : null
           )}
         </h3>
 
@@ -614,6 +621,7 @@ const ProductList = ({
         QMProducts={QMProducts}
         SweepProducts={SweepProducts}
         testTime={testTime}
+        assignments={assignments}
       />
       <DroppableSection
         id="On Break"
