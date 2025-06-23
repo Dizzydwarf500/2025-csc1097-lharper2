@@ -259,7 +259,7 @@ const calculateShiftDuration = (startTime, endTime) => {
 
   return `${hours}H${minutes}m`;
 };
-
+// Dont touch
 // Droppable Section Component with Drop Effects
 const DroppableSection = ({
   id,
