@@ -672,20 +672,23 @@ const PopoutMenu = ({
 
                     return nowMinutes >= shiftMinutes && nowMinutes < shiftMinutes + 10;
                   })
-                  .map((product, index) => (
-                    <div
-                      key={product.id}
-                      className={`product-item rollcall-item ${scannedIds.includes(product.id) ? 'highlighted' : ''}`}
-                      onClick={() => moveToOnDuty(product.id)}
-                    >
-                      <h4>
-                        {product.name} {product.IDname}
-                      </h4>
-                      <p>
-                        {product.Shift_Start_Time} - {product.Shift_End_Time}
-                      </p>
-                    </div>
-                  ))
+                  .map((product) => {
+                    const isHighlighted = scannedIds.includes(product.id);
+                    return (
+                      <div
+                        key={product.id}
+                        className={`product-item rollcall-item ${isHighlighted ? 'highlighted' : ''}`}
+                        onClick={() => moveToOnDuty(product.id)}
+                      >
+                        <h4>
+                          {product.name} {product.IDname}
+                        </h4>
+                        <p>
+                          {product.Shift_Start_Time} - {product.Shift_End_Time}
+                        </p>
+                      </div>
+                    );
+                  })
               ) : (
                 <p>No one is available for Rollcall.</p>
               )}
@@ -694,25 +697,27 @@ const PopoutMenu = ({
               Close
             </button>
           </div>
-        </div>
+        </div >
       )}
-      {showNewRollcallPopup && (
-        <div style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: '#fff',
-          color: '#333',
-          border: '1px solid #ccc',
-          padding: '16px 24px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-          zIndex: 9999,
-        }}>
-          <strong>🚨 New Rollcall</strong>
-          <div>{rollcallNotificationCount} staff ready to check in</div>
-        </div>
-      )}
+      {
+        showNewRollcallPopup && (
+          <div style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            background: '#fff',
+            color: '#333',
+            border: '1px solid #ccc',
+            padding: '16px 24px',
+            borderRadius: '10px',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            zIndex: 9999,
+          }}>
+            <strong>🚨 New Rollcall</strong>
+            <div>{rollcallNotificationCount} staff ready to check in</div>
+          </div>
+        )
+      }
     </>
 
   );
