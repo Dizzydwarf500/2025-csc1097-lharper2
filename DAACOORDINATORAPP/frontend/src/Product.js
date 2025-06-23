@@ -408,6 +408,7 @@ const DroppableSection = ({
               SweepProducts={SweepProducts}
               testTime={testTime}
               assignments={assignments}
+              scannedId={scannedId}
             />
           </CSSTransition>
         ))}
@@ -624,6 +625,7 @@ const ProductList = ({
         SweepProducts={SweepProducts}
         testTime={testTime}
         assignments={assignments}
+        scannedId={scannedId}
       />
       <DroppableSection
         id="On Break"
@@ -636,6 +638,7 @@ const ProductList = ({
         QMProducts={QMProducts}
         SweepProducts={SweepProducts}
         testTime={testTime}
+        scannedId={scannedId}
       />
       <DroppableSection
         id="Finished"
@@ -648,6 +651,7 @@ const ProductList = ({
         QMProducts={QMProducts}
         SweepProducts={SweepProducts}
         testTime={testTime}
+        scannedId={scannedId}
       />
 
       {showBreakPopup && (

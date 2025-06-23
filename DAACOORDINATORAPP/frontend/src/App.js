@@ -99,6 +99,36 @@ function App() {
     }, speed);
   };
 
+  const keycardToIdMap = {
+    '0001624299': 100003,
+    // Add more mappings here
+  };
+
+  const [scannedId, setScannedId] = useState(null);
+
+  useEffect(() => {
+    let buffer = '';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        const code = buffer.trim();
+        buffer = '';
+
+        const matchedId = keycardToIdMap[code];
+        if (matchedId) {
+          setScannedId(matchedId);
+          setTimeout(() => setScannedId(null), 5000); // Reset after 5 seconds
+        }
+      } else {
+        buffer += e.key;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+
   const stopAutoIncrement = () => {
     clearInterval(autoIncrementRef.current);
     autoIncrementRef.current = null;
@@ -501,6 +531,7 @@ function App() {
             SweepProducts={SweepProducts}
             testTime={testTime}
             isAutomated={isAutomated}
+            scannedId={scannedId}
           />
 
           <AIHelper
@@ -546,6 +577,7 @@ function App() {
           finishedProducts={finishedProducts}
           onDutyProducts={onDutyProducts}
           onBreakProducts={onBreakProducts}
+          scannedId={scannedId}
         />
       </div>
     </DndProvider>

@@ -5,8 +5,8 @@
   right: 0;
   height: 100vh;
   width: 300px;
-  background-color: rgba(0, 0, 0, 0.85); 
-  transition: transform 0.3s ease, width 0.3s ease; 
+  background-color: rgba(0, 0, 0, 0.85);
+  transition: transform 0.3s ease, width 0.3s ease;
   transform: translateX(100%);
   color: white;
   z-index: 1000;
@@ -18,7 +18,12 @@
 
 /* Add the extended class for the Staff section */
 .popout-menu.extended {
-  width: 600px; 
+  width: 600px;
+}
+
+.rollcall-item.highlighted {
+  background-color: #c8f7c5 !important;
+  border: 2px solid #4CAF50;
 }
 
 .popout-tab {
@@ -71,18 +76,18 @@
   background-color: #ffffff;
   color: #000000;
   font-size: 12px;
-  width: 250px; 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: transform 0.1s ease, box-shadow 0.1s ease; 
+  width: 250px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .rollcall-product:hover {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Rollcall item hover effect */
 .menu-content ul li:hover {
-  color: #aaa; 
+  color: #aaa;
 }
 
 /* Styles for the Rollcall popup modal */
@@ -101,7 +106,7 @@
 
 /* Popup Content: Dark, subtle background with rounded corners */
 .popup-content {
-  background-color: rgba(50, 50, 50, 0.9); 
+  background-color: rgba(50, 50, 50, 0.9);
   padding: 40px;
   border-radius: 12px;
   width: 90vw;
@@ -122,7 +127,7 @@
 
 /* Rollcall Section */
 .rollcall-section {
-  background-color: #2c2c2c; 
+  background-color: #2c2c2c;
   padding: 20px;
   border-radius: 8px;
   text-align: left;
@@ -135,7 +140,7 @@
 }
 
 .rollcall-item {
-  background-color: #3a3a3a; 
+  background-color: #3a3a3a;
   padding: 15px;
   margin: 10px 0;
   border-radius: 8px;
@@ -150,20 +155,20 @@
 
 .rollcall-item h4 {
   margin: 0;
-  color: #e0e0e0; 
+  color: #e0e0e0;
   font-size: 18px;
 }
 
 .rollcall-item p {
   margin: 5px 0 0;
-  color: #a0a0a0; 
+  color: #a0a0a0;
   font-size: 14px;
 }
 
 /* Close Button: Subtle button in the top-right corner */
 .close-button {
   margin-top: 20px;
-  background-color: #444; 
+  background-color: #444;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -190,12 +195,12 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 300px; 
+  width: 300px;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.1); 
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 20px;
   color: white;
-  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Styling for content inside the extended section */
@@ -209,6 +214,7 @@
   font-size: 14px;
   color: #000000;
 }
+
 .staff-section {
   border: 1px solid #ccc;
   padding: 10px;
@@ -318,12 +324,12 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 300px; 
+  width: 300px;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.1); 
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 20px;
   color: white;
-  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -389,10 +395,10 @@
   right: 0;
   width: 300px;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.1); 
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 20px;
   color: white;
-  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: -4px 0px 8px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -450,10 +456,9 @@
   border-color: #888;
   background-color: rgba(50, 50, 50, 0.2);
 }
+
 .ap-symbol {
   color: green;
   font-weight: bold;
   margin-left: 5px;
 }
-
-
