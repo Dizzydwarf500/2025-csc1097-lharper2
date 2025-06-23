@@ -22,14 +22,15 @@
 }
 
 .rollcall-item.highlighted {
-  background-color: #e6f4ea !important;
-  /* softer, muted green */
-  border: 1.5px solid #388e3c;
-  /* darker, less flashy green border */
-  box-shadow: 0 1px 3px rgba(56, 142, 60, 0.25);
-  /* gentle shadow for subtle emphasis */
+  background-color: #2e7d32 !important;
+  /* dark forest green */
+  border: 1.5px solid #1b5e20;
+  /* even darker green border */
   border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, border 0.3s ease;
 }
+
 
 
 .popout-tab {
