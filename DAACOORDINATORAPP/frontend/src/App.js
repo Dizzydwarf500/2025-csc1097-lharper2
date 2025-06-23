@@ -547,7 +547,7 @@ function App() {
             SweepProducts={SweepProducts}
             testTime={testTime}
             isAutomated={isAutomated}
-            scannedId={scannedId}
+            scannedIds={scannedIds}
           />
 
           <AIHelper
