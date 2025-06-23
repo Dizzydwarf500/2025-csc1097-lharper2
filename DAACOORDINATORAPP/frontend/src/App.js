@@ -110,7 +110,7 @@ function App() {
     // Add more as needed
   };
 
-  const [scannedId, setScannedId] = useState(null);
+  const [scannedIds, setScannedIds] = useState(null);
 
   useEffect(() => {
     let buffer = '';
@@ -122,7 +122,7 @@ function App() {
         const matchedId = keycardToIdMap[code];
 
         if (matchedId) {
-          setScannedId(matchedId);
+          setScannedIds((prev) => [...new Set([...prev, matchedId])]);
           setScanMessage(`Scan successful: ID ${matchedId}`);
           setScanSuccess(true);
         } else {
@@ -132,7 +132,6 @@ function App() {
 
         setTimeout(() => {
           setScanMessage(null);
-          setScannedId(null);
         }, 5000);
       } else {
         buffer += e.key;
@@ -594,7 +593,7 @@ function App() {
           finishedProducts={finishedProducts}
           onDutyProducts={onDutyProducts}
           onBreakProducts={onBreakProducts}
-          scannedId={scannedId}
+          scannedIds={scannedIds}
         />
       </div>
       {scanMessage && (

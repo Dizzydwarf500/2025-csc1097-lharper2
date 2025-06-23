@@ -38,7 +38,7 @@ const PopoutMenu = ({
   finishedProducts,
   onDutyProducts = [],
   onBreakProducts = [],
-  scannedId,
+  scannedIds,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRollcallOpen, setIsRollcallOpen] = useState(false);
@@ -675,7 +675,7 @@ const PopoutMenu = ({
                   .map((product, index) => (
                     <div
                       key={product.id}
-                      className={`product-item rollcall-item ${scannedId === product.IDname ? 'highlighted' : ''}`}
+                      className={`product-item rollcall-item ${scannedIds.includes(product.id) ? 'highlighted' : ''}`}
                       onClick={() => moveToOnDuty(product.id)}
                     >
                       <h4>
