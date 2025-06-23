@@ -98,10 +98,12 @@ function App() {
       incrementTestTime();
     }, speed);
   };
+  const [scanMessage, setScanMessage] = useState(null);
+  const [scanSuccess, setScanSuccess] = useState(null); // true or false
 
   const keycardToIdMap = {
     '0001624299': 100003,
-    // Add more mappings here
+    // Add more as needed
   };
 
   const [scannedId, setScannedId] = useState(null);
@@ -113,12 +115,21 @@ function App() {
       if (e.key === 'Enter') {
         const code = buffer.trim();
         buffer = '';
-
         const matchedId = keycardToIdMap[code];
+
         if (matchedId) {
           setScannedId(matchedId);
-          setTimeout(() => setScannedId(null), 5000); // Reset after 5 seconds
+          setScanMessage(`Scan successful: ID ${matchedId}`);
+          setScanSuccess(true);
+        } else {
+          setScanMessage(`Scan failed: unknown card`);
+          setScanSuccess(false);
         }
+
+        setTimeout(() => {
+          setScanMessage(null);
+          setScannedId(null);
+        }, 5000);
       } else {
         buffer += e.key;
       }
@@ -127,6 +138,8 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+
 
 
   const stopAutoIncrement = () => {
@@ -580,8 +593,27 @@ function App() {
           scannedId={scannedId}
         />
       </div>
+      {scanMessage && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: scanSuccess ? '#d4edda' : '#f8d7da',
+          color: scanSuccess ? '#155724' : '#721c24',
+          border: `1px solid ${scanSuccess ? '#c3e6cb' : '#f5c6cb'}`,
+          borderRadius: '8px',
+          padding: '12px 16px',
+          fontWeight: 'bold',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          zIndex: 10000,
+        }}>
+          {scanMessage}
+        </div>
+      )}
+
     </DndProvider>
   );
 }
+
 
 export default App;
