@@ -110,7 +110,7 @@ function App() {
     // Add more as needed
   };
 
-  const [scannedIds, setScannedIds] = useState(null);
+  const [scannedId, setScannedId] = useState(null);
 
   useEffect(() => {
     let buffer = '';
@@ -122,7 +122,7 @@ function App() {
         const matchedId = keycardToIdMap[code];
 
         if (matchedId) {
-          setScannedIds((prev) => [...new Set([...prev, matchedId])]);
+          setScannedId(matchedId);
           setScanMessage(`Scan successful: ID ${matchedId}`);
           setScanSuccess(true);
         } else {
@@ -547,7 +547,7 @@ function App() {
             SweepProducts={SweepProducts}
             testTime={testTime}
             isAutomated={isAutomated}
-            scannedIds={scannedIds}
+            scannedId={scannedId}
           />
 
           <AIHelper
@@ -593,7 +593,7 @@ function App() {
           finishedProducts={finishedProducts}
           onDutyProducts={onDutyProducts}
           onBreakProducts={onBreakProducts}
-          scannedIds={scannedIds}
+          scannedId={scannedId}
         />
       </div>
       {scanMessage && (
