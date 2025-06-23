@@ -675,7 +675,7 @@ const PopoutMenu = ({
                   .map((product, index) => (
                     <div
                       key={product.id}
-                      className={`product-item rollcall-item ${scannedId === product.id ? 'highlighted' : ''}`}
+                      className={`product-item rollcall-item ${scannedId === product.IDname ? 'highlighted' : ''}`}
                       onClick={() => moveToOnDuty(product.id)}
                     >
                       <h4>
